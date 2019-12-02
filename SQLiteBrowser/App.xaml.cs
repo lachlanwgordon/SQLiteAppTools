@@ -1,4 +1,8 @@
 ﻿using System;
+using SQLiteBrowser.Models;
+using SQLiteBrowser.ModelServices;
+using SQLiteBrowser.Service;
+using SQLiteBrowser.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,11 +14,17 @@ namespace SQLiteBrowser
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            DependencyService.Register<IDatabase, Database>();
+            DependencyService.Register<IPersonService, PersonService>();
+
+            MainPage = new PeoplePage();
         }
 
-        protected override void OnStart()
+
+        protected override async void OnStart()
         {
+            var db = DependencyService.Resolve<IDatabase>();
+            await db.RegisterTypes(typeof(Person));
         }
 
         protected override void OnSleep()

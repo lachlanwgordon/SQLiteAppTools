@@ -15,4 +15,16 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="ModelServices\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+    <Folder Include="Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Views\PeoplePage.xaml">
+      <LogicalName>SQLiteBrowser.Views.PeoplePagePage.xaml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

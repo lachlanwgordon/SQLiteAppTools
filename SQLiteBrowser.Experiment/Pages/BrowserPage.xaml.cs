@@ -10,5 +10,11 @@ namespace SQLiteBrowser.Experiment.Pages
         {
             InitializeComponent();
         }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await VM.InitializeAsync();
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using SQLiteBrowser.Experiment;
+using SQLiteBrowser.Experiment.Pages;
 using SQLiteBrowser.Models;
 using SQLiteBrowser.ModelServices;
 using SQLiteBrowser.Service;
@@ -17,7 +19,7 @@ namespace SQLiteBrowser
             DependencyService.Register<IDatabase, Database>();
             DependencyService.Register<IPersonService, PersonService>();
 
-            MainPage = new PeoplePage();
+            MainPage = new MyTabbedPage();
         }
 
 
@@ -25,6 +27,8 @@ namespace SQLiteBrowser
         {
             var db = DependencyService.Resolve<IDatabase>();
             await db.RegisterTypes(typeof(Person));
+            Manager.Initialize(db.Connection.DatabasePath);
+
         }
 
         protected override void OnSleep()

@@ -27,4 +27,7 @@
       <LogicalName>SQLiteBrowser.Views.PeoplePagePage.xaml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SQLiteBrowser.Experiment\SQLiteBrowser.Experiment.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sqlitebrowser="clr-namespace:SQLiteBrowser"
+    xmlns:pages="clr-namespace:SQLiteBrowser.Experiment.Pages;assembly=SQLiteBrowser.Experiment"
+    xmlns:views="clr-namespace:SQLiteBrowser.Views"
+    x:Class="SQLiteBrowser.Views.MyTabbedPage">
+    <!--Pages can be added as references or inline-->
+    <sqlitebrowser:MainPage
+        Title="Tab 1" />
+    <views:PeoplePage
+        Title="Tab 2" />
+    <pages:BrowserPage
+        Title="Browser" />
+</TabbedPage>

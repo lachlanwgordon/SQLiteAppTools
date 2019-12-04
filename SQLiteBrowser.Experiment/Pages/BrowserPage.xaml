@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-  xmlns="http://xamarin.com/schemas/2014/forms"
-  x:Class="SQLiteBrowser.Experiment.Pages.BrowserPage">
+<ContentPage
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:vm="clr-namespace:SQLiteBrowser.Experiment.ViewModels"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="True"
+    x:Class="SQLiteBrowser.Experiment.Pages.BrowserPage">
+    <ContentPage.BindingContext>
+        <vm:BrowserViewModel
+            x:Name="VM" />
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+        <Picker
+            ItemsSource="{Binding Mappings}"
+            ItemDisplayBinding="{Binding TableName}">
 
+        </Picker>
+        <Label
+            Text="{Binding MappingSummary}"
+            Grid.Row="1" />
+        <CollectionView
+            BackgroundColor="Red"
+            ItemsSource="{Binding Records}"
+            Grid.Row="2">
+            <CollectionView.HeaderTemplate>
+                <DataTemplate>
+                    <StackLayout
+                        Orientation="Horizontal"
+                        BackgroundColor="Aquamarine"
+                        BindableLayout.ItemsSource="{Binding Columns}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Label
+                                    Text="{Binding Name}" />
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </DataTemplate>
+
+            </CollectionView.HeaderTemplate>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Label
+                            Text="Item" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

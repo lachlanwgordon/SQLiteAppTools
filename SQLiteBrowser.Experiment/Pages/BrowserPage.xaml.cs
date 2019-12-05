@@ -15,6 +15,23 @@ namespace SQLiteBrowser.Experiment.Pages
         {
             base.OnAppearing();
             await VM.InitializeAsync();
+            //VM.PropertyChanged += VM_PropertyChanged;
         }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            //VM.PropertyChanged -= VM_PropertyChanged;
+        }
+
+        //private void VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if(e.PropertyName == "TotalCharacterLength")
+        //    {
+        //        var factor = (double) Resources["CharacterWidth"];
+        //        TheCollectionView.WidthRequest = VM.TotalCharacterLength * factor;
+        //    }
+        //}
+
     }
 }

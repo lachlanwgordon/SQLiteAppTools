@@ -2,8 +2,8 @@
 {
     public class Property
     {
+        public ColumnHeader ColumnHeader { get; set; }
         public object Value { get; set; }
-        public double Width { get; set; }
-        public string Name => Value.ToString();
+        public string Text => Value.ToString();
     }
 }

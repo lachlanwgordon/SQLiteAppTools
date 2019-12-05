@@ -8,30 +8,37 @@ using SQLiteBrowser.Experiment.Service;
 using Xamarin.Forms.Internals;
 using System.Reflection;
 using static SQLite.TableMapping;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using MvvmHelpers;
 
 namespace SQLiteBrowser.Experiment.ViewModels
 {
-    public class BrowserViewModel
+    public class BrowserViewModel : BaseViewModel
     {
-        public string MappingSummary
-        {
-            get;
-            set;
-        } = "Table info";
+        public string MappingSummary { get; set; } = "Table info";
 
         private TableMapping selectedMapping;
         IDatabase db;
 
+       
 
-        public ObservableCollection<TableMapping> Mappings { get; private set; } = new ObservableCollection<TableMapping>();
-        public ObservableCollection<object> Records { get; set; } = new ObservableCollection<object>();
-        public ObservableCollection<Row> Rows { get; set; } = new ObservableCollection<Row>();
-        public ObservableCollection<ColumnHeader> Columns { get; set; } = new ObservableCollection<ColumnHeader>();
-        public int TotalCharacterLength => Columns.Sum(x => x.Name.Length);
+        public ObservableRangeCollection<TableMapping> Mappings { get; private set; } = new ObservableRangeCollection<TableMapping>();
+        public List<object> Records { get; set; } = new List<object>();
+        public ObservableRangeCollection<Row> Rows { get; set; } = new ObservableRangeCollection<Row>();
+        public ObservableRangeCollection<ColumnHeader> Columns { get; set; } = new ObservableRangeCollection<ColumnHeader>();
+        public int TotalCharacterLength
+        {
+            get
+            {
+                var length = Columns.Sum(x => x.MaxLength);
+                return length;
+            }
+        }
         public TableMapping SelectedMapping
         {
             get => selectedMapping;
-            
+
             set
             {
                 selectedMapping = value;
@@ -41,30 +48,45 @@ namespace SQLiteBrowser.Experiment.ViewModels
 
         private async Task LoadRecords()
         {
-            Columns.Clear();
-            SelectedMapping.Columns.ForEach(x => Columns.Add(new ColumnHeader(x)));
+            Rows.Clear();
+
+            var columns = new List<ColumnHeader>();
+            var rows = new List<Row>();
+            SelectedMapping.Columns.ForEach(x => columns.Add(new ColumnHeader(x)));
 
             var records = await db.GetRecords(SelectedMapping);
-            Records.Clear();
-            Rows.Clear();
-            records.ForEach(x => Records.Add(x));
 
-
+            
 
             foreach (var record in records)
             {
                 var row = new Row
                 {
-                     Properties = new List<Property>()
+                    Properties = new List<Property>()
                 };
-                foreach (var column in Columns)
+                foreach (var column in columns)
                 {
                     var props = new List<object>();
                     var prop = record.GetType().GetProperty(column.Name).GetValue(record);
-                    row.Properties.Add(new Property { Value = prop, Width = column.Width });
+                    var property = new Property { Value = prop, ColumnHeader = column };
+                    row.Properties.Add(property);
                 }
-                Rows.Add(row);
+                rows.Add(row);
             }
+            foreach (var column in columns)
+            {
+                var alltheProps = rows.SelectMany(x => x.Properties);
+                var filterProps = alltheProps.Where(x => x.ColumnHeader.Name == column.Name);
+                var max = filterProps.Max(x => x.Text.Length);
+                column.MaxLength = Math.Max(max, column.MaxLength);
+                //column.MaxLength = rows.SelectMany(x => x.Properties).Where(x => x.ColumnHeader.Name == column.Name).Max(x => x.Text.Length);
+
+            }
+
+            Columns = new ObservableRangeCollection<ColumnHeader>(columns);
+            OnPropertyChanged(nameof(TotalCharacterLength));
+            OnPropertyChanged(nameof(Columns));
+            Rows.AddRange(rows);
 
 
 
@@ -79,5 +101,7 @@ namespace SQLiteBrowser.Experiment.ViewModels
             if (selectedMapping != null)
                 MappingSummary = selectedMapping.TableName;
         }
+
+
     }
 }

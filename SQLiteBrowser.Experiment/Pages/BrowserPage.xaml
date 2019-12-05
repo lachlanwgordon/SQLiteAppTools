@@ -5,6 +5,7 @@
     xmlns:vm="clr-namespace:SQLiteBrowser.Experiment.ViewModels"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="True"
+    xmlns:converter="clr-namespace:SQLiteBrowser.Experiment.Converters"
     x:Class="SQLiteBrowser.Experiment.Pages.BrowserPage">
     <ContentPage.BindingContext>
         <vm:BrowserViewModel
@@ -25,6 +26,7 @@
         </Grid.ColumnDefinitions>
         <Picker
             ItemsSource="{Binding Mappings}"
+            SelectedItem="{Binding SelectedMapping}"
             ItemDisplayBinding="{Binding TableName}">
 
         </Picker>
@@ -37,7 +39,8 @@
             Orientation="Horizontal">
 
             <CollectionView
-                WidthRequest="{Binding Width}"
+                x:Name="TheCollectionView"
+                WidthRequest="{Binding TotalCharacterLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
                 HorizontalOptions="FillAndExpand"
                 BackgroundColor="Red"
                 ItemsSource="{Binding Rows}"
@@ -52,12 +55,9 @@
                             BindableLayout.ItemsSource="{Binding Columns}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid
-                                        WidthRequest="{Binding Width}">
-
-                                        <Label
-                                            Text="{Binding Name}" />
-                                    </Grid>
+                                    <Label
+                                        WidthRequest="{Binding MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                                        Text="{Binding Name}" />
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
@@ -74,15 +74,9 @@
                             BindableLayout.ItemsSource="{Binding Properties}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid
-                                        WidthRequest="{Binding Width}">
-                                        <Label
-                                            LineBreakMode="NoWrap"
-                                            BackgroundColor="Green"
-                                            Padding="5"
-                                            Margin="9"
-                                            Text="{Binding Name}" />
-                                    </Grid>
+                                    <Label
+                                        WidthRequest="{Binding ColumnHeader.MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                                        Text="{Binding Text}" />
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
@@ -92,4 +86,12 @@
         </ScrollView>
 
     </Grid>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:StringLengthToLabelWidth
+                x:Key="stringLengthToLabelWidth" />
+            <x:Double
+                x:Key="CharacterWidth">20</x:Double>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 </ContentPage>

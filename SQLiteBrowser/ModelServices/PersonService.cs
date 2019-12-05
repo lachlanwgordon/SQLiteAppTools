@@ -23,12 +23,10 @@ namespace SQLiteBrowser.ModelServices
         public async Task<List<Person>> GetAllPeopleAsync()
         {
             await Task.Delay(500);
+            await SeedDemoDataAsync();
+
             var people =  await database.Connection.Table<Person>().ToListAsync();
-            if(!people.Any())
-            {
-                await SeedDemoDataAsync();
-                people = await database.Connection.Table<Person>().ToListAsync();
-            }
+            
             return people;
         }
 
@@ -52,6 +50,15 @@ namespace SQLiteBrowser.ModelServices
                 UpdatedTimeStamp = DateTime.UtcNow
             };
             await database.Connection.InsertOrReplaceAsync(person2);
+            var person3 = new Person
+            {
+                DateOfBirth = new DateTime(1970, 05, 02),
+                FavouriteNumber = 6,
+                FirstName = "Spook",
+                LastName = "Gordon",
+                UpdatedTimeStamp = DateTime.UtcNow
+            };
+            await database.Connection.InsertOrReplaceAsync(person3);
         }
 
         public async Task<Person> GetPersonByIdAsync(int id)

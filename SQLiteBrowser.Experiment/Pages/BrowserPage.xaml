@@ -31,34 +31,65 @@
         <Label
             Text="{Binding MappingSummary}"
             Grid.Row="1" />
-        <CollectionView
-            BackgroundColor="Red"
-            ItemsSource="{Binding Records}"
-            Grid.Row="2">
-            <CollectionView.HeaderTemplate>
-                <DataTemplate>
-                    <StackLayout
-                        Orientation="Horizontal"
-                        BackgroundColor="Aquamarine"
-                        BindableLayout.ItemsSource="{Binding Columns}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Label
-                                    Text="{Binding Name}" />
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </StackLayout>
-                </DataTemplate>
+        <ScrollView
+            Grid.Row="2"
+            HorizontalOptions="FillAndExpand"
+            Orientation="Horizontal">
 
-            </CollectionView.HeaderTemplate>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Label
-                            Text="Item" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            <CollectionView
+                WidthRequest="{Binding Width}"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="Red"
+                ItemsSource="{Binding Rows}"
+                Header="{Binding Columns}">
+                <CollectionView.HeaderTemplate>
+                    <DataTemplate>
+                        <StackLayout
+                            HeightRequest="50"
+                            Orientation="Horizontal"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Aquamarine"
+                            BindableLayout.ItemsSource="{Binding Columns}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        WidthRequest="{Binding Width}">
+
+                                        <Label
+                                            Text="{Binding Name}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </DataTemplate>
+
+                </CollectionView.HeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout
+                            HeightRequest="50"
+                            Orientation="Horizontal"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Orange"
+                            BindableLayout.ItemsSource="{Binding Properties}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        WidthRequest="{Binding Width}">
+                                        <Label
+                                            LineBreakMode="NoWrap"
+                                            BackgroundColor="Green"
+                                            Padding="5"
+                                            Margin="9"
+                                            Text="{Binding Name}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
     </Grid>
 </ContentPage>

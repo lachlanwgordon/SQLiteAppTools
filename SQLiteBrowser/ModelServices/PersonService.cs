@@ -36,8 +36,8 @@ namespace SQLiteBrowser.ModelServices
             {
                 DateOfBirth = new DateTime(1980, 05, 02),
                 FavouriteNumber = 7,
-                FirstName = "Oreo",
-                LastName = "Button",
+                FirstName = "Bob",
+                LastName = "Brown",
                 UpdatedTimeStamp = DateTime.UtcNow
             };
             await database.Connection.InsertOrReplaceAsync(person);
@@ -45,17 +45,17 @@ namespace SQLiteBrowser.ModelServices
             {
                 DateOfBirth = new DateTime(1980, 05, 02),
                 FavouriteNumber = 7,
-                FirstName = "Gravy",
-                LastName = "Butt",
+                FirstName = "Janet",
+                LastName = "Rice",
                 UpdatedTimeStamp = DateTime.UtcNow
             };
             await database.Connection.InsertOrReplaceAsync(person2);
             var person3 = new Person
             {
                 DateOfBirth = new DateTime(1970, 05, 02),
-                FavouriteNumber = 6,
-                FirstName = "Spook",
-                LastName = "Gordon",
+                FavouriteNumber = 459155949,
+                FirstName = "Richard",
+                LastName = "Dinatale",
                 UpdatedTimeStamp = DateTime.UtcNow
             };
             await database.Connection.InsertOrReplaceAsync(person3);

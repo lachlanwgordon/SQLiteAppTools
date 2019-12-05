@@ -27,14 +27,15 @@ namespace SQLiteBrowser.Experiment.ViewModels
         public List<object> Records { get; set; } = new List<object>();
         public ObservableRangeCollection<Row> Rows { get; set; } = new ObservableRangeCollection<Row>();
         public ObservableRangeCollection<ColumnHeader> Columns { get; set; } = new ObservableRangeCollection<ColumnHeader>();
-        public int TotalCharacterLength
+        public IEnumerable<int> ColumnLengths
         {
             get
             {
-                var length = Columns.Sum(x => x.MaxLength);
+                var length = Columns.Select(x => x.MaxLength);
                 return length;
             }
         }
+
         public TableMapping SelectedMapping
         {
             get => selectedMapping;
@@ -84,7 +85,7 @@ namespace SQLiteBrowser.Experiment.ViewModels
             }
 
             Columns = new ObservableRangeCollection<ColumnHeader>(columns);
-            OnPropertyChanged(nameof(TotalCharacterLength));
+            OnPropertyChanged(nameof(ColumnLengths));
             OnPropertyChanged(nameof(Columns));
             Rows.AddRange(rows);
 

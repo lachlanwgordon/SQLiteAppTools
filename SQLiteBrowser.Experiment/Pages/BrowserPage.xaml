@@ -40,7 +40,7 @@
 
             <CollectionView
                 x:Name="TheCollectionView"
-                WidthRequest="{Binding TotalCharacterLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                WidthRequest="{Binding ColumnLengths, Converter={StaticResource stringLengthsToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
                 HorizontalOptions="FillAndExpand"
                 BackgroundColor="Red"
                 ItemsSource="{Binding Rows}"
@@ -49,15 +49,29 @@
                     <DataTemplate>
                         <StackLayout
                             HeightRequest="50"
+                            Spacing="0"
                             Orientation="Horizontal"
                             HorizontalOptions="FillAndExpand"
                             BackgroundColor="Aquamarine"
                             BindableLayout.ItemsSource="{Binding Columns}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Label
-                                        WidthRequest="{Binding MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
-                                        Text="{Binding Name}" />
+                                    <Grid
+                                        Margin="0">
+                                        <Frame
+                                            BorderColor="Black"
+                                            CornerRadius="0"
+                                            BackgroundColor="Transparent"
+                                            HasShadow="False"
+                                            Padding="0"
+                                            Margin="0" />
+                                        <Label
+                                            HorizontalTextAlignment="Center"
+                                            WidthRequest="{Binding MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                                            Text="{Binding Name}" />
+                                    </Grid>
+
+
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
@@ -67,16 +81,29 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout
-                            HeightRequest="50"
+                            Spacing="0"
                             Orientation="Horizontal"
                             HorizontalOptions="FillAndExpand"
-                            BackgroundColor="Orange"
                             BindableLayout.ItemsSource="{Binding Properties}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <Label
-                                        WidthRequest="{Binding ColumnHeader.MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
-                                        Text="{Binding Text}" />
+                                    <Grid
+                                        Margin="0">
+                                        <Frame
+                                            BorderColor="Black"
+                                            CornerRadius="0"
+                                            BackgroundColor="Transparent"
+                                            HasShadow="False"
+                                            Padding="0"
+                                            Margin="0" />
+                                        <Label
+                                            HorizontalTextAlignment="{Binding Type, Converter={StaticResource typeToTextAlignmentConverter}}"
+                                            Margin="0"
+                                            Padding="5"
+                                            WidthRequest="{Binding ColumnHeader.MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                                            Text="{Binding Text}" />
+                                    </Grid>
+
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
@@ -88,10 +115,13 @@
     </Grid>
     <ContentPage.Resources>
         <ResourceDictionary>
+          <converter:TypeToTextAlignmentConverter x:Key="typeToTextAlignmentConverter"/>
             <converter:StringLengthToLabelWidth
                 x:Key="stringLengthToLabelWidth" />
+            <converter:StringLengthsToLabelWidth
+                x:Key="stringLengthsToLabelWidth" />
             <x:Double
-                x:Key="CharacterWidth">20</x:Double>
+                x:Key="CharacterWidth">10</x:Double>
         </ResourceDictionary>
     </ContentPage.Resources>
 </ContentPage>

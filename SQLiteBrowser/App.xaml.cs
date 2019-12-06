@@ -26,7 +26,7 @@ namespace SQLiteBrowser
         protected override async void OnStart()
         {
             var db = DependencyService.Resolve<IDatabase>();
-            await db.RegisterTypes(typeof(Person));
+            await db.RegisterTypes(typeof(Person), typeof(Bike));
             Manager.Initialize(db.Connection.DatabasePath);
 
         }

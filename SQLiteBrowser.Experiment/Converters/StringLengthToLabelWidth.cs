@@ -27,7 +27,7 @@ namespace SQLiteBrowser.Experiment.Converters
             var param = (double)parameter;
 
             // TODO: Put your value conversion logic here.
-            var width = Math.Clamp((double)(input * param), 50, 200);
+            var width = Math.Max((double)(input * param), 50);
 
             return (width);
         }
@@ -60,7 +60,7 @@ namespace SQLiteBrowser.Experiment.Converters
             double total = 0;
             foreach (var length in input)
             {
-                total += Math.Clamp((double)(length * param), 50, 200);
+                total += Math.Max((double)(length * param), 50);
             }
 
 

@@ -32,7 +32,7 @@ namespace SQLiteBrowser.Experiment.Service
 
         public async Task<IEnumerable<object>> GetRecords(TableMapping mapping) 
         {
-            var items = await Connection.QueryAsync(mapping, "select * from Person");
+            var items = await Connection.QueryAsync(mapping, $"select * from {mapping.TableName}");
 
             return items;
         }

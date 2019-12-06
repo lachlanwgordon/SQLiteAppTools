@@ -11,7 +11,8 @@
         <vm:BrowserViewModel
             x:Name="VM" />
     </ContentPage.BindingContext>
-    <Grid>
+    <Grid
+        BackgroundColor="Black">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
@@ -27,101 +28,129 @@
         <Picker
             ItemsSource="{Binding Mappings}"
             SelectedItem="{Binding SelectedMapping}"
+            BackgroundColor="White"
             ItemDisplayBinding="{Binding TableName}">
 
         </Picker>
         <Label
             Text="{Binding MappingSummary}"
             Grid.Row="1" />
+
         <ScrollView
             Grid.Row="2"
             HorizontalOptions="FillAndExpand"
             Orientation="Horizontal">
+            <StackLayout>
 
-            <CollectionView
-                x:Name="TheCollectionView"
-                WidthRequest="{Binding ColumnLengths, Converter={StaticResource stringLengthsToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
-                HorizontalOptions="FillAndExpand"
-                BackgroundColor="Red"
-                ItemsSource="{Binding Rows}"
-                Header="{Binding Columns}">
-                <CollectionView.HeaderTemplate>
-                    <DataTemplate>
-                        <StackLayout
-                            HeightRequest="50"
-                            Spacing="0"
-                            Orientation="Horizontal"
-                            HorizontalOptions="FillAndExpand"
-                            BackgroundColor="Aquamarine"
-                            BindableLayout.ItemsSource="{Binding Columns}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid
-                                        Margin="0">
-                                        <Frame
-                                            BorderColor="Black"
-                                            CornerRadius="0"
-                                            BackgroundColor="Transparent"
-                                            HasShadow="False"
-                                            Padding="0"
-                                            Margin="0" />
-                                        <Label
-                                            HorizontalTextAlignment="Center"
-                                            WidthRequest="{Binding MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
-                                            Text="{Binding Name}" />
-                                    </Grid>
+                <StackLayout
+                    BackgroundColor="Blue"
+                    HeightRequest="40"
+                    Spacing="0"
+                    Orientation="Horizontal"
+                    HorizontalOptions="FillAndExpand"
+                    BindableLayout.ItemsSource="{Binding Columns}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid
+                                Margin="0">
+                                <!--<Frame
+                                             />-->
+                                <Label
+                                    HorizontalTextAlignment="Center"
+                                    WidthRequest="{Binding MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                                    Text="{Binding Name}" />
+                            </Grid>
 
 
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
-                    </DataTemplate>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+                <CollectionView
+                    x:Name="TheCollectionView"
+                    WidthRequest="{Binding ColumnLengths, Converter={StaticResource stringLengthsToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                    HorizontalOptions="FillAndExpand"
+                    ItemsSource="{Binding Rows}"
+                   >
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout
+                                Spacing="0"
+                                Orientation="Horizontal"
+                                HorizontalOptions="FillAndExpand"
+                                BindableLayout.ItemsSource="{Binding Properties}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid
+                                            Margin="0">
+                                            <!--<Frame 
+                                             />-->
+                                            <Label
+                                                HorizontalTextAlignment="{Binding Type, Converter={StaticResource typeToTextAlignmentConverter}}"
+                                                WidthRequest="{Binding ColumnHeader.MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                                                Text="{Binding Text}" />
+                                        </Grid>
 
-                </CollectionView.HeaderTemplate>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout
-                            Spacing="0"
-                            Orientation="Horizontal"
-                            HorizontalOptions="FillAndExpand"
-                            BindableLayout.ItemsSource="{Binding Properties}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid
-                                        Margin="0">
-                                        <Frame
-                                            BorderColor="Black"
-                                            CornerRadius="0"
-                                            BackgroundColor="Transparent"
-                                            HasShadow="False"
-                                            Padding="0"
-                                            Margin="0" />
-                                        <Label
-                                            HorizontalTextAlignment="{Binding Type, Converter={StaticResource typeToTextAlignmentConverter}}"
-                                            Margin="0"
-                                            Padding="5"
-                                            WidthRequest="{Binding ColumnHeader.MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
-                                            Text="{Binding Text}" />
-                                    </Grid>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
 
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
         </ScrollView>
 
     </Grid>
     <ContentPage.Resources>
         <ResourceDictionary>
-          <converter:TypeToTextAlignmentConverter x:Key="typeToTextAlignmentConverter"/>
+            <Style
+                TargetType="Frame">
+                <Setter
+                    Property="HasShadow"
+                    Value="False" />
+                <Setter
+                    Property="BorderColor"
+                    Value="Black" />
+                <Setter
+                    Property="CornerRadius"
+                    Value="0" />
+                <Setter
+                    Property="Padding"
+                    Value="0" />
+                <Setter
+                    Property="Margin"
+                    Value="0" />
+                <Setter
+                    Property="BackgroundColor"
+                    Value="Transparent" />
+            </Style>
+            <Style
+                TargetType="Label">
+                <Setter
+                    Property="BackgroundColor"
+                    Value="White" />
+                <Setter
+                    Property="Padding"
+                    Value="5" />
+                <Setter
+                    Property="FontFamily"
+                    Value="Menlo" />
+                <Setter
+                    Property="Margin"
+                    Value=".5" />
+                <Setter
+                    Property="VerticalTextAlignment"
+                    Value="Center" />
+            </Style>
+            <converter:TypeToTextAlignmentConverter
+                x:Key="typeToTextAlignmentConverter" />
             <converter:StringLengthToLabelWidth
                 x:Key="stringLengthToLabelWidth" />
             <converter:StringLengthsToLabelWidth
                 x:Key="stringLengthsToLabelWidth" />
             <x:Double
-                x:Key="CharacterWidth">10</x:Double>
+                x:Key="CharacterWidth">11</x:Double>
         </ResourceDictionary>
     </ContentPage.Resources>
 </ContentPage>

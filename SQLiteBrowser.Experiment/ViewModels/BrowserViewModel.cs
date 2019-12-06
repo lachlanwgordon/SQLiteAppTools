@@ -27,11 +27,11 @@ namespace SQLiteBrowser.Experiment.ViewModels
         public List<object> Records { get; set; } = new List<object>();
         public ObservableRangeCollection<Row> Rows { get; set; } = new ObservableRangeCollection<Row>();
         public ObservableRangeCollection<ColumnHeader> Columns { get; set; } = new ObservableRangeCollection<ColumnHeader>();
-        public IEnumerable<int> ColumnLengths
+        public List<int> ColumnLengths
         {
             get
             {
-                var length = Columns.Select(x => x.MaxLength);
+                var length = Columns.Select(x => x.MaxLength).ToList();
                 return length;
             }
         }
@@ -44,6 +44,7 @@ namespace SQLiteBrowser.Experiment.ViewModels
             {
                 selectedMapping = value;
                 _ = LoadRecords();
+                OnPropertyChanged(nameof(SelectedMapping));
             }
         }
 
@@ -96,8 +97,10 @@ namespace SQLiteBrowser.Experiment.ViewModels
         public async Task InitializeAsync()
         {
             db = new Database();
-            var mappings = db.GetAllMappings();
-            mappings.ForEach(x => Mappings.Add(x));
+            var mappings = db.GetAllMappings().ToList();
+            mappings.Remove(mappings.FirstOrDefault(x => x.TableName == "ColumnInfo"));
+            Mappings.Clear();
+            Mappings.AddRange(mappings);
             SelectedMapping = Mappings.FirstOrDefault();
             if (selectedMapping != null)
                 MappingSummary = selectedMapping.TableName;

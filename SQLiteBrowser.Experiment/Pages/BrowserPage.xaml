@@ -5,6 +5,7 @@
     xmlns:vm="clr-namespace:SQLiteBrowser.Experiment.ViewModels"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="True"
+    xmlns:behaviors="clr-namespace:SQLiteBrowser.Experiment.Behaviors"
     xmlns:converter="clr-namespace:SQLiteBrowser.Experiment.Converters"
     x:Class="SQLiteBrowser.Experiment.Pages.BrowserPage">
     <ContentPage.BindingContext>
@@ -14,6 +15,8 @@
     <Grid
         BackgroundColor="Black">
         <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
             <RowDefinition
                 Height="Auto" />
             <RowDefinition
@@ -30,19 +33,27 @@
             SelectedItem="{Binding SelectedMapping}"
             BackgroundColor="White"
             ItemDisplayBinding="{Binding TableName}">
+            <Picker.Behaviors>
+                <behaviors:EventToCommandBehavior
+                    EventName="Unfocused"
+                    Command="{Binding TableSelectedCommand}" />
+            </Picker.Behaviors>
 
         </Picker>
         <Label
             Text="{Binding MappingSummary}"
             Grid.Row="1" />
-
         <ScrollView
+            Orientation="Horizontal"
             Grid.Row="2"
-            HorizontalOptions="FillAndExpand"
-            Orientation="Horizontal">
-            <StackLayout>
+            Grid.RowSpan="2">
+            <StackLayout
+                WidthRequest="1500"
+
+                >
 
                 <StackLayout
+                    Grid.Row="2"
                     BackgroundColor="Blue"
                     HeightRequest="40"
                     Spacing="0"
@@ -56,8 +67,9 @@
                                 <!--<Frame
                                              />-->
                                 <Label
+                                                WidthRequest="300"
+                                    HorizontalOptions="FillAndExpand"
                                     HorizontalTextAlignment="Center"
-                                    WidthRequest="{Binding MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
                                     Text="{Binding Name}" />
                             </Grid>
 
@@ -66,12 +78,14 @@
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
                 <CollectionView
+                    Grid.Row="3"
                     x:Name="TheCollectionView"
-                    WidthRequest="{Binding ColumnLengths, Converter={StaticResource stringLengthsToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
                     HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding Rows}"
-                   >
-                    
+                    ItemsSource="{Binding Rows}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout
+                            Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout
@@ -86,8 +100,7 @@
                                             <!--<Frame 
                                              />-->
                                             <Label
-                                                HorizontalTextAlignment="{Binding Type, Converter={StaticResource typeToTextAlignmentConverter}}"
-                                                WidthRequest="{Binding ColumnHeader.MaxLength, Converter={StaticResource stringLengthToLabelWidth}, ConverterParameter={StaticResource CharacterWidth}}"
+                                                WidthRequest="300"
                                                 Text="{Binding Text}" />
                                         </Grid>
 
@@ -100,6 +113,8 @@
             </StackLayout>
 
         </ScrollView>
+
+
 
     </Grid>
     <ContentPage.Resources>
@@ -147,8 +162,6 @@
                 x:Key="typeToTextAlignmentConverter" />
             <converter:StringLengthToLabelWidth
                 x:Key="stringLengthToLabelWidth" />
-            <converter:StringLengthsToLabelWidth
-                x:Key="stringLengthsToLabelWidth" />
             <x:Double
                 x:Key="CharacterWidth">11</x:Double>
         </ResourceDictionary>

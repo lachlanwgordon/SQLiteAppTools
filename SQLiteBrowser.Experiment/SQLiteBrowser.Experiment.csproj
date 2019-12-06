@@ -14,5 +14,11 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Service\" />
     <Folder Include="Converters\" />
+    <Folder Include="Behaviors\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Converters\BoolToString.cs" />
+    <Compile Remove="Converters\DoubleToBool.cs" />
+    <Compile Remove="Converters\IntToString.cs" />
   </ItemGroup>
 </Project>

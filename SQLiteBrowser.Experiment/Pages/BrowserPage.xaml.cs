@@ -24,6 +24,9 @@ namespace SQLiteBrowser.Experiment.Pages
             //VM.PropertyChanged -= VM_PropertyChanged;
         }
 
+        void Picker_Unfocused(System.Object sender, Xamarin.Forms.FocusEventArgs e)
+        {
+        }
         //private void VM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         //{
         //    if(e.PropertyName == "TotalCharacterLength")

@@ -11,11 +11,30 @@ using static SQLite.TableMapping;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using MvvmHelpers;
+using System.Diagnostics;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace SQLiteBrowser.Experiment.ViewModels
 {
     public class BrowserViewModel : BaseViewModel
     {
+        public ICommand TableSelectedCommand => new Command(TableSelected);
+
+        private async void TableSelected(object obj)
+        {
+            try
+            {
+                Debug.WriteLine("table selected");
+                await LoadRecords();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading {ex}\n{ex.StackTrace}");
+            }
+
+        }
+
         public string MappingSummary { get; set; } = "Table info";
 
         private TableMapping selectedMapping;
@@ -24,17 +43,9 @@ namespace SQLiteBrowser.Experiment.ViewModels
        
 
         public ObservableRangeCollection<TableMapping> Mappings { get; private set; } = new ObservableRangeCollection<TableMapping>();
-        public List<object> Records { get; set; } = new List<object>();
         public ObservableRangeCollection<Row> Rows { get; set; } = new ObservableRangeCollection<Row>();
         public ObservableRangeCollection<ColumnHeader> Columns { get; set; } = new ObservableRangeCollection<ColumnHeader>();
-        public List<int> ColumnLengths
-        {
-            get
-            {
-                var length = Columns.Select(x => x.MaxLength).ToList();
-                return length;
-            }
-        }
+
 
         public TableMapping SelectedMapping
         {
@@ -43,14 +54,17 @@ namespace SQLiteBrowser.Experiment.ViewModels
             set
             {
                 selectedMapping = value;
-                _ = LoadRecords();
+                //_ = LoadRecords();
                 OnPropertyChanged(nameof(SelectedMapping));
             }
         }
 
         private async Task LoadRecords()
         {
+            Debug.WriteLine("Load Records");
+
             Rows.Clear();
+            Columns.Clear();
 
             var columns = new List<ColumnHeader>();
             var rows = new List<Row>();
@@ -75,35 +89,40 @@ namespace SQLiteBrowser.Experiment.ViewModels
                 }
                 rows.Add(row);
             }
-            foreach (var column in columns)
-            {
-                var alltheProps = rows.SelectMany(x => x.Properties);
-                var filterProps = alltheProps.Where(x => x.ColumnHeader.Name == column.Name);
-                var max = filterProps.Max(x => x.Text.Length);
-                column.MaxLength = Math.Max(max, column.MaxLength);
-                //column.MaxLength = rows.SelectMany(x => x.Properties).Where(x => x.ColumnHeader.Name == column.Name).Max(x => x.Text.Length);
+            //foreach (var column in columns)
+            //{
+            //    var alltheProps = rows.SelectMany(x => x.Properties);
+            //    var filterProps = alltheProps.Where(x => x.ColumnHeader.Name == column.Name);
+            //    //var max = filterProps.Max(x => x.Text.Length);
+            //    //column.MaxLength = Math.Max(max, column.MaxLength);
+            //    //column.MaxLength = rows.SelectMany(x => x.Properties).Where(x => x.ColumnHeader.Name == column.Name).Max(x => x.Text.Length);
 
-            }
+            //}
 
             Columns = new ObservableRangeCollection<ColumnHeader>(columns);
-            OnPropertyChanged(nameof(ColumnLengths));
-            OnPropertyChanged(nameof(Columns));
+            //Columns.AddRange(columns);
             Rows.AddRange(rows);
+            //OnPropertyChanged(nameof(ColumnLengths));
+            OnPropertyChanged(nameof(Columns));
 
 
 
         }
 
+
+
         public async Task InitializeAsync()
         {
+            Debug.WriteLine("Init");
             db = new Database();
             var mappings = db.GetAllMappings().ToList();
             mappings.Remove(mappings.FirstOrDefault(x => x.TableName == "ColumnInfo"));
             Mappings.Clear();
             Mappings.AddRange(mappings);
-            SelectedMapping = Mappings.FirstOrDefault();
-            if (selectedMapping != null)
-                MappingSummary = selectedMapping.TableName;
+            //if(selectedMapping == null)
+            //    SelectedMapping = Mappings.FirstOrDefault();
+            //if (SelectedMapping != null)
+            //    MappingSummary = selectedMapping.TableName;
         }
 
 

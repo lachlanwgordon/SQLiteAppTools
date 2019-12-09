@@ -19,6 +19,12 @@ namespace SQLiteBrowser.Experiment.ViewModels
 {
     public class BrowserViewModel : BaseViewModel
     {
+        public ColumnDefinitionCollection ColumnDefinitions
+        {
+            get;
+            set;
+        }
+
         public ICommand TableSelectedCommand => new Command(TableSelected);
 
         private async void TableSelected(object obj)
@@ -59,7 +65,7 @@ namespace SQLiteBrowser.Experiment.ViewModels
             }
         }
 
-        private async Task LoadRecords()
+        public async Task LoadRecords()
         {
             Debug.WriteLine("Load Records");
 
@@ -68,7 +74,7 @@ namespace SQLiteBrowser.Experiment.ViewModels
 
             var columns = new List<ColumnHeader>();
             var rows = new List<Row>();
-            SelectedMapping.Columns.ForEach(x => columns.Add(new ColumnHeader(x)));
+            SelectedMapping.Columns.ForEach(x => columns.Add(new ColumnHeader(x) { ColumnNumber = SelectedMapping.Columns.IndexOf(x)}));
 
             var records = await db.GetRecords(SelectedMapping);
 
@@ -86,6 +92,7 @@ namespace SQLiteBrowser.Experiment.ViewModels
                     var prop = record.GetType().GetProperty(column.Name).GetValue(record);
                     var property = new Property { Value = prop, ColumnHeader = column };
                     row.Properties.Add(property);
+                    column.MaxLength = Math.Max(column.MaxLength, property.Text.Length);
                 }
                 rows.Add(row);
             }
@@ -114,6 +121,7 @@ namespace SQLiteBrowser.Experiment.ViewModels
         public async Task InitializeAsync()
         {
             Debug.WriteLine("Init");
+            await Task.Delay(500);
             db = new Database();
             var mappings = db.GetAllMappings().ToList();
             mappings.Remove(mappings.FirstOrDefault(x => x.TableName == "ColumnInfo"));

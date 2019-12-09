@@ -5,8 +5,12 @@
     xmlns:sqlitebrowser="clr-namespace:SQLiteBrowser"
     xmlns:pages="clr-namespace:SQLiteBrowser.Experiment.Pages;assembly=SQLiteBrowser.Experiment"
     xmlns:views="clr-namespace:SQLiteBrowser.Views"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="True"
     x:Class="SQLiteBrowser.Views.MyTabbedPage">
     <!--Pages can be added as references or inline-->
+    <pages:CodedBrowserPage
+        Title="Browser" />
     <sqlitebrowser:MainPage
         Title="Tab 1" />
     <views:PeoplePage

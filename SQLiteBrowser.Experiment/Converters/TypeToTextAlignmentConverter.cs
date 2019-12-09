@@ -23,7 +23,7 @@ namespace SQLiteBrowser.Experiment.Converters
 
             TextAlignment alignment = TextAlignment.Start;
 
-            if(input == typeof(int) || input == typeof(double) || input == typeof(DateTime))
+            if(input == typeof(int) || input == typeof(double) || input == typeof(DateTime) || input == typeof(decimal) || input == typeof(TimeSpan))
                     alignment = TextAlignment.End;
 
 

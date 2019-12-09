@@ -6,28 +6,15 @@
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="True"
     xmlns:behaviors="clr-namespace:SQLiteBrowser.Experiment.Behaviors"
+    BackgroundColor="Black"
     xmlns:converter="clr-namespace:SQLiteBrowser.Experiment.Converters"
     x:Class="SQLiteBrowser.Experiment.Pages.BrowserPage">
     <ContentPage.BindingContext>
         <vm:BrowserViewModel
             x:Name="VM" />
     </ContentPage.BindingContext>
-    <Grid
-        BackgroundColor="Black">
-        <Grid.RowDefinitions>
-            <RowDefinition
-                Height="Auto" />
-            <RowDefinition
-                Height="Auto" />
-            <RowDefinition
-                Height="Auto" />
-            <RowDefinition
-                Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                Width="*" />
-        </Grid.ColumnDefinitions>
+    <StackLayout
+        Spacing="0">
         <Picker
             ItemsSource="{Binding Mappings}"
             SelectedItem="{Binding SelectedMapping}"
@@ -40,86 +27,70 @@
             </Picker.Behaviors>
 
         </Picker>
-        <Label
-            Text="{Binding MappingSummary}"
-            Grid.Row="1" />
-        <ScrollView
-            Orientation="Horizontal"
-            Grid.Row="2"
-            Grid.RowSpan="2">
-            <StackLayout
-                WidthRequest="1500"
-
-                >
-
-                <StackLayout
-                    Grid.Row="2"
-                    BackgroundColor="Blue"
-                    HeightRequest="40"
-                    Spacing="0"
-                    Orientation="Horizontal"
-                    HorizontalOptions="FillAndExpand"
-                    BindableLayout.ItemsSource="{Binding Columns}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Grid
-                                Margin="0">
-                                <!--<Frame
-                                             />-->
-                                <Label
-                                                WidthRequest="300"
-                                    HorizontalOptions="FillAndExpand"
-                                    HorizontalTextAlignment="Center"
-                                    Text="{Binding Name}" />
-                            </Grid>
-
-
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
-                <CollectionView
-                    Grid.Row="3"
-                    x:Name="TheCollectionView"
-                    HorizontalOptions="FillAndExpand"
-                    ItemsSource="{Binding Rows}">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout
-                            Orientation="Vertical" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout
-                                Spacing="0"
-                                Orientation="Horizontal"
-                                HorizontalOptions="FillAndExpand"
-                                BindableLayout.ItemsSource="{Binding Properties}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid
-                                            Margin="0">
-                                            <!--<Frame 
-                                             />-->
-                                            <Label
-                                                WidthRequest="300"
-                                                Text="{Binding Text}" />
-                                        </Grid>
-
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-
-        </ScrollView>
 
 
 
-    </Grid>
+
+        <Grid
+            x:Name="TheHeaderRow"
+            HeightRequest="40"
+            BindableLayout.ItemsSource="{Binding Columns}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate
+                    Grid.Column="{Binding ColumnHeader.ColumnNumber}"
+                    >
+                    
+
+                        <Label
+                            BackgroundColor="White"
+                            TextColor="Green"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding Name}" />
+
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </Grid>
+        <CollectionView
+            Margin="0"
+            x:Name="TheCollectionView"
+            ItemsSource="{Binding Rows}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout
+                    Orientation="Vertical"
+                    ItemSpacing="1" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout
+                        Spacing="1"
+                        Margin="0"
+                        Padding="0"
+                        Orientation="Horizontal"
+                        BindableLayout.ItemsSource="{Binding Properties}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout
+                                    WidthRequest="300">
+
+                                    <Label
+                                        BackgroundColor="White"
+                                        TextColor="Green"
+                                        HorizontalTextAlignment="{Binding Type, Converter={StaticResource typeToTextAlignmentConverter}}"
+                                        Text="{Binding Text}" />
+                                </StackLayout>
+
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style
+
+
+            <!--<Style
                 TargetType="Frame">
                 <Setter
                     Property="HasShadow"
@@ -137,27 +108,22 @@
                     Property="Margin"
                     Value="0" />
                 <Setter
-                    Property="BackgroundColor"
-                    Value="Transparent" />
-            </Style>
-            <Style
-                TargetType="Label">
+                    Property="WidthRequest"
+                    Value="300" />
+
                 <Setter
                     Property="BackgroundColor"
                     Value="White" />
+
+            </Style>-->
+            <!--<Style
+                TargetType="Label">
+
                 <Setter
-                    Property="Padding"
-                    Value="5" />
-                <Setter
-                    Property="FontFamily"
-                    Value="Menlo" />
-                <Setter
-                    Property="Margin"
-                    Value=".5" />
-                <Setter
-                    Property="VerticalTextAlignment"
-                    Value="Center" />
-            </Style>
+                    Property="WidthRequest"
+                    Value="300" />
+
+            </Style>-->
             <converter:TypeToTextAlignmentConverter
                 x:Key="typeToTextAlignmentConverter" />
             <converter:StringLengthToLabelWidth

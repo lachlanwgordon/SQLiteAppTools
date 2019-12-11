@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using SQLiteBrowser;
 using Foundation;
 using UIKit;
+using SQLiteBrowser.Sample;
 
 namespace SQLiteBrowser.iOS
 {

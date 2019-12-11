@@ -1,14 +1,14 @@
 ﻿using System;
 using SQLiteBrowser.Experiment;
-using SQLiteBrowser.Experiment.Pages;
 using SQLiteBrowser.Models;
 using SQLiteBrowser.ModelServices;
+using SQLiteBrowser.Sample.Views;
 using SQLiteBrowser.Service;
 using SQLiteBrowser.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace SQLiteBrowser
+namespace SQLiteBrowser.Sample
 {
     public partial class App : Application
     {

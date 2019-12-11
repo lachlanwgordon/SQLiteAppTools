@@ -1,20 +1,14 @@
 ﻿using System;
-
+using SQLite;
 using Xamarin.Forms;
 
 namespace SQLiteBrowser.Experiment.ViewModels
 {
-    public class TestModel : ContentPage
+    public class TestModel 
     {
-        public TestModel()
-        {
-            Content = new StackLayout
-            {
-                Children = {
-                    new Label { Text = "Hello ContentPage" }
-                }
-            };
-        }
+        [PrimaryKey]
+        public int? Id { get; set; }
+        public string Name { get; set; }
     }
 }
 

@@ -9,7 +9,7 @@ namespace SQLiteBrowser.Experiment.Pages
 {
     public class CodedBrowserPage : ContentPage
     {
-        private const int CharacterWidth = 12;
+        private const int CharacterWidth = 11;
         BrowserViewModel VM = new BrowserViewModel();
 
         CollectionView CollectionView;

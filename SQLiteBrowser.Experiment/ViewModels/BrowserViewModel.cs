@@ -67,6 +67,8 @@ namespace SQLiteBrowser.Experiment.ViewModels
 
         public async Task LoadRecords()
         {
+            if (selectedMapping == null)
+                return;
             Debug.WriteLine("Load Records");
 
             Rows.Clear();
@@ -122,8 +124,13 @@ namespace SQLiteBrowser.Experiment.ViewModels
         {
             Debug.WriteLine("Init");
             await Task.Delay(500);
+
+
             db = new Database();
-            var mappings = db.GetAllMappings().ToList();
+
+
+
+            var mappings = (await db.GetAllMappings()).ToList();
             mappings.Remove(mappings.FirstOrDefault(x => x.TableName == "ColumnInfo"));
             Mappings.Clear();
             Mappings.AddRange(mappings);

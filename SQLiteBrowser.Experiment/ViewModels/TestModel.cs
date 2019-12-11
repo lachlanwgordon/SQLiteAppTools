@@ -2,7 +2,7 @@
 using SQLite;
 using Xamarin.Forms;
 
-namespace SQLiteBrowser.Experiment.ViewModels
+namespace SQLiteBrowser.ViewModels
 {
     public class TestModel 
     {

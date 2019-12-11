@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SQLiteBrowser.Experiment.ViewModels
+namespace SQLiteBrowser.ViewModels
 {
     public class Property
     {

@@ -15,7 +15,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace SQLiteBrowser.Experiment.ViewModels
+namespace SQLiteBrowser.ViewModels
 {
     public class BrowserViewModel : BaseViewModel
     {

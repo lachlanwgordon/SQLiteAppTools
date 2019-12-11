@@ -34,13 +34,13 @@
   <ItemGroup>
     <ProjectReference Include="..\SQLiteBrowser.iOS\SQLiteBrowser.iOS.csproj">
       <Project>{BFA206E5-C90B-4B86-8FA5-05632512F8A3}</Project>
-      <Name>SQLiteBrowser.iOS</Name>
+      <Name>SQLiteBrowser.Sample.iOS</Name>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\SQLiteBrowser.Android\SQLiteBrowser.Android.csproj">
       <Project>{C2AA41B8-3B9B-4A2F-8B9E-62D2509E9DC2}</Project>
-      <Name>SQLiteBrowser.Android</Name>
+      <Name>SQLiteBrowser.Sample.Android</Name>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
       <Private>False</Private>
     </ProjectReference>

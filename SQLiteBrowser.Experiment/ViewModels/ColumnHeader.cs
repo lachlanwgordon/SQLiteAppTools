@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using static SQLite.TableMapping;
 
-namespace SQLiteBrowser.Experiment.ViewModels
+namespace SQLiteBrowser.ViewModels
 {
     public class ColumnHeader
     {

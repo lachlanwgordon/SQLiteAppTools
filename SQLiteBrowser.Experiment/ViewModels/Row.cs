@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SQLiteBrowser.Experiment.ViewModels
+namespace SQLiteBrowser.ViewModels
 {
     public class Row
     {

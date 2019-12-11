@@ -2,13 +2,13 @@
 <ContentPage
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:vm="clr-namespace:SQLiteBrowser.Experiment.ViewModels"
+    xmlns:vm="clr-namespace:SQLiteBrowser.ViewModels"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="True"
     xmlns:behaviors="clr-namespace:SQLiteBrowser.Experiment.Behaviors"
     BackgroundColor="Black"
     xmlns:converter="clr-namespace:SQLiteBrowser.Experiment.Converters"
-    x:Class="SQLiteBrowser.Experiment.Pages.BrowserPage">
+    x:Class="SQLiteBrowser.Pages.BrowserPage">
     <ContentPage.BindingContext>
         <vm:BrowserViewModel
             x:Name="VM" />

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using SQLiteBrowser.Experiment.ViewModels;
+using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;
 
-namespace SQLiteBrowser.Experiment.Pages
+namespace SQLiteBrowser.Pages
 {
     public class CodedBrowserPage : ContentPage
     {

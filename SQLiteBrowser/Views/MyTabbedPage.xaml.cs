@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace SQLiteBrowser.Views
+namespace SQLiteBrowser.Sample.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MyTabbedPage : TabbedPage

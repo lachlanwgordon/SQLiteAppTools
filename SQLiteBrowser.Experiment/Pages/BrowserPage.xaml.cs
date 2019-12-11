@@ -2,7 +2,7 @@ using System;
 using Xamarin.Forms;
 
 
-namespace SQLiteBrowser.Experiment.Pages
+namespace SQLiteBrowser.Pages
 {
     public partial class BrowserPage : ContentPage
     {

@@ -13,8 +13,6 @@
     <Folder Include="Pages\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Service\" />
-    <Folder Include="Converters\" />
-    <Folder Include="Behaviors\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Converters\BoolToString.cs" />

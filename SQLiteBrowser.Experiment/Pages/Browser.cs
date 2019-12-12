@@ -4,11 +4,46 @@ using System.Diagnostics;
 using System.Linq;
 using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;
+using SQLite;
+using System.Threading.Tasks;
 
-namespace SQLiteBrowser.Pages
+namespace SQLiteBrowser
 {
-    public class CodedBrowserPage : ContentPage
+    public class Browser : ContentPage
     {
+        private static bool Initialized { get; set; }
+        private static SQLite.SQLiteConnection Connection;
+        private static SQLite.SQLiteAsyncConnection AsyncConnection;
+
+        public static async Task Init(string databasePath, params Type[] types)
+        {
+            Connection = new SQLiteConnection(databasePath);
+            Connection.CreateTables(CreateFlags.None, types);
+            AsyncConnection = new SQLiteAsyncConnection(databasePath);
+            await AsyncConnection.CreateTablesAsync(CreateFlags.None, types);
+        }
+
+        public static async Task Init(SQLite.SQLiteConnection connection)
+        {
+            Connection = connection;
+            var asyncConnection = new SQLiteAsyncConnection(connection.DatabasePath);
+            var types = connection.TableMappings.Select(x => x.MappedType).ToArray();
+            await asyncConnection.CreateTablesAsync(CreateFlags.None, types);
+            AsyncConnection = asyncConnection;
+            Connection = connection;
+        }
+
+        public static void Init(SQLite.SQLiteAsyncConnection asyncConnection)
+        {
+            var connection = new SQLiteConnection(asyncConnection.DatabasePath);
+            var types = asyncConnection.TableMappings.Select(x => x.MappedType).ToArray();
+            connection.CreateTables(CreateFlags.None, types);
+            AsyncConnection = asyncConnection;
+            Connection = connection;
+
+        }
+
+
         private const int CharacterWidth = 11;
         BrowserViewModel VM = new BrowserViewModel();
 
@@ -51,7 +86,7 @@ namespace SQLiteBrowser.Pages
             
         };
 
-        public CodedBrowserPage()
+        public Browser()
         {
             BindingContext = VM;
             CollectionView = CollectionViewTemplate;
@@ -195,13 +230,17 @@ namespace SQLiteBrowser.Pages
 
         protected override async void OnAppearing()
         {
+            if (Connection == null || AsyncConnection == null)
+                throw new InvalidOperationException("Please call SQLiteBrowser.Browser.Initialize before attempting to use the page");
+
+
             base.OnAppearing();
 
             //Events. Don't Forget To unsubscribe
             Picker.Unfocused += Picker_Unfocused;
 
             //Data Init
-            await VM.InitializeAsync();
+            await VM.InitializeAsync(Connection, AsyncConnection);
 
             //Set Data Properties
             Picker.ItemsSource = VM.Mappings;

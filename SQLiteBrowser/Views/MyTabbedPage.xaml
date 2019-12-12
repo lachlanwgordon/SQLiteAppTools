@@ -2,19 +2,16 @@
 <TabbedPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:sqlitebrowser="clr-namespace:SQLiteBrowser"
-    xmlns:pages="clr-namespace:SQLiteBrowser.Pages;assembly=SQLiteBrowser"
-    xmlns:views="clr-namespace:SQLiteBrowser.Views"
+    xmlns:sqlitebrowser="clr-namespace:SQLiteBrowser;assembly=SQLiteBrowser"
+    xmlns:views="clr-namespace:SQLiteBrowser.Sample.Views"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="True"
     x:Class="SQLiteBrowser.Sample.Views.MyTabbedPage">
     <!--Pages can be added as references or inline-->
-    <pages:CodedBrowserPage
+    <sqlitebrowser:Browser
         Title="Browser" />
-    <sqlitebrowser:MainPage
+    <views:MainPage
         Title="Tab 1" />
     <views:PeoplePage
         Title="Tab 2" />
-    <pages:BrowserPage
-        Title="Browser" />
 </TabbedPage>

@@ -2,7 +2,7 @@ using System;
 using Xamarin.Forms;
 
 
-namespace SQLiteBrowser.Views
+namespace SQLiteBrowser.Sample.Views
 {
     public partial class PeoplePage : ContentPage
     {

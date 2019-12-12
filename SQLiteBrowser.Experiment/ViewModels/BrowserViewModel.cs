@@ -44,8 +44,7 @@ namespace SQLiteBrowser.ViewModels
         public string MappingSummary { get; set; } = "Table info";
 
         private TableMapping selectedMapping;
-        IDatabase db;
-
+        private Database db;
        
 
         public ObservableRangeCollection<TableMapping> Mappings { get; private set; } = new ObservableRangeCollection<TableMapping>();
@@ -120,13 +119,13 @@ namespace SQLiteBrowser.ViewModels
 
 
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(SQLiteConnection connection, SQLiteAsyncConnection asyncConnection)
         {
             Debug.WriteLine("Init");
             await Task.Delay(500);
 
 
-            db = new Database();
+            db = new Database(connection, asyncConnection);
 
 
 

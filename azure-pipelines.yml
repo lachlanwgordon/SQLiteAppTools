@@ -16,8 +16,9 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   inputs:
     command: 'restore'
+    restoreSolution: '**/SQLiteBrowser.sln'
     feedsToUse: 'select'
 

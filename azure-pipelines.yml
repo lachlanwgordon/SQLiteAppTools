@@ -19,6 +19,6 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/SQLiteBrowser.sln'
+    restoreSolution: '$(solution)'
     feedsToUse: 'select'
 

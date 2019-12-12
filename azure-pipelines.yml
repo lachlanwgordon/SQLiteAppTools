@@ -11,7 +11,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/SQLiteBrowser.Build.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -22,12 +22,12 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'restore'
-    restoreSolution: '/SQLiteBrowser/SQLiteBrowser.csproj'
+    restoreSolution: '**/SQLiteBrowser.Build.sln'
     feedsToUse: 'select'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: 'SQLiteBrowser/*.csproj'
+    projects: '**/SQLiteBrowser.Build.sln'
 
 
 

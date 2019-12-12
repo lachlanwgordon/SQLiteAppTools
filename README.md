@@ -1,7 +1,7 @@
 The repo is currently in the experimental phase and the API is changing frequently. This will be available as a nuget when it's ready. This readme reflects how the code should end up – not as it currently is.
 
 # SQLite Browser
-SQLite Browser lets you look inside the database inside your Xamarin Forms app to inspect and debug the contents. There's no need to dig through folders deeply buried in macOS with GUIDs for names or a command line to dig around in Android. Just a nuget with a GUI write in your app.
+SQLite Browser lets you look inside the database inside your Xamarin Forms app to inspect and debug the contents. There's no need to dig through folders deeply buried in macOS with GUIDs for names or a command line to dig around in Android. Just a nuget with a GUI right in your app.
 
 SQLite Browser works on any Xamarin Forms app using sqlite-net-pcl and can be used on simulators, emulators and devices.
 

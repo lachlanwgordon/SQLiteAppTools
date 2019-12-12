@@ -1,5 +1,4 @@
 ﻿using System;
-using SQLiteBrowser.Experiment;
 using SQLiteBrowser.Models;
 using SQLiteBrowser.ModelServices;
 using SQLiteBrowser.Sample.Views;

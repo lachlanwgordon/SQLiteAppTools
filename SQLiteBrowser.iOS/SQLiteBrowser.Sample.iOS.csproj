@@ -131,7 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SQLiteBrowser\SQLiteBrowser.Sample.csproj">
-      <Project>{24C7EC97-FA29-4FCF-8B40-239608365E3A}</Project>
+      <Project>{8EEB68A4-CEA4-48F1-ACD1-50082B19D7D0}</Project>
       <Name>SQLiteBrowser.Sample</Name>
     </ProjectReference>
   </ItemGroup>

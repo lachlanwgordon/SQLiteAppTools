@@ -8,10 +8,11 @@
     ios:Page.UseSafeArea="True"
     x:Class="SQLiteBrowser.Sample.Views.MyTabbedPage">
     <!--Pages can be added as references or inline-->
-    <sqlitebrowser:Browser
-        Title="Browser" />
+    
     <views:MainPage
         Title="Tab 1" />
+    <sqlitebrowser:Browser
+        Title="Browser" />
     <views:PeoplePage
         Title="Tab 2" />
 </TabbedPage>

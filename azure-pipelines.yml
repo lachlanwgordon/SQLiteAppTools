@@ -26,5 +26,5 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '/SQLiteBrowser/SQLiteBrowser.csproj'
+    projects: 'SQLiteBrowser/*.csproj'
 

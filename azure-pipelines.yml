@@ -39,3 +39,11 @@ steps:
     command: 'pack'
     packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
     versioningScheme: 'off'
+
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/2b60df49-c3d6-42c9-b110-19c2857331ed'

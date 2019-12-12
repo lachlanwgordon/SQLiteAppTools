@@ -130,7 +130,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SQLiteBrowser\SQLiteBrowser.Sample.csproj">
+    <ProjectReference Include="..\SQLiteBrowser.Sample\SQLiteBrowser.Sample.csproj">
       <Project>{8EEB68A4-CEA4-48F1-ACD1-50082B19D7D0}</Project>
       <Name>SQLiteBrowser.Sample</Name>
     </ProjectReference>

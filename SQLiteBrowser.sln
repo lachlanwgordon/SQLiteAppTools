@@ -1,15 +1,15 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser.Sample.Android", "SQLiteBrowser.Android\SQLiteBrowser.Sample.Android.csproj", "{C2AA41B8-3B9B-4A2F-8B9E-62D2509E9DC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser.Sample.Android", "SQLiteBrowser.Sample.Android\SQLiteBrowser.Sample.Android.csproj", "{C2AA41B8-3B9B-4A2F-8B9E-62D2509E9DC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser.UITests", "SQLiteBrowser.UITests\SQLiteBrowser.UITests.csproj", "{2FA96BEA-C7B8-4EB4-9AAE-1227B4257F37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser.Sample", "SQLiteBrowser\SQLiteBrowser.Sample.csproj", "{8EEB68A4-CEA4-48F1-ACD1-50082B19D7D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser.Sample", "SQLiteBrowser.Sample\SQLiteBrowser.Sample.csproj", "{8EEB68A4-CEA4-48F1-ACD1-50082B19D7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser", "SQLiteBrowser.Experiment\SQLiteBrowser.csproj", "{9D0187C8-F39B-4374-AF59-7DBD76B1F22F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser", "SQLiteBrowser\SQLiteBrowser.csproj", "{9D0187C8-F39B-4374-AF59-7DBD76B1F22F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser.Sample.iOS", "SQLiteBrowser.iOS\SQLiteBrowser.Sample.iOS.csproj", "{BFA206E5-C90B-4B86-8FA5-05632512F8A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteBrowser.Sample.iOS", "SQLiteBrowser.Sample.iOS\SQLiteBrowser.Sample.iOS.csproj", "{BFA206E5-C90B-4B86-8FA5-05632512F8A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

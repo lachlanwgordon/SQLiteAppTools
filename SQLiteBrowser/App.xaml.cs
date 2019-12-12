@@ -4,7 +4,6 @@ using SQLiteBrowser.Models;
 using SQLiteBrowser.ModelServices;
 using SQLiteBrowser.Sample.Views;
 using SQLiteBrowser.Service;
-using SQLiteBrowser.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -27,8 +26,7 @@ namespace SQLiteBrowser.Sample
         {
             var db = DependencyService.Resolve<IDatabase>();
             await db.RegisterTypes(typeof(Person), typeof(Bike));
-            Manager.Initialize(db.Connection.DatabasePath);
-
+            SQLiteBrowser.Browser.Init(db.Connection);
         }
 
         protected override void OnSleep()

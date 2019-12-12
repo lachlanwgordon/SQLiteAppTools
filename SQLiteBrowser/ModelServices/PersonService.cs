@@ -59,6 +59,15 @@ namespace SQLiteBrowser.ModelServices
                 UpdatedTimeStamp = DateTime.UtcNow
             };
             await database.Connection.InsertOrReplaceAsync(person3);
+            var person4 = new Person
+            {
+                DateOfBirth = new DateTime(1950, 12, 03),
+                FavouriteNumber = 10,
+                FirstName = "Xamarin",
+                LastName = "Monkey",
+                UpdatedTimeStamp = DateTime.UtcNow
+            };
+            await database.Connection.InsertOrReplaceAsync(person4);
             await database.Connection.InsertAllAsync(Bike.SeedData);
             //This seed data for other classes doesn't really belong here but it's just nonsense to put some stuff in the db, so who really cares
 

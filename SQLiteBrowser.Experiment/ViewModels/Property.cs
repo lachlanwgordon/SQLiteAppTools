@@ -8,6 +8,6 @@ namespace SQLiteBrowser.ViewModels
         public Type Type => Value.GetType();
         public int Thing { get; set; }
         public object Value { get; set; }
-        public string Text => Value.ToString();
+        public string Text => Value != null ? Value.ToString() : "null" ;
     }
 }

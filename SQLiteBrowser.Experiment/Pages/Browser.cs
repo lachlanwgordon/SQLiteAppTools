@@ -43,26 +43,38 @@ namespace SQLiteBrowser
 
         }
 
-
         private const int CharacterWidth = 11;
         BrowserViewModel VM = new BrowserViewModel();
 
         CollectionView CollectionView;
 
+        static Color Gray = Color.Gray;
+
         CollectionView CollectionViewTemplate => new CollectionView
         {
             Margin = 0,
-            BackgroundColor = Color.Olive,
+            BackgroundColor = Color.Gray,
             ItemsLayout = new GridItemsLayout(ItemsLayoutOrientation.Vertical)
             {
                 VerticalItemSpacing = 1,
                 Span = 1
+            },
+            EmptyView = new Grid
+            {
+                Children =
+                {
+                    new Label
+                    {
+                        Text = "Select a table to view data"
+                    }
+                }
             }
+            
         };
 
         Picker Picker = new Picker
         {
-            BackgroundColor = Color.DarkGoldenrod
+            Title = "Select a table..."
         };
 
         Grid Headers = new Grid
@@ -70,7 +82,8 @@ namespace SQLiteBrowser
             ColumnSpacing = 1,
             BackgroundColor = Color.Gray,
             Padding = 0,
-            Margin = 1,
+            Margin = Xamarin.Forms.Device.RuntimePlatform == Device.iOS ? 1 : 0,
+            HeightRequest = 40
         };
 
         ScrollView ScrollView = new ScrollView
@@ -83,7 +96,14 @@ namespace SQLiteBrowser
 
         StackLayout InnerStack = new StackLayout
         {
-            
+            Spacing = 1,
+            BackgroundColor = Gray
+        };
+
+        ActivityIndicator ActivityIndicator = new ActivityIndicator
+        {
+            IsRunning = true,
+            IsVisible = false
         };
 
         public Browser()
@@ -97,36 +117,19 @@ namespace SQLiteBrowser
                 Children =
                 {
                     Picker,
+                    ActivityIndicator,
                     ScrollView
-                    //{
-                        
-                    //    Content = new StackLayout
-                    //    {
-                    //        Spacing = 0,
-                    //        Padding = 0,
-                    //        Margin = 0,
-                    //        Children =
-                    //        {
-                    //            Headers,
-                    //            CollectionView
-                    //        }
-                    //    }
-                    //}
-
                 }
             };
             ScrollView.Content = InnerStack;
             InnerStack.Children.Add(Headers);
             InnerStack.Children.Add(CollectionView);
-
-
         }
 
         private async void Picker_Unfocused(object sender, FocusEventArgs e)
         {
+            ActivityIndicator.IsVisible = true;
             await VM.LoadRecords();
-
-            //Make a header row
 
             Headers.Children.Clear();
             Headers.ColumnDefinitions.Clear();
@@ -135,17 +138,11 @@ namespace SQLiteBrowser
             CollectionView = CollectionViewTemplate;
             InnerStack.Children.Add(CollectionView);
 
-            //CollectionView.WidthRequest = 150 * VM.Columns.Count;
-
-            //Headers.WidthRequest = 150 * VM.Columns.Count;
-            //ForceLayout();
             foreach (var column in VM.Columns)
             {
                 Headers.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(column.MaxLength * CharacterWidth, GridUnitType.Absolute) });
             }
 
-
-            //Make Header Labels
             foreach (var column in VM.Columns)
             {
                 var label = new Label
@@ -163,8 +160,6 @@ namespace SQLiteBrowser
 
             CollectionView.ItemTemplate = new DataTemplate(() =>
             {
-                Debug.WriteLine($"BC: {BindingContext}");
-
                 var rowLayout = new Grid
                 {
                     HorizontalOptions = LayoutOptions.Start,
@@ -172,11 +167,7 @@ namespace SQLiteBrowser
                     Margin = 0,
                     ColumnSpacing = 1,
                     BackgroundColor = Color.Gray,
-                    //ColumnDefinitions = Headers.ColumnDefinitions,
                 };
-                //rowLayout.BindingContext = new Binding("Properties");
-                //BindableLayout.SetItemsSource(rowLayout, "Properties");
-                //var props = BindingContext as Row;
 
                 foreach (var column in VM.Columns)
                 {
@@ -192,25 +183,14 @@ namespace SQLiteBrowser
                         Margin = 0,
                         BackgroundColor = Color.White,
                         Text = column.Name,
-
-                        //BindingContext = props.Properties.ElementAt(column.ColumnNumber)
                     };
                     label.BindingContextChanged += LabelBindingContextChanged;
-                    //rowLayout.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(150, GridUnitType.Absolute) });
-
-                    //label.SetBinding(Label.TextProperty, "Text");
                     rowLayout.Children.Add(label, column.ColumnNumber, 0);
 
-                    if(column.ColumnNumber > rowLayout.ColumnDefinitions.Count - 1)
-                    {
-                        Debug.WriteLine($"HeaderColCount = {Headers.ColumnDefinitions.Count} RowColDefCount: {rowLayout.ColumnDefinitions.Count} colCount = {VM.Columns.Count}");
-                    }
                 }
                 return rowLayout;
             });
-
-            //ForceLayout();
-
+            ActivityIndicator.IsVisible = false;
 
         }
 
@@ -225,14 +205,12 @@ namespace SQLiteBrowser
 
             var index = (label.Parent as Grid).Children.IndexOf(label);
             label.Text = row.Properties.ElementAtOrDefault(index).Text;
-            Debug.WriteLine($"labelBD: {label.BindingContext}  text: {label.Text}");
         }
 
         protected override async void OnAppearing()
         {
             if (Connection == null || AsyncConnection == null)
                 throw new InvalidOperationException("Please call SQLiteBrowser.Browser.Initialize before attempting to use the page");
-
 
             base.OnAppearing();
 
@@ -247,7 +225,12 @@ namespace SQLiteBrowser
             Picker.ItemDisplayBinding = new Binding("TableName");
             Picker.SetBinding(Picker.SelectedItemProperty, "SelectedMapping");
             CollectionView.ItemsSource = VM.Rows;
+        }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Picker.Unfocused -= Picker_Unfocused;
         }
     }
 }

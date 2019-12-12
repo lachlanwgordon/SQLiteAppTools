@@ -29,11 +29,7 @@ steps:
     command: 'build'
     projects: 'SQLiteBrowser/*.csproj'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'SQLiteBrowser/*.csproj'
-    versioningScheme: 'off'
+
 
 - task: NuGetCommand@2
   inputs:

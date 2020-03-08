@@ -30,12 +30,7 @@ namespace SQLiteBrowser.ViewModels
         public TableMapping SelectedMapping
         {
             get => selectedMapping;
-
-            set
-            {
-                selectedMapping = value;
-                OnPropertyChanged(nameof(SelectedMapping));
-            }
+            set => SetProperty(ref selectedMapping, value);
         }
 
         public async Task LoadRecords()

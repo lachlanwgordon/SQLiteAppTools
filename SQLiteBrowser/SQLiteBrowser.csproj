@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.3.0.991221" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
 
   </ItemGroup>
@@ -19,6 +19,7 @@
     <Folder Include="Pages\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Service\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Converters\BoolToString.cs" />

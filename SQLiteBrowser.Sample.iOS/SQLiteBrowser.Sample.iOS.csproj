@@ -126,7 +126,7 @@
     <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.21.8" />
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
     <PackageReference Include="sqlite-net-pcl">
-      <Version>1.5.231</Version>
+      <Version>1.6.292</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +134,9 @@
       <Project>{8EEB68A4-CEA4-48F1-ACD1-50082B19D7D0}</Project>
       <Name>SQLiteBrowser.Sample</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Northwind_small.sqlite" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

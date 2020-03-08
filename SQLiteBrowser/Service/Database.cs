@@ -23,6 +23,15 @@ namespace SQLiteBrowser.Experiment.Service
             Path = path;
         }
 
+
+        public String GetInfo()
+        {
+            var command = new SQLiteCommand(Connection);
+            command.CommandText = "";
+            var result = command.ExecuteQuery<object>();
+            return result.ToString();
+        }
+
         public Database(SQLiteConnection connection, SQLiteAsyncConnection asyncConnection)
         {
             Connection = connection;

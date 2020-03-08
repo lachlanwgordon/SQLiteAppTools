@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    Padding="40"
+    x:Class="SQLiteBrowser.Pages.AltBrowserPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+                Width="*" />
+        </Grid.ColumnDefinitions>
+        <Picker
+            ItemsSource="{Binding Tables}"
+            SelectedItem="{Binding SelectedTable}"
+            ItemDisplayBinding="{Binding name}" />
+        <CollectionView
+            ItemsSource="{Binding SelectedTable.Rows}"
+            Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+
+                    <StackLayout
+                        BindableLayout.ItemsSource="{Binding .}"
+                        Orientation="Horizontal">
+                        <Label Text="{Binding .}"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

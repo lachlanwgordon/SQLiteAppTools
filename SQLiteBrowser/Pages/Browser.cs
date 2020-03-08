@@ -12,7 +12,7 @@ namespace SQLiteBrowser
     public class Browser : ContentPage
     {
         private static bool Initialized { get; set; }
-        private static SQLite.SQLiteConnection Connection;
+        public static SQLite.SQLiteConnection Connection;
         private static SQLite.SQLiteAsyncConnection AsyncConnection;
 
         public static async Task Init(string databasePath, params Type[] types)
@@ -205,6 +205,7 @@ namespace SQLiteBrowser
 
             var index = (label.Parent as Grid).Children.IndexOf(label);
             label.Text = row.Properties.ElementAtOrDefault(index).Text;
+            label.HorizontalTextAlignment = row.Properties.ElementAtOrDefault(index).TextAlignment;
         }
 
         protected override async void OnAppearing()

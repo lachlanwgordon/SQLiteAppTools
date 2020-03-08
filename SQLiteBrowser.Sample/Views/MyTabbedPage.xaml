@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sqlitebrowser="clr-namespace:SQLiteBrowser;assembly=SQLiteBrowser"
+    xmlns:sqlitebrowserPages="clr-namespace:SQLiteBrowser.Pages;assembly=SQLiteBrowser"
     xmlns:views="clr-namespace:SQLiteBrowser.Sample.Views"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     ios:Page.UseSafeArea="True"
@@ -13,6 +14,8 @@
         Title="Tab 1" />
     <sqlitebrowser:Browser
         Title="Browser" />
+    <sqlitebrowserPages:AltBrowserPage
+        Title="Alt Browser"/>
     <views:PeoplePage
         Title="Tab 2" />
 </TabbedPage>

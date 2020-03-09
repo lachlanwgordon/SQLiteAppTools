@@ -40,7 +40,7 @@ namespace SQLiteBrowser.Models
             ColumnInfos = columns;
 
             var command = new SQLiteCommand(connection);
-            command.CommandText = $"select * from {name}";
+            command.CommandText = $"select * from '{name}'";
             IEnumerable<IEnumerable<object>> items;
             try
             {

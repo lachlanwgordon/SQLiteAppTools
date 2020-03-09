@@ -22,6 +22,10 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
     <Folder Include="Service\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Northwind_small.sqlite" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Views\PeoplePage.xaml">
@@ -30,5 +34,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SQLiteBrowser\SQLiteBrowser.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\Northwind_small.sqlite" />
   </ItemGroup>
 </Project>

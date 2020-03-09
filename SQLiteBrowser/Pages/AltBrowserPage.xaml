@@ -39,7 +39,7 @@
                         Width="*" />
                 </Grid.ColumnDefinitions>
                 <StackLayout
-                    Margin="1,0,0,0"
+                    Margin="{OnPlatform Android='0', iOS='1,0,0,0'}"
                     Spacing="1"
                     BindableLayout.ItemsSource="{Binding SelectedTable.ColumnInfos}"
                     Orientation="Horizontal">

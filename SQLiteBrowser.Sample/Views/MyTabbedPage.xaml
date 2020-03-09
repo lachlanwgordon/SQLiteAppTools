@@ -12,8 +12,6 @@
     
     <views:MainPage
         Title="Tab 1" />
-    <sqlitebrowser:Browser
-        Title="Browser" />
     <sqlitebrowserPages:AltBrowserPage
         Title="Alt Browser"/>
     <views:PeoplePage

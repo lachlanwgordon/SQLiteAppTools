@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="Pages\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Service\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

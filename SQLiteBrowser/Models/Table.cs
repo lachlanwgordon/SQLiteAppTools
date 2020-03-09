@@ -24,9 +24,7 @@ namespace SQLiteBrowser.Models
 
         public static List<Table> GetAll(SQLiteConnection connection)
         {
-
             var tables = connection.Query<Table>("select * from sqlite_master where type = 'table';");
-
 
             foreach (var table in tables)
             {

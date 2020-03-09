@@ -19,10 +19,7 @@ namespace SQLiteBrowser.ViewModels
 
         public async Task OnAppearingAsync()
         {
-            //var connection = new SQLite.SQLiteConnection(Browser.Connection.DatabasePath);
             var connection = new SQLite.SQLiteConnection(Path);
-
-
             
             var tables = Table.GetAll(connection);
             Tables.AddRange(tables);

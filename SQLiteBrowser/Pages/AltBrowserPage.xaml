@@ -5,7 +5,9 @@
     Padding="0,40,0,0"
     x:Class="SQLiteBrowser.Pages.AltBrowserPage">
 
-    <Grid>
+    <Grid
+        RowSpacing="2"
+        BackgroundColor="Gray">
         <Grid.RowDefinitions>
             <RowDefinition
                 Height="Auto" />
@@ -24,7 +26,8 @@
             Grid.Row="1"
             Orientation="Horizontal">
             <Grid
-                BackgroundColor="Orange">
+                RowSpacing="2"
+                >
                 <Grid.RowDefinitions>
                     <RowDefinition
                         Height="Auto" />
@@ -36,34 +39,41 @@
                         Width="*" />
                 </Grid.ColumnDefinitions>
                 <StackLayout
-                    BackgroundColor="Blue"
+                    Margin="1,0,0,0"
+                    Spacing="1"
                     BindableLayout.ItemsSource="{Binding SelectedTable.ColumnInfos}"
                     Orientation="Horizontal">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <Label
-                                BackgroundColor="Beige"
+                                BackgroundColor="White"
+                                LineBreakMode="MiddleTruncation"
+                                WidthRequest="150"
                                 Text="{Binding Name}" />
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
                 <CollectionView
-                    BackgroundColor="Yellow"
                     ItemsSource="{Binding SelectedTable.Rows}"
                     Grid.Row="1">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="1" Orientation="Vertical" /> 
+                    </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout
-                                Spacing="5"
-                                BackgroundColor="Green"
+                                Spacing="1"
                                 HorizontalOptions="FillAndExpand"
                                 BindableLayout.ItemsSource="{Binding .}"
                                 Orientation="Horizontal">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
                                         <Label
+                                            BackgroundColor="White"
+                                            Margin="0"
+                                            Padding="0"
                                             Text="{Binding .}"
-                                            BackgroundColor="BlueViolet"
+                                            LineBreakMode="MiddleTruncation"
                                             WidthRequest="150" />
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>

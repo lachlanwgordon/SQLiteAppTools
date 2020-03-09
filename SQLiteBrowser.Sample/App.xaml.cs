@@ -6,6 +6,7 @@ using SQLiteBrowser.ModelServices;
 using SQLiteBrowser.Pages;
 using SQLiteBrowser.Sample.Views;
 using SQLiteBrowser.Service;
+using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,7 +20,9 @@ namespace SQLiteBrowser.Sample
 
             DependencyService.Register<IDatabase, Database>();
             DependencyService.Register<IPersonService, PersonService>();
-
+            var nwindName = "Northwind_small.sqlite";
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), nwindName);
+            AltBrowserViewModel.Path = path;
             MainPage = new AltBrowserPage();
         }
 

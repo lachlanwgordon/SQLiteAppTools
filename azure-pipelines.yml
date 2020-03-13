@@ -13,7 +13,10 @@ steps:
 - checkout: self
   persistCredentials: true
 
-
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    feedsToUse: 'select'
 # increment version to be completed, having trouble with git
 #- task: PowerShell@2
 #  inputs:

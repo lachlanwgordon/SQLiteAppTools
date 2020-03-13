@@ -30,7 +30,11 @@ steps:
     configuration: 'release'
     restoreNugetPackages: true
 
-
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'SQLiteBrowser/*.csproj'
+    versioningScheme: 'off'
 
 - task: PublishPipelineArtifact@0
   inputs:

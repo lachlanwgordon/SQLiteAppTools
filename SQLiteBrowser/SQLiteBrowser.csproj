@@ -7,6 +7,7 @@
     <Authors>Lachlan Gordon</Authors>
     <PackageId>SQLitesBrowser</PackageId>
     <PackOnBuild>true</PackOnBuild>
+    <IsPackable>true</IsPackable>
     <Description>SQLite Browser lets you look inside the database inside your Xamarin Forms app to inspect and debug the contents. There's no need to dig through folders deeply buried in macOS with GUIDs for names or a command line to dig around in Android. Just a nuget with a GUI right in your app.</Description>
   </PropertyGroup>
 

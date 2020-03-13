@@ -17,9 +17,9 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+# - task: NuGetCommand@2
+#   inputs:
+#     restoreSolution: '$(solution)'
 
 - task: VSBuild@1
   inputs:
@@ -34,16 +34,16 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
-    versioningScheme: 'byBuildNumber'
+# - task: NuGetCommand@2
+#   inputs:
+#     command: 'pack'
+#     packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
+#     versioningScheme: 'byBuildNumber'
 
 
 - task: NuGetCommand@2
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '**/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/2b60df49-c3d6-42c9-b110-19c2857331ed'

@@ -11,7 +11,7 @@ pool:
 
 variables:
   BuildConfiguration: Release
-  Projects: '**/*.csproj'
+  Projects: 'SQLiteBrowser/SQLiteBrowser.csproj'
 
 steps:
 

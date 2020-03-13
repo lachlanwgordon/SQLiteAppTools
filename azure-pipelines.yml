@@ -15,30 +15,35 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+# - task: NuGetToolInstaller@1
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+    projects: 'SQLiteBrowser/SQLiteBrowser.csproj'
+
+
+# - task: VSTest@2
+#   inputs:
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: "dotnet pack"
+  inputs:
+    command: 'pack'
+    arguments: '--configuration $(buildConfiguration)'
+    packagesToPack: 'SQLiteBrowser/SQLiteBrowser.csproj'
+    nobuild: true
+    versioningScheme: 'off'
 
 - task: NuGetCommand@2
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-# - task: NuGetCommand@2
-#   inputs:
-#     command: 'pack'
-#     packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
-#     versioningScheme: 'byBuildNumber'
+    command: 'pack'
+    packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
+    versioningScheme: 'byBuildNumber'
 
 
 - task: NuGetCommand@2
@@ -47,3 +52,5 @@ steps:
     packagesToPush: '**/*.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/2b60df49-c3d6-42c9-b110-19c2857331ed'
+    versioningScheme: 'off'
+    allowPackageConflicts: true

@@ -13,8 +13,6 @@ steps:
 - checkout: self
   persistCredentials: true
 
-- script: dotnet restore 
-  displayName: Restore Packages
 
 # increment version to be completed, having trouble with git
 #- task: PowerShell@2
@@ -26,6 +24,7 @@ steps:
   inputs:
     solution: '**/*.sln'
     configuration: 'release'
+    restoreNugetPackages: true
 
 
 

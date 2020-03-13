@@ -9,7 +9,7 @@ using SQLiteBrowser.Service;
 using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
+//[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace SQLiteBrowser.Sample
 {
     public partial class App : Application
@@ -20,10 +20,9 @@ namespace SQLiteBrowser.Sample
 
             DependencyService.Register<IDatabase, Database>();
             DependencyService.Register<IPersonService, PersonService>();
-            var nwindName = "Northwind_small.sqlite";
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), nwindName);
-            AltBrowserViewModel.Path = path;
-            MainPage = new AltBrowserPage();
+            
+            MainPage = new LoadingPage();
+
         }
 
 
@@ -34,16 +33,13 @@ namespace SQLiteBrowser.Sample
 
             var nwindName = "Northwind_small.sqlite";
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), nwindName);
-            SQLiteBrowser.ViewModels.AltBrowserViewModel.Path = path;
-            //SQLiteBrowser.ViewModels.AltBrowserViewModel.Path = db.Connection.DatabasePath;
-            //"/Users/lachlangordon/Library/Developer/CoreSimulator/Devices/ED153C3A-26D3-4723-90C3-779277A53213/data/Containers/Data/Application/27F40C23-50BE-4ED8-818A-3BC9D93CA7CC/Documents/Northwind_small.sqlite"
             if (!File.Exists(path))
             {
                 var nwindResourcePath = "SQLiteBrowser.Sample.Resources.Northwind_small.sqlite";
                 WriteResourceToFile(nwindResourcePath, path);
-
             }
-
+            AltBrowserViewModel.Path = path;
+            MainPage = new AltBrowserPage();
 
         }
 

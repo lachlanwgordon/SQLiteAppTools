@@ -2,8 +2,19 @@
 <ContentPage
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:local="clr-namespace:SQLiteBrowser.Behavior"
+    xmlns:models="clr-namespace:SQLiteBrowser.Models"
     Padding="0,40,0,0"
     x:Class="SQLiteBrowser.Pages.AltBrowserPage">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Label">
+        <Setter Property="Text" Value="{Binding DisplayText}"/>
+        <Setter Property="IsVisible" Value="{Binding IsVisible}"/>
+        <Setter Property="BackgroundColor" Value="White"/>
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
 
     <Grid
         RowSpacing="2"
@@ -19,18 +30,27 @@
                 Width="*" />
         </Grid.ColumnDefinitions>
         <Picker
+            Title="Table"
             ItemsSource="{Binding Tables}"
             SelectedItem="{Binding SelectedTable}"
-            ItemDisplayBinding="{Binding name}" />
+            ItemDisplayBinding="{Binding name}">
+            <Picker.Behaviors>
+                <local:EventToCommandBehavior
+                    EventName="Unfocused"
+                    Command="{Binding TableSelected}" />
+            </Picker.Behaviors>
+        </Picker>
         <ScrollView
+            WidthRequest="{Binding ColumnHeaders.Width}"
             Grid.Row="1"
             Orientation="Horizontal">
             <Grid
-                RowSpacing="2"
-                >
+            WidthRequest="{Binding ColumnHeaders.Width}"
+                Grid.Row="1"
+                RowSpacing="2">
                 <Grid.RowDefinitions>
                     <RowDefinition
-                        Height="Auto" />
+                        Height="30" />
                     <RowDefinition
                         Height="*" />
                 </Grid.RowDefinitions>
@@ -38,47 +58,173 @@
                     <ColumnDefinition
                         Width="*" />
                 </Grid.ColumnDefinitions>
-                <StackLayout
-                    Margin="{OnPlatform Android='0', iOS='1,0,0,0'}"
-                    Spacing="1"
-                    BindableLayout.ItemsSource="{Binding SelectedTable.ColumnInfos}"
-                    Orientation="Horizontal">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Label
-                                BackgroundColor="White"
-                                LineBreakMode="MiddleTruncation"
-                                WidthRequest="150"
-                                Text="{Binding Name}" />
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
+                <AbsoluteLayout
+                    BindingContext="{Binding ColumnHeaders}"
+                    >
+                    <Label 
+                        BindingContext="{Binding Cell0}"
+                        AbsoluteLayout.LayoutBounds="0,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell1}"
+                        AbsoluteLayout.LayoutBounds="100,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell2}"
+                        AbsoluteLayout.LayoutBounds="200,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell3}"
+                        AbsoluteLayout.LayoutBounds="300,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell4}"
+                        AbsoluteLayout.LayoutBounds="400,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell5}"
+                        AbsoluteLayout.LayoutBounds="500,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell6}"
+                        AbsoluteLayout.LayoutBounds="600,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell7}"
+                        AbsoluteLayout.LayoutBounds="700,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell8}"
+                        AbsoluteLayout.LayoutBounds="800,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell9}"
+                        AbsoluteLayout.LayoutBounds="900,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell10}"
+                        AbsoluteLayout.LayoutBounds="1000,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell11}"
+                        AbsoluteLayout.LayoutBounds="1100,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell12}"
+                        AbsoluteLayout.LayoutBounds="1200,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell13}"
+                        AbsoluteLayout.LayoutBounds="1300,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell14}"
+                        AbsoluteLayout.LayoutBounds="1400,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell15}"
+                        AbsoluteLayout.LayoutBounds="1500,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell16}"
+                        AbsoluteLayout.LayoutBounds="1600,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                    <Label
+                        BindingContext="{Binding Cell17}"
+                        AbsoluteLayout.LayoutBounds="1700,0,99,1"
+                        AbsoluteLayout.LayoutFlags="HeightProportional" />
+                </AbsoluteLayout>
+
                 <CollectionView
-                    ItemsSource="{Binding SelectedTable.Rows}"
+                    RemainingItemsThreshold="5"
+                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreRows}"
+                    ItemsSource="{Binding AltRows}"
                     Grid.Row="1">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="1" Orientation="Vertical" /> 
+                        <LinearItemsLayout
+                            ItemSpacing="1"
+                            Orientation="Vertical" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout
-                                Spacing="1"
-                                HorizontalOptions="FillAndExpand"
-                                BindableLayout.ItemsSource="{Binding .}"
-                                Orientation="Horizontal">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Label
-                                            BackgroundColor="White"
-                                            Margin="0"
-                                            Padding="0"
-                                            Text="{Binding .}"
-                                            LineBreakMode="MiddleTruncation"
-                                            WidthRequest="150" />
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
+                        <DataTemplate
+                            x:DataType="models:Row">
+                            <AbsoluteLayout
+                                WidthRequest="{Binding Width}">
 
-                            </StackLayout>
+                                <Label
+                                    BindingContext="{Binding Cell0}"
+                                    AbsoluteLayout.LayoutBounds="0,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell1}"
+                                    AbsoluteLayout.LayoutBounds="100,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell2}"
+                                    AbsoluteLayout.LayoutBounds="200,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell3}"
+                                    AbsoluteLayout.LayoutBounds="300,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell4}"
+                                    AbsoluteLayout.LayoutBounds="400,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label 
+                                    BindingContext="{Binding Cell5}"
+                                    AbsoluteLayout.LayoutBounds="500,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell6}"
+                                    AbsoluteLayout.LayoutBounds="600,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell7}"
+                                    AbsoluteLayout.LayoutBounds="700,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell8}"
+                                    AbsoluteLayout.LayoutBounds="800,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell9}"
+                                    AbsoluteLayout.LayoutBounds="900,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell10}"
+                                    AbsoluteLayout.LayoutBounds="1000,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell11}"
+                                    AbsoluteLayout.LayoutBounds="1100,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell12}"
+                                    AbsoluteLayout.LayoutBounds="1200,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell13}"
+                                    AbsoluteLayout.LayoutBounds="1300,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell14}"
+                                    AbsoluteLayout.LayoutBounds="1400,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell15}"
+                                    AbsoluteLayout.LayoutBounds="1500,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell16}"
+                                    AbsoluteLayout.LayoutBounds="1600,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                                <Label
+                                    BindingContext="{Binding Cell17}"
+                                    AbsoluteLayout.LayoutBounds="1700,0,99,1"
+                                    AbsoluteLayout.LayoutFlags="HeightProportional" />
+                            </AbsoluteLayout>
+
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
 

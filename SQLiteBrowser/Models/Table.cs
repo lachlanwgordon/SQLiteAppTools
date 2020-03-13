@@ -19,25 +19,31 @@ namespace SQLiteBrowser.Models
         public string tbl_name { get; set; }
         public int rootpage { get; set; }
         public string sql { get; set; }
-        public IEnumerable<ColumnInfo> ColumnInfos { get; set; }
+        public List<ColumnInfo> ColumnInfos { get; set; }
         public IEnumerable<IEnumerable<object>> Rows { get; set; } = new List<List<object>>();
+        public List<Row> FormattedRows { get; set; } = new List<Row>();
+        public Row HeaderRow { get; set; }
 
-        public static List<Table> GetAll(SQLiteConnection connection)
+        public static List<Table> GetAll(SQLiteConnection connection, bool loadData)
         {
             var tables = connection.Query<Table>("select * from sqlite_master where type = 'table';");
 
-            foreach (var table in tables)
+            if (loadData)
             {
-                table.LoadData(connection);
+                foreach (var table in tables)
+                {
+                    table.LoadData(connection);
+                }
             }
             return tables;
         }
-
 
         public IEnumerable<IEnumerable<object>> LoadData(SQLiteConnection connection)
         {
             var columns = connection.GetTableInfo(name);
             ColumnInfos = columns;
+
+            HeaderRow = new Row(ColumnInfos);
 
             var command = new SQLiteCommand(connection);
             command.CommandText = $"select * from '{name}'";
@@ -46,6 +52,8 @@ namespace SQLiteBrowser.Models
             {
                 items = command.ExecuteDeferredQuery(this, connection);
                 Rows = items;
+                FormattedRows = FormatRows(items);
+
             }
             catch (Exception ex)
             {
@@ -54,6 +62,16 @@ namespace SQLiteBrowser.Models
             }
             
             return items;
+        }
+
+        private List<Row> FormatRows(IEnumerable<IEnumerable<object>> items)
+        {
+            var rows = new List<Row>();
+            foreach (var row in items)
+            {
+                rows.Add(new Row(row, ColumnInfos));
+            }
+            return rows;
         }
     }
 

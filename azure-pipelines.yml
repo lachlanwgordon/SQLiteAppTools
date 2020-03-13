@@ -26,7 +26,7 @@ steps:
 - task: VSBuild@1
   displayName: Build
   inputs:
-    solution: '**/*.sln'
+    solution: 'SQLiteBrowser/*.csproj'
     configuration: 'release'
     restoreNugetPackages: true
 

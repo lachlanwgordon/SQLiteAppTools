@@ -16,6 +16,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
+    projects: 'SQLiteBrowser/*.csproj'
     feedsToUse: 'select'
 # increment version to be completed, having trouble with git
 #- task: PowerShell@2

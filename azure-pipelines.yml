@@ -1,50 +1,49 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
 - master
 
 pool:
-  vmImage: 'vs2017-win2016'
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/SQLiteBrowser.Build.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
 
 steps:
-- checkout: self
-  persistCredentials: true
+- task: NuGetToolInstaller@1
 
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   inputs:
-    command: 'restore'
-    projects: 'SQLiteBrowser/*.csproj'
-    feedsToUse: 'select'
-# increment version to be completed, having trouble with git
-#- task: PowerShell@2
-#  inputs:
-#    filePath: versionIncrement.ps1
+    restoreSolution: '$(solution)'
 
 - task: VSBuild@1
-  displayName: Build
   inputs:
-    solution: 'SQLiteBrowser/*.csproj'
-    configuration: 'release'
-    restoreNugetPackages: true
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
 
 - task: NuGetCommand@2
   inputs:
     command: 'pack'
-    packagesToPack: 'SQLiteBrowser/*.csproj'
-    versioningScheme: 'off'
+    packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
+    versioningScheme: 'byBuildNumber'
 
-- task: PublishPipelineArtifact@0
-  inputs:
-    artifactName: artifacts
 
 - task: NuGetCommand@2
-  displayName: 'NuGet push'
   inputs:
     command: 'push'
-    packagesToPush: '**/*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
     publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/2b60df49-c3d6-42c9-b110-19c2857331ed'
-    allowPackageConflicts: true

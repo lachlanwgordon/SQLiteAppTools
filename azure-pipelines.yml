@@ -39,11 +39,11 @@ steps:
     nobuild: true
     versioningScheme: 'off'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
-    versioningScheme: 'byBuildNumber'
+# - task: NuGetCommand@2
+#   inputs:
+#     command: 'pack'
+#     packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
+#     versioningScheme: 'byBuildNumber'
 
 
 - task: NuGetCommand@2

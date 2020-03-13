@@ -73,10 +73,19 @@ steps:
     Contents: '**/*.nupkg'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
     flattenFolders: true
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish artifacts'
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+- task: NuGetCommand@2
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/2b60df49-c3d6-42c9-b110-19c2857331ed'
+
+
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish artifacts'
+#   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'
+

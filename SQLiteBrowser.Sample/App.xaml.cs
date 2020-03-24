@@ -21,7 +21,7 @@ namespace SQLiteBrowser.Sample
             DependencyService.Register<IDatabase, Database>();
             DependencyService.Register<IPersonService, PersonService>();
             
-            MainPage = new LoadingPage();
+            MainPage = new AltBrowserPage();
 
         }
 
@@ -39,7 +39,7 @@ namespace SQLiteBrowser.Sample
                 WriteResourceToFile(nwindResourcePath, path);
             }
             AltBrowserViewModel.Path = path;
-            MainPage = new AltBrowserPage();
+            MainPage = new MyTabbedPage();
 
         }
 

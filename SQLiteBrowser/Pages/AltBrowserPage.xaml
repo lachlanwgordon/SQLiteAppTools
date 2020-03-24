@@ -4,8 +4,13 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:local="clr-namespace:SQLiteBrowser.Behavior"
     xmlns:models="clr-namespace:SQLiteBrowser.Models"
+    xmlns:vm="clr-namespace:SQLiteBrowser.ViewModels"
     Padding="0,40,0,0"
+
     x:Class="SQLiteBrowser.Pages.AltBrowserPage">
+    <ContentPage.BindingContext>
+        <vm:AltBrowserViewModel x:Name="VM"/>
+    </ContentPage.BindingContext>
   <ContentPage.Resources>
     <ResourceDictionary>
       <Style TargetType="Label">
@@ -46,7 +51,6 @@
             Orientation="Horizontal">
             <Grid
             WidthRequest="{Binding ColumnHeaders.Width}"
-                Grid.Row="1"
                 RowSpacing="2">
                 <Grid.RowDefinitions>
                     <RowDefinition
@@ -136,8 +140,6 @@
                 </AbsoluteLayout>
 
                 <CollectionView
-                    RemainingItemsThreshold="5"
-                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreRows}"
                     ItemsSource="{Binding AltRows}"
                     Grid.Row="1">
                     <CollectionView.ItemsLayout>

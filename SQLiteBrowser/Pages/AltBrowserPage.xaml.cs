@@ -8,18 +8,16 @@ namespace SQLiteBrowser.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AltBrowserPage : ContentPage
     {
-        public AltBrowserViewModel ViewModel => BindingContext as AltBrowserViewModel;
         public AltBrowserPage()
         {
-            BindingContext = new AltBrowserViewModel();
             InitializeComponent();
         }
 
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-            await ViewModel.OnAppearingAsync();
+            VM.OnAppearing();
         }
     }
 }

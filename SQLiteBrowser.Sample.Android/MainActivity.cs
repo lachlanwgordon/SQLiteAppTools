@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using SQLiteBrowser.Sample;
+using Xamarin.Forms;
 
 namespace SQLiteBrowser.Droid
 {
@@ -20,6 +21,7 @@ namespace SQLiteBrowser.Droid
 
             base.OnCreate(savedInstanceState);
 
+            Forms.SetFlags("Markup_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());

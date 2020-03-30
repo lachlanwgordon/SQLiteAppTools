@@ -14,7 +14,16 @@ namespace SQLiteBrowser.ViewModels
 
         public ObservableRangeCollection<Table> Tables { get; set; }  = new ObservableRangeCollection<Table>();
 
-        public ObservableRangeCollection<Row> AltRows { get; set; } = new ObservableRangeCollection<Row>();
+
+        ObservableRangeCollection<Row> altRows = new ObservableRangeCollection<Row>(); 
+        public ObservableRangeCollection<Row> AltRows
+        {
+            get => altRows;
+            set
+            {
+                SetProperty(ref altRows, value);
+            }
+        }
 
         Row columnHeaders;
         public Row ColumnHeaders
@@ -38,12 +47,17 @@ namespace SQLiteBrowser.ViewModels
 
         private void LoadTableData()
         {
-            AltRows.Clear();
-
+            var watch = new Stopwatch();
+            watch.Start();
+            Debug.WriteLine($"LoadTableData1 {watch.ElapsedMilliseconds}ms");
             _ = SelectedTable.LoadData(connection);
+            Debug.WriteLine($"LoadTableData2 {watch.ElapsedMilliseconds}ms");
             ColumnHeaders = selectedTable.HeaderRow;
+            Debug.WriteLine($"LoadTableData3 {watch.ElapsedMilliseconds}ms");
 
             AltRows.AddRange(selectedTable.FormattedRows);
+            //AltRows = new ObservableRangeCollection<Row>(selectedTable.FormattedRows);
+            Debug.WriteLine($"LoadTableData {watch.ElapsedMilliseconds}ms");
         }
 
         public static string Path { get; set; }

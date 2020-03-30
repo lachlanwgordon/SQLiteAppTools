@@ -6,20 +6,27 @@
     xmlns:models="clr-namespace:SQLiteBrowser.Models"
     xmlns:vm="clr-namespace:SQLiteBrowser.ViewModels"
     Padding="0,40,0,0"
-
     x:Class="SQLiteBrowser.Pages.AltBrowserPage">
     <ContentPage.BindingContext>
-        <vm:AltBrowserViewModel x:Name="VM"/>
+        <vm:AltBrowserViewModel
+            x:Name="VM" />
     </ContentPage.BindingContext>
-  <ContentPage.Resources>
-    <ResourceDictionary>
-      <Style TargetType="Label">
-        <Setter Property="Text" Value="{Binding DisplayText}"/>
-        <Setter Property="IsVisible" Value="{Binding IsVisible}"/>
-        <Setter Property="BackgroundColor" Value="White"/>
-      </Style>
-    </ResourceDictionary>
-  </ContentPage.Resources>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style
+                TargetType="Label">
+                <Setter
+                    Property="Text"
+                    Value="{Binding DisplayText}" />
+                <Setter
+                    Property="IsVisible"
+                    Value="{Binding IsVisible}" />
+                <Setter
+                    Property="BackgroundColor"
+                    Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Grid
         RowSpacing="2"
@@ -50,7 +57,8 @@
             Grid.Row="1"
             Orientation="Horizontal">
             <Grid
-            WidthRequest="{Binding ColumnHeaders.Width}"
+                WidthRequest="{Binding ColumnHeaders.Width}"
+                Grid.Row="1"
                 RowSpacing="2">
                 <Grid.RowDefinitions>
                     <RowDefinition
@@ -63,9 +71,8 @@
                         Width="*" />
                 </Grid.ColumnDefinitions>
                 <AbsoluteLayout
-                    BindingContext="{Binding ColumnHeaders}"
-                    >
-                    <Label 
+                    BindingContext="{Binding ColumnHeaders}">
+                    <Label
                         BindingContext="{Binding Cell0}"
                         AbsoluteLayout.LayoutBounds="0,0,99,1"
                         AbsoluteLayout.LayoutFlags="HeightProportional" />
@@ -173,7 +180,7 @@
                                     BindingContext="{Binding Cell4}"
                                     AbsoluteLayout.LayoutBounds="400,0,99,1"
                                     AbsoluteLayout.LayoutFlags="HeightProportional" />
-                                <Label 
+                                <Label
                                     BindingContext="{Binding Cell5}"
                                     AbsoluteLayout.LayoutBounds="500,0,99,1"
                                     AbsoluteLayout.LayoutFlags="HeightProportional" />

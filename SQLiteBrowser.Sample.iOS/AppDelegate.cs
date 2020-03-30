@@ -5,6 +5,7 @@ using SQLiteBrowser;
 using Foundation;
 using UIKit;
 using SQLiteBrowser.Sample;
+using Xamarin.Forms;
 
 namespace SQLiteBrowser.iOS
 {
@@ -24,6 +25,7 @@ namespace SQLiteBrowser.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Xamarin.Calabash.Start();
+            Forms.SetFlags("Markup_Experimental");
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 

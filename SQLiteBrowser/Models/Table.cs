@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Linq;
 using SQLite;
 using static SQLite.SQLite3;
 using static SQLite.SQLiteConnection;
-using Sqlite3Statement = System.IntPtr;
-
-
 
 namespace SQLiteBrowser.Models
 {

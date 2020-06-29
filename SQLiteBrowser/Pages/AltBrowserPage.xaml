@@ -52,10 +52,7 @@
                     Command="{Binding TableSelected}" />
             </Picker.Behaviors>
         </Picker>
-        <ScrollView
-            WidthRequest="{Binding ColumnHeaders.Width}"
-            Grid.Row="1"
-            Orientation="Horizontal">
+        
             <Grid
                 WidthRequest="{Binding ColumnHeaders.Width}"
                 Grid.Row="1"
@@ -240,7 +237,6 @@
                 </CollectionView>
             </Grid>
 
-        </ScrollView>
 
     </Grid>
 

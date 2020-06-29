@@ -18,4 +18,6 @@
         Title="Coded Viewer"/>
     <views:PeoplePage
         Title="Tab 2" />
+    <sqlitebrowserPages:FakeScrolling
+        Title="Fake Scrolling" />
 </TabbedPage>

@@ -37,9 +37,24 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate
                     x:DataType="models:Row">
-                    <Grid>
-                        <Label Text="{Binding Cell0}"/>
-                    </Grid>
+                    <Expander>
+                        <Expander.Header>
+                            <Grid>
+                                <Label
+                                    Text="{Binding Cell0.DisplayText}" />
+                            </Grid>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <Grid>
+                                <Label
+                                    Text="{Binding Cell1.DisplayText}" />
+                                <Label
+                                    Grid.Column="1"
+                                    Text="{Binding Cell2.DisplayText}" />
+                            </Grid>
+                        </Expander.Content>
+                    </Expander>
+
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

@@ -20,7 +20,7 @@ namespace SQLiteBrowser.Sample
 
             DependencyService.Register<IDatabase, Database>();
             DependencyService.Register<IPersonService, PersonService>();
-
+            Device.SetFlags(new string[] { "Expander_Experimental" });
             MainPage = new ContentPage();
 
 

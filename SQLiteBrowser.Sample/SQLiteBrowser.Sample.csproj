@@ -11,10 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.494-pre2" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
-    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.1-beta" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -23,6 +23,7 @@
     <Folder Include="Views\" />
     <Folder Include="Service\" />
     <Folder Include="Resources\" />
+    <Folder Include="Pages\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Northwind_small.sqlite" />

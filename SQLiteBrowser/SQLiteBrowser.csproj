@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.494-pre2" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
-    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.1-beta" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.6.2" />
 
   </ItemGroup>
   <ItemGroup>

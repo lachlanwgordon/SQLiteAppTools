@@ -20,7 +20,7 @@ namespace SQLiteBrowser.Sample
 
             DependencyService.Register<IDatabase, Database>();
             DependencyService.Register<IPersonService, PersonService>();
-            Device.SetFlags(new string[] { "Expander_Experimental" });
+            Device.SetFlags(new string[] { "Expander_Experimental", "Markup_Experimental" });
             MainPage = new ContentPage();
 
 
@@ -42,7 +42,9 @@ namespace SQLiteBrowser.Sample
             AltBrowserViewModel.Path = path;
             //MainPage = new MyTabbedPage();
             //MainPage = new TestPage();
-            MainPage = new ExpanderPage();
+            //MainPage = new NewPage();
+            MainPage = new CSMarkupPage();
+
 
         }
 

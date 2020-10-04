@@ -4,13 +4,45 @@ using SQLite;
 using SQLiteBrowser.Models;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System;
+using System.Linq;
 
 namespace SQLiteBrowser.ViewModels
 {
 
     public class AltBrowserViewModel : BaseViewModel
     {
+        bool isPopupShowing;
+        public bool IsPopupShowing
+        {
+            get => isPopupShowing;
+            set => SetProperty(ref isPopupShowing, value);
+        }
+
+        Row selectedItem;
+        public Row SelectedItem
+        {
+            get => selectedItem;
+            set => SetProperty(ref selectedItem, value);
+        }
+
         public ICommand TableSelected => new Command(LoadTableData);
+        public ICommand OpenItemCommand => new Command(OpenItem);
+        public ICommand ClosePopupCommand => new Command(ClosePopup);
+
+        private void ClosePopup(object obj)
+        {
+            SelectedItem = null;
+            IsPopupShowing = false;
+        }
+
+        private void OpenItem(object obj)
+        {
+            var item = obj as Row;
+            SelectedItem = item;
+            IsPopupShowing = true;
+
+        }
 
         public ObservableRangeCollection<Table> Tables { get; set; }  = new ObservableRangeCollection<Table>();
 
@@ -24,6 +56,8 @@ namespace SQLiteBrowser.ViewModels
                 SetProperty(ref altRows, value);
             }
         }
+
+        public ObservableRangeCollection<string> AllCells { get; set; } = new ObservableRangeCollection<string>();
 
         Row columnHeaders;
         public Row ColumnHeaders
@@ -42,6 +76,7 @@ namespace SQLiteBrowser.ViewModels
             set
             {
                 SetProperty(ref selectedTable, value);
+                LoadTableData();
             }
         }
 
@@ -49,15 +84,16 @@ namespace SQLiteBrowser.ViewModels
         {
             var watch = new Stopwatch();
             watch.Start();
-            Debug.WriteLine($"LoadTableData1 {watch.ElapsedMilliseconds}ms");
             _ = SelectedTable.LoadData(connection);
-            Debug.WriteLine($"LoadTableData2 {watch.ElapsedMilliseconds}ms");
             ColumnHeaders = selectedTable.HeaderRow;
-            Debug.WriteLine($"LoadTableData3 {watch.ElapsedMilliseconds}ms");
-
+            AltRows.Clear();
             AltRows.AddRange(selectedTable.FormattedRows);
-            //AltRows = new ObservableRangeCollection<Row>(selectedTable.FormattedRows);
-            Debug.WriteLine($"LoadTableData {watch.ElapsedMilliseconds}ms");
+
+            var allCells = selectedTable.FormattedRows.SelectMany(x => x.Cells);
+            var allStrings = allCells.Select(x => x.DisplayText);
+            AllCells.Clear();
+            AllCells.AddRange(allStrings);
+
         }
 
         public static string Path { get; set; }

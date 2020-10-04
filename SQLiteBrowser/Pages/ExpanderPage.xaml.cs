@@ -14,7 +14,6 @@ namespace SQLiteBrowser.Pages
         {
             base.OnAppearing();
             VM.OnAppearing();
-
         }
     }
 }

@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SQLiteBrowser.Pages.NewPage"
+    xmlns:vm="clr-namespace:SQLiteBrowser.ViewModels"
+    xmlns:behavior="clr-namespace:SQLiteBrowser.Behavior"
+    Padding="{OnPlatform iOS='0,40,0,0', Android='0'}"
+    x:Name="rootPage"
+    xmlns:models="clr-namespace:SQLiteBrowser.Models">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style
+                x:Key="TableBackground"
+                TargetType="View">
+                <Setter
+                    Property="BackgroundColor"
+                    Value="Gray" />
+            </Style>
+            <Style
+                x:Key="CellLabel"
+                TargetType="Label">
+                <Setter
+                    Property="Padding"
+                    Value="2" />
+                <Setter
+                    Property="BackgroundColor"
+                    Value="White" />
+                <Setter
+                    Property="VerticalTextAlignment"
+                    Value="Center" />
+                <Setter
+                    Property="FontSize"
+                    Value="Small" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <vm:AltBrowserViewModel
+            x:Name="VM" />
+    </ContentPage.BindingContext>
+    <Grid
+        Style="{StaticResource TableBackground}"
+        RowDefinitions="50,50,*">
+        <Picker
+            Title="Table"
+            ItemsSource="{Binding Tables}"
+            SelectedItem="{Binding SelectedTable}"
+            ItemDisplayBinding="{Binding name}">
+            <Picker.Behaviors>
+                <behavior:EventToCommandBehavior
+                    EventName="Unfocused"
+                    Command="{Binding TableSelected}" />
+            </Picker.Behaviors>
+        </Picker>
+        <Grid
+            Grid.Row="1"
+            HeightRequest="50"
+            ColumnSpacing="1"
+            BindingContext="{Binding ColumnHeaders}">
+            <Label
+                Style="{StaticResource CellLabel}"
+                Text="{Binding Cell0.DisplayText}" />
+            <Label
+                Style="{StaticResource CellLabel}"
+                Grid.Column="1"
+                Text="{Binding Cell1.DisplayText}" />
+            <Label
+                Style="{StaticResource CellLabel}"
+                Grid.Column="2"
+                Text="{Binding Cell2.DisplayText}" />
+            <Label
+                Style="{StaticResource CellLabel}"
+                Grid.Column="3"
+                Text="{Binding Cell3.DisplayText}" />
+            <Label
+                Style="{StaticResource CellLabel}"
+                Grid.Column="4"
+                Text="{Binding Cell4.DisplayText}" />
+        </Grid>
+        <CollectionView
+            Style="{StaticResource TableBackground}"
+            ItemsSource="{Binding AltRows}"
+            Grid.Row="2">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout
+                    ItemSpacing="1"
+                    Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate
+                    x:DataType="models:Row">
+                    <Grid
+                        HeightRequest="50"
+                        ColumnSpacing="1">
+                        <Label
+                            Style="{StaticResource CellLabel}"
+                            Text="{Binding Cell0.DisplayText}" />
+                        <Label
+                            Style="{StaticResource CellLabel}"
+                            Grid.Column="1"
+                            Text="{Binding Cell1.DisplayText}" />
+                        <Label
+                            Style="{StaticResource CellLabel}"
+                            Grid.Column="2"
+                            Text="{Binding Cell2.DisplayText}" />
+                        <Label
+                            Style="{StaticResource CellLabel}"
+                            Grid.Column="3"
+                            Text="{Binding Cell3.DisplayText}" />
+                        <Label
+                            Style="{StaticResource CellLabel}"
+                            Grid.Column="4"
+                            Text="{Binding Cell4.DisplayText}" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{Binding BindingContext.OpenItemCommand, Source={x:Reference rootPage}}"
+                                NumberOfTapsRequired="1"
+                                CommandParameter="{Binding .}" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Frame
+            IsVisible="{Binding IsPopupShowing}"
+                Grid.RowSpan="3"
+            Padding="20"
+            Margin="20"
+            >
+
+            <Grid
+                VerticalOptions="Start"
+                BackgroundColor="#55555555">
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="Auto" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition
+                        Height="40" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout
+                    BackgroundColor="{StaticResource BackgroundColor}"
+                    BindableLayout.ItemsSource="{Binding SelectedItem.Cells}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Label Text="{Binding Colum"/>
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource CellLabel}"
+                                    Text="{Binding DisplayText}" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+
+                </StackLayout>
+                <Button
+                    VerticalOptions="End"
+                    Text="Close"
+                    Grid.Row="2"
+                    Command="{Binding ClosePopupCommand}" />
+            </Grid>
+        </Frame>
+
+    </Grid>
+</ContentPage>

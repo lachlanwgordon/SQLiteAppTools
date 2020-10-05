@@ -40,9 +40,6 @@ namespace SQLiteBrowser.Sample
                 WriteResourceToFile(nwindResourcePath, path);
             }
             AltBrowserViewModel.Path = path;
-            //MainPage = new MyTabbedPage();
-            //MainPage = new TestPage();
-            //MainPage = new NewPage();
             MainPage = new CSMarkupPage();
 
 

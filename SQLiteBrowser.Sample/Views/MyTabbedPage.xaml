@@ -12,12 +12,6 @@
     
     <views:MainPage
         Title="Tab 1" />
-    <sqlitebrowserPages:AltBrowserPage
-        Title="Alt Browser"/>
-    <sqlitebrowserPages:DBViewerPage
-        Title="Coded Viewer"/>
     <views:PeoplePage
         Title="Tab 2" />
-    <sqlitebrowserPages:FakeScrolling
-        Title="Fake Scrolling" />
 </TabbedPage>

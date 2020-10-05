@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xamarin.Forms;
 using static SQLite.SQLiteConnection;
 
 namespace SQLiteBrowser.Models
@@ -12,9 +13,22 @@ namespace SQLiteBrowser.Models
         public Cell(object item)
         {
             Item = item;
+
+            if(item != null)
+            {
+                if(int.TryParse(item.ToString(), out int intValue))
+                {
+                    Alignment = TextAlignment.End;
+                }
+                else
+                {
+                    Alignment = TextAlignment.Center;
+                }
+            }
         }
 
         public String DisplayText => Item?.ToString();
+        public TextAlignment Alignment { get; set; }
         public bool IsVisible => Item != null;
 
 

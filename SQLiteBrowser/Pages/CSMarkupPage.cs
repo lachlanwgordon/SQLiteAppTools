@@ -61,8 +61,11 @@ namespace SQLiteBrowser.Pages
                 ItemTemplate = new DataTemplate(() =>
                 {
 
-                    var grid = new Label { MaxLines = 1, BackgroundColor = cellColor, Margin = cellMargin, Padding = cellPadding, HeightRequest = cellHeight }.Bind(Label.TextProperty);
+                    var grid = new Label { MaxLines = 1, BackgroundColor = cellColor, Margin = cellMargin, Padding = cellPadding, HeightRequest = cellHeight }
+                        .Bind(Label.TextProperty)
 
+                        .Bind(Label.HorizontalTextAlignmentProperty, "Alignment");
+                    
                     return grid;
                 })
             }
@@ -145,7 +148,7 @@ namespace SQLiteBrowser.Pages
 
         private void AltRows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            MainGrid.WidthRequest = ViewModel.ColumnHeaders.Cells.Count * 300;
+            MainGrid.WidthRequest = ViewModel.ColumnHeaders.Cells.Count * 200;
             (CollectionView.ItemsLayout as GridItemsLayout).Span = ViewModel.ColumnHeaders.Cells.Count;
 
         }

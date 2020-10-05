@@ -57,7 +57,8 @@ namespace SQLiteBrowser.ViewModels
             }
         }
 
-        public ObservableRangeCollection<string> AllCells { get; set; } = new ObservableRangeCollection<string>();
+        public ObservableRangeCollection<Models.Cell> AllCells { get; set; } = new ObservableRangeCollection<Models.Cell>();
+
 
         Row columnHeaders;
         public Row ColumnHeaders
@@ -90,7 +91,7 @@ namespace SQLiteBrowser.ViewModels
             AltRows.AddRange(selectedTable.FormattedRows);
 
             var allCells = selectedTable.FormattedRows.SelectMany(x => x.Cells);
-            var allStrings = allCells.Select(x => x.DisplayText);
+            var allStrings = allCells;//.Select(x => x.DisplayText);
             AllCells.Clear();
             AllCells.AddRange(allStrings);
 

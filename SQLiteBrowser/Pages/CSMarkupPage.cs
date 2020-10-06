@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using SQLiteBrowser.Models;
 using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;

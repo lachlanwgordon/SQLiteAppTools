@@ -1,12 +1,6 @@
 using System.Diagnostics;
-using SQLite;
 using SQLiteBrowser.Models;
-using System.Windows.Input;
-using Xamarin.Forms;
-using System;
 using System.Linq;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SQLiteBrowser.Services;

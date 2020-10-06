@@ -1,5 +1,4 @@
 using System.Diagnostics;
-//using MvvmHelpers;
 using SQLite;
 using SQLiteBrowser.Models;
 using System.Windows.Input;

@@ -9,30 +9,17 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SQLiteBrowser.Services;
 
 namespace SQLiteBrowser.ViewModels
 {
-
     public class AltBrowserViewModel : BaseViewModel
     {
-        //public ICommand TableSelected => new Command(LoadTableData);
-
         private List<Table> tables;
         public List<Table> Tables
         {
             get => tables;
             set => SetProperty(ref tables, value);
-
-        }
-
-        List<Row> rows = new List<Row>();
-        public List<Row> Rows
-        {
-            get => rows;
-            set
-            {
-                SetProperty(ref rows, value);
-            }
         }
 
         private List<Models.Cell> allCells;
@@ -42,49 +29,26 @@ namespace SQLiteBrowser.ViewModels
             set => SetProperty(ref allCells, value);
         }
 
-
-        Row columnHeaders;
-        public Row ColumnHeaders
-        {
-            get => columnHeaders;
-            set
-            {
-                SetProperty(ref columnHeaders, value);
-            }
-        }
-
         Table selectedTable;
         public Table SelectedTable
         {
             get => selectedTable;
             set
             {
-                //LoadTableData(value);
                 SetProperty(ref selectedTable, value);
             }
         }
 
         public async Task LoadTableData(Table table)
         {
-            table.LoadData(connection);
-            ColumnHeaders = table.HeaderRow;
-            Rows = table.FormattedRows;
+            await TableService.LoadData(table);
 
-            AllCells = Rows.SelectMany(x => x.Cells).ToList();
+            AllCells = table.Rows.SelectMany(x => x.Cells).ToList();
         }
 
-        public static string Path { get; set; }
-
-        private SQLiteConnection connection;
-
-        public void LoadTables()
+        public async Task LoadTables()
         {
-            if (Path == null)
-                return;
-
-            connection = new SQLiteConnection(Path);
-
-            var tables = Table.GetAll(connection, false);
+            var tables = await TableService.GetAll();
 
             Tables = tables;
         }

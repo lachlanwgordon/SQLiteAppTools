@@ -9,14 +9,16 @@ namespace SQLiteBrowser.Models
     public class Cell
     {
         object Item;
+        private Column Column;
 
-        public Cell(object item)
+        public Cell(object item, Column column)
         {
+            Column = column;
             Item = item;
 
-            if(item != null)
+            if (item != null && column != null)
             {
-                if(int.TryParse(item.ToString(), out int intValue))
+                if(column.CLRType == typeof(int))
                 {
                     Alignment = TextAlignment.End;
                 }
@@ -27,12 +29,9 @@ namespace SQLiteBrowser.Models
             }
         }
 
-        public String DisplayText => Item?.ToString();
+        public string DisplayText => Item?.ToString();
         public TextAlignment Alignment { get; set; }
         public bool IsVisible => Item != null;
-
-
-        public Dictionary<string, string> Properties => Item.GetType().GetProperties().ToDictionary(x => x.Name, x => "Test");
 
         public override string ToString()
         {

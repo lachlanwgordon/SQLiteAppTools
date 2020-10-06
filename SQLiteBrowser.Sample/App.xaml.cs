@@ -6,6 +6,7 @@ using SQLiteBrowser.ModelServices;
 using SQLiteBrowser.Pages;
 using SQLiteBrowser.Sample.Views;
 using SQLiteBrowser.Service;
+using SQLiteBrowser.Services;
 using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -39,10 +40,8 @@ namespace SQLiteBrowser.Sample
                 var nwindResourcePath = "SQLiteBrowser.Sample.Resources.Northwind_small.sqlite";
                 WriteResourceToFile(nwindResourcePath, path);
             }
-            AltBrowserViewModel.Path = path;
+            TableService.Init(path);
             MainPage = new CSMarkupPage();
-
-
         }
 
         public void WriteResourceToFile(string resourceName, string fileName)

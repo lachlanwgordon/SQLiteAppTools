@@ -29,7 +29,7 @@ namespace SQLiteBrowser.Pages
         {
             Title = "Table",
             BackgroundColor = cellColor,
-            ItemDisplayBinding = new Binding(nameof(Table.name)),
+            ItemDisplayBinding = new Binding(nameof(Table.Name)),
         };
 
         public CSMarkupPage()
@@ -103,22 +103,16 @@ namespace SQLiteBrowser.Pages
                     CollectionView
                 }
             };
-            bool horizontalScrollingEnabled = true;
-            if (horizontalScrollingEnabled)
+            
+            var scroller = new ScrollView
             {
-                var scroller = new ScrollView
-                {
-                    BackgroundColor = cellBorderColor,
-                    Orientation = ScrollOrientation.Horizontal,
-                    Content = BodyGrid
-                };
-                Grid.SetRow(scroller, (int)MainRow.Body);
-                body = scroller;
-            }
-            else
-            {
-                body = BodyGrid;
-            }
+                BackgroundColor = cellBorderColor,
+                Orientation = ScrollOrientation.Horizontal,
+                Content = BodyGrid
+            };
+            Grid.SetRow(scroller, (int)MainRow.Body);
+            body = scroller;
+            
 
             MainGrid = new Grid
             {
@@ -151,11 +145,11 @@ namespace SQLiteBrowser.Pages
             UpdateView();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            ViewModel.LoadTables();
+            await ViewModel.LoadTables();
             Picker.ItemsSource = ViewModel.Tables;
             Picker.Unfocused += TableSelected;
         }
@@ -169,16 +163,13 @@ namespace SQLiteBrowser.Pages
 
         private void UpdateView()
         {
-            BodyGrid.WidthRequest = ViewModel.ColumnHeaders.Cells.Count * 200;
-            Debug.WriteLine($"{ViewModel.SelectedTable.name} selected, Setting ItemsLayout to span {ViewModel.ColumnHeaders.Cells.Count}");
+            BodyGrid.WidthRequest = ViewModel.SelectedTable.Columns.Count * 200;
 
             Headers.Children.Clear();
-            Headers.ColumnDefinitions.Clear();
 
             int columnNumber = 0;
-            foreach (var column in ViewModel.SelectedTable.ColumnInfos)
+            foreach (var column in ViewModel.SelectedTable.Columns)
             {
-                Headers.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                 var label = new Label
                 {
                     Text = column.Name,
@@ -192,8 +183,7 @@ namespace SQLiteBrowser.Pages
                 columnNumber++;
             }
             CollectionView.ItemsSource = ViewModel.AllCells;
-            (CollectionView.ItemsLayout as GridItemsLayout).Span = ViewModel.ColumnHeaders.Cells.Count;
+            (CollectionView.ItemsLayout as GridItemsLayout).Span = ViewModel.SelectedTable.Columns.Count;
         }
-
     }
 }

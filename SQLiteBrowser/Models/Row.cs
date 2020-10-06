@@ -8,43 +8,13 @@ namespace SQLiteBrowser.Models
 {
     public class Row
     {
-        List<ColumnInfo> ColumnInfos;
+        Table Table;
         public List<Cell> Cells { get; set; } = new List<Cell>();
-        private IEnumerable<object> items;
 
-
-        public Row(List<ColumnInfo> columnInfos)
+        public Row(List<Cell> cells, Table table)
         {
-            ColumnInfos = columnInfos;
-            foreach (var item in columnInfos)
-            {
-                Cells.Add(new Cell(item));
-            }
-        }
-
-        public Row(IEnumerable<object> items, List<ColumnInfo> columnInfos)
-        {
-            this.items = items;
-            ColumnInfos = columnInfos;
-
-            int index = 0;
-            foreach (var item in items)
-            {
-
-                if(item != null)
-                {
-                    Cells.Add(new Cell(item));
-                }
-                else
-                {
-                    if(columnInfos[index] != null)
-                        Cells.Add(new Cell(""));
-                    else
-                        Cells.Add(new Cell(item));
-                }
-
-                index++;
-            }
+            Cells = cells;
+            Table = table;
         }
     }
 }

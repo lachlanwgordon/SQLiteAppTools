@@ -13,5 +13,6 @@ namespace SQLiteBrowser.Models
 		public string SQLType { get; set; }
 		public ColType ColType { get; set; }
 		public Type CLRType { get; set; }
-	}
+        public bool IsDate { get; internal set; }
+    }
 }

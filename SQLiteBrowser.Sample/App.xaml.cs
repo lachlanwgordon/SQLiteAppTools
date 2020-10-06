@@ -34,14 +34,17 @@ namespace SQLiteBrowser.Sample
             await db.RegisterTypes(typeof(Person), typeof(Bike));
 
             var nwindName = "Northwind_small.sqlite";
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), nwindName);
+            var sampleName = "browser.db3";
+            //var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), nwindName);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), sampleName);
+
             if (!File.Exists(path))
             {
                 var nwindResourcePath = "SQLiteBrowser.Sample.Resources.Northwind_small.sqlite";
                 WriteResourceToFile(nwindResourcePath, path);
             }
             TableService.Init(path);
-            MainPage = new CSMarkupPage();
+            MainPage = new MyTabbedPage();
         }
 
         public void WriteResourceToFile(string resourceName, string fileName)

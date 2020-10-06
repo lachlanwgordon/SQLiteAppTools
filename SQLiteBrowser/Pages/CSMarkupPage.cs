@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using SQLiteBrowser.Converters;
 using SQLiteBrowser.Models;
 using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;
@@ -50,7 +52,7 @@ namespace SQLiteBrowser.Pages
         }
         CollectionView CollectionView;
 
-
+        int templateCount;
         private View GetContent()
         {
             Padding = new Thickness(0, 40, 0, 0);
@@ -58,7 +60,7 @@ namespace SQLiteBrowser.Pages
             {
                 Margin = layoutMargin,
                 VerticalOptions = LayoutOptions.Start,
-
+                //ItemSizingStrategy = ItemSizingStrategy.MeasureFirstItem,
                 ItemsLayout = new GridItemsLayout(ItemsLayoutOrientation.Vertical)
                 {
                     Span = 5,
@@ -68,16 +70,21 @@ namespace SQLiteBrowser.Pages
                 BackgroundColor = cellBorderColor,
                 ItemTemplate = new DataTemplate(() =>
                 {
+                    var count = templateCount++;
+                    //Debug.WriteLine($"template start templateCount: {count} time: {stopwatch.ElapsedMilliseconds}");
+
                     var cell = new Label
                     {
                         MaxLines = 1,
                         BackgroundColor = cellColor,
                         Margin = cellMargin,
                         Padding = cellPadding,
-                        HeightRequest = cellHeight
+                        HeightRequest = cellHeight,
+                        LineBreakMode = LineBreakMode.NoWrap
                     };
-                    cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText));
-                    cell.SetBinding(Label.HorizontalTextAlignmentProperty, nameof(Cell.Alignment));
+                    cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText), BindingMode.OneTime);
+                    cell.SetBinding(Label.HorizontalTextAlignmentProperty, "Column.CLRType", BindingMode.OneTime, new TypeToAlignmentConverter());
+                    Debug.WriteLine($"template end templateCount: {count} time: {stopwatch.ElapsedMilliseconds}");
                     return cell;
                 })
             };
@@ -137,10 +144,16 @@ namespace SQLiteBrowser.Pages
 
         private async void TableSelected(object sender, FocusEventArgs e)
         {
+            stopwatch.Reset();
+            stopwatch.Start();
+            Debug.WriteLine($"Table selected {stopwatch.ElapsedMilliseconds}");
+
             var table = (sender as Picker).SelectedItem as Table;
             ViewModel.SelectedTable = table;
             await ViewModel.LoadTableData(table);
             CollectionView.ItemsSource = ViewModel.AllCells;
+            Debug.WriteLine($"Table data loaded {stopwatch.ElapsedMilliseconds}");
+
             UpdateView();
         }
 
@@ -160,8 +173,11 @@ namespace SQLiteBrowser.Pages
             base.OnDisappearing();
         }
 
+        Stopwatch stopwatch = new Stopwatch();
         private void UpdateView()
         {
+            Debug.WriteLine($"update view {stopwatch.ElapsedMilliseconds}");
+
             BodyGrid.WidthRequest = ViewModel.SelectedTable.Columns.Count * 200;
 
             Headers.Children.Clear();
@@ -174,15 +190,21 @@ namespace SQLiteBrowser.Pages
                     Text = column.Name,
                     BackgroundColor = cellColor,
                     Margin = cellMargin,
-                    Padding = cellPadding
+                    Padding = cellPadding,
+                    HorizontalTextAlignment = column.CLRType.IsPrimitive ? TextAlignment.End : TextAlignment.Start
                 };
                 Grid.SetColumn(label, columnNumber);
                 Headers.Children.Add(label);
 
                 columnNumber++;
             }
+            Debug.WriteLine($"headers added {stopwatch.ElapsedMilliseconds}");
+
             CollectionView.ItemsSource = ViewModel.AllCells;
+            Debug.WriteLine($"source set {stopwatch.ElapsedMilliseconds}");
+
             (CollectionView.ItemsLayout as GridItemsLayout).Span = ViewModel.SelectedTable.Columns.Count;
+            Debug.WriteLine($"Width set {stopwatch.ElapsedMilliseconds}");
         }
     }
 }

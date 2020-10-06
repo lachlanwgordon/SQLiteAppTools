@@ -14,4 +14,5 @@
         Title="Tab 1" />
     <views:PeoplePage
         Title="Tab 2" />
+    <sqlitebrowserPages:CSMarkupPage Title="DB"></sqlitebrowserPages:CSMarkupPage>
 </TabbedPage>

@@ -31,16 +31,23 @@ namespace SQLiteBrowser.Extensions
             var stmt = prepareMethod.Invoke(command, null);
             //var stmt = command.Prepare();//If public can avoid the reflection
 
-            while (SQLite3.Step((SQLitePCL.sqlite3_stmt)stmt) == SQLite3.Result.Row)
+            while (Step((SQLitePCL.sqlite3_stmt)stmt) == Result.Row)
             {
                 var cells = new List<Cell>();
                 for (int i = 0; i < table.Columns.Count(); i++)
                 {
                     var column = table.Columns[i];
-                    var colType = SQLite3.ColumnType((SQLitePCL.sqlite3_stmt)stmt, i);
+                    var colType = ColumnType((SQLitePCL.sqlite3_stmt)stmt, i);
                     var clrType = GetTypeFromColType(colType);
+                    if(column.Name.ToLower().Contains("date") && colType == ColType.Integer)
+                    {
+                        column.IsDate = true;
+                        clrType = typeof(long);
+                    }
+
 
                     //These are set a lot of times
+                    //Would it be faster to check if they need to be set?
                     //TODO: Optimise?
                     column.ColType = colType;
                     column.CLRType = clrType;

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using SQLite;
-using static SQLite.SQLiteConnection;
 
 namespace SQLiteBrowser.Models
 {

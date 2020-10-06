@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xamarin.Forms;
-using static SQLite.SQLiteConnection;
 
 namespace SQLiteBrowser.Models
 {
@@ -30,6 +27,9 @@ namespace SQLiteBrowser.Models
         }
 
         public string DisplayText => Item?.ToString();
+
+        //This is the only property that means the models depend on Xamarin Forms
+        //Consider moving
         public TextAlignment Alignment { get; set; }
         public bool IsVisible => Item != null;
 

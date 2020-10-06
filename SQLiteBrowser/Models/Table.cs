@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using SQLite;
-using SQLiteBrowser.Extensions;
-using static SQLite.SQLite3;
-using static SQLite.SQLiteConnection;
 
 namespace SQLiteBrowser.Models
 {

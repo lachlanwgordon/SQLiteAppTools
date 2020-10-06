@@ -12,6 +12,8 @@ namespace SQLiteBrowser.Extensions
         //A slight variation of the same method in https://github.com/praeclarum/sqlite-net/blob/master/src/SQLite.cs
         //But I need one that doesn't need a TableMapping, because I don't have Classes
         //There's some dodgy reflection in here to call a private method
+        //This method is gradually gaining more and more knowledge of my models, rather than being purely DBish
+        //Perhaps a refactor is coming.
         public static List<Row> ExecuteDeferredQuery(this SQLiteCommand command, Table table, SQLiteConnection connection)
         {
             if (connection.Trace)

@@ -1,63 +1,47 @@
 using System.Diagnostics;
-using MvvmHelpers;
+//using MvvmHelpers;
 using SQLite;
 using SQLiteBrowser.Models;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System;
 using System.Linq;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SQLiteBrowser.ViewModels
 {
 
     public class AltBrowserViewModel : BaseViewModel
     {
-        bool isPopupShowing;
-        public bool IsPopupShowing
-        {
-            get => isPopupShowing;
-            set => SetProperty(ref isPopupShowing, value);
-        }
+        //public ICommand TableSelected => new Command(LoadTableData);
 
-        Row selectedItem;
-        public Row SelectedItem
+        private List<Table> tables;
+        public List<Table> Tables
         {
-            get => selectedItem;
-            set => SetProperty(ref selectedItem, value);
-        }
-
-        public ICommand TableSelected => new Command(LoadTableData);
-        public ICommand OpenItemCommand => new Command(OpenItem);
-        public ICommand ClosePopupCommand => new Command(ClosePopup);
-
-        private void ClosePopup(object obj)
-        {
-            SelectedItem = null;
-            IsPopupShowing = false;
-        }
-
-        private void OpenItem(object obj)
-        {
-            var item = obj as Row;
-            SelectedItem = item;
-            IsPopupShowing = true;
+            get => tables;
+            set => SetProperty(ref tables, value);
 
         }
 
-        public ObservableRangeCollection<Table> Tables { get; set; }  = new ObservableRangeCollection<Table>();
-
-
-        ObservableRangeCollection<Row> altRows = new ObservableRangeCollection<Row>(); 
-        public ObservableRangeCollection<Row> AltRows
+        List<Row> rows = new List<Row>();
+        public List<Row> Rows
         {
-            get => altRows;
+            get => rows;
             set
             {
-                SetProperty(ref altRows, value);
+                SetProperty(ref rows, value);
             }
         }
 
-        public ObservableRangeCollection<Models.Cell> AllCells { get; set; } = new ObservableRangeCollection<Models.Cell>();
+        private List<Models.Cell> allCells;
+        public List<Models.Cell> AllCells
+        {
+            get => allCells;
+            set => SetProperty(ref allCells, value);
+        }
 
 
         Row columnHeaders;
@@ -66,7 +50,7 @@ namespace SQLiteBrowser.ViewModels
             get => columnHeaders;
             set
             {
-                SetProperty(ref columnHeaders, value) ;
+                SetProperty(ref columnHeaders, value);
             }
         }
 
@@ -76,33 +60,25 @@ namespace SQLiteBrowser.ViewModels
             get => selectedTable;
             set
             {
+                //LoadTableData(value);
                 SetProperty(ref selectedTable, value);
-                LoadTableData();
             }
         }
 
-        private void LoadTableData()
+        public async Task LoadTableData(Table table)
         {
-            var watch = new Stopwatch();
-            watch.Start();
-            _ = SelectedTable.LoadData(connection);
-            ColumnHeaders = selectedTable.HeaderRow;
-            AltRows.Clear();
-            AltRows.AddRange(selectedTable.FormattedRows);
+            table.LoadData(connection);
+            ColumnHeaders = table.HeaderRow;
+            Rows = table.FormattedRows;
 
-            var allCells = selectedTable.FormattedRows.SelectMany(x => x.Cells);
-            var allStrings = allCells;//.Select(x => x.DisplayText);
-            AllCells.Clear();
-            AllCells.AddRange(allStrings);
-
+            AllCells = Rows.SelectMany(x => x.Cells).ToList();
         }
 
         public static string Path { get; set; }
 
-        public static Stopwatch Stopwatch = new Stopwatch();
         private SQLiteConnection connection;
 
-        public void OnAppearing()
+        public void LoadTables()
         {
             if (Path == null)
                 return;
@@ -111,7 +87,7 @@ namespace SQLiteBrowser.ViewModels
 
             var tables = Table.GetAll(connection, false);
 
-            Tables.AddRange(tables);
+            Tables = tables;
         }
     }
 }

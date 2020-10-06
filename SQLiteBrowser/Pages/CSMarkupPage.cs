@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using SQLiteBrowser.Models;
 using SQLiteBrowser.ViewModels;
 using Xamarin.Forms;
@@ -24,10 +25,16 @@ namespace SQLiteBrowser.Pages
         static Color cellColor = Color.White;
         static Color cellBorderColor = Color.DarkGray;
 
-
         AltBrowserViewModel ViewModel = new AltBrowserViewModel();
-        Grid Headers = new Grid { BackgroundColor = cellBorderColor, ColumnSpacing = columnSpacing, Margin = layoutMargin};
         View MainGrid;
+        public Grid BodyGrid;
+        Grid Headers = new Grid { BackgroundColor = cellBorderColor, ColumnSpacing = columnSpacing, Margin = layoutMargin};
+        Picker Picker = new Picker
+        {
+            Title = "Table",
+            BackgroundColor = cellColor,
+            ItemDisplayBinding = new Binding(nameof(Table.name)),
+        };
 
         public CSMarkupPage()
         {
@@ -35,14 +42,20 @@ namespace SQLiteBrowser.Pages
             Content = GetContent();
         }
 
-        enum BodyRow
+        enum MainRow
         {
             Picker,
+            Body,
+        }
+
+        enum BodyRow
+        {
             Headers,
             Collection,
-            BlankSpace
         }
         CollectionView CollectionView;
+
+
         private View GetContent()
         {
             Padding = new Thickness(0,40,0,0);
@@ -50,7 +63,7 @@ namespace SQLiteBrowser.Pages
             {
                 Margin = layoutMargin,
                 VerticalOptions = LayoutOptions.Start,
-                
+
                 ItemsLayout = new GridItemsLayout(ItemsLayoutOrientation.Vertical)
                 {
                     Span = 5,
@@ -65,16 +78,43 @@ namespace SQLiteBrowser.Pages
                         .Bind(Label.TextProperty)
 
                         .Bind(Label.HorizontalTextAlignmentProperty, "Alignment");
-                    
+
                     return grid;
                 })
             }
-                .Row(BodyRow.Collection)
-                .Bind(ItemsView.ItemsSourceProperty, nameof(ViewModel.AllCells));
+                .Row(BodyRow.Collection);
 
-          
-
-
+            View body;
+            BodyGrid = new Grid
+            {
+                BackgroundColor = cellBorderColor,
+                RowSpacing = layoutSpacing,
+                RowDefinitions = Rows.Define(
+                    (BodyRow.Headers, 50),
+                    (BodyRow.Collection, Star)
+                ),
+                Children =
+                {
+                    Headers.Row(BodyRow.Headers),
+                    CollectionView.Row(BodyRow.Collection)
+                }
+            };
+            bool horizontalScrollingEnabled = true;
+            if (horizontalScrollingEnabled)
+            {
+                var scroller = new ScrollView
+                {
+                    BackgroundColor = cellBorderColor,
+                    Orientation = ScrollOrientation.Horizontal,
+                    Content = BodyGrid
+                }.Row(MainRow.Body);
+                body = scroller;
+            }
+            else
+            {
+                body = BodyGrid;
+            }
+            
             MainGrid = new Grid
             {
                 RowSpacing = layoutSpacing,
@@ -82,60 +122,52 @@ namespace SQLiteBrowser.Pages
                 Padding = layoutPadding,
                 Margin = layoutMargin,
                 RowDefinitions = Rows.Define(
-                    (BodyRow.Picker, 50),
-                    (BodyRow.Headers, 50),
-                    (BodyRow.Collection, Star)
+                    (MainRow.Picker, 50),
+                    (MainRow.Body, Star)
                     ),
                 Children =
                 {
-                    new Picker { Title = "Table", BackgroundColor = cellColor, ItemDisplayBinding = new Binding(nameof(Table.name)) }
-                        .Bind(Picker.ItemsSourceProperty, nameof(ViewModel.Tables))
-                        .Bind(Picker.SelectedItemProperty, nameof(ViewModel.SelectedTable))
-                    
-
-                    ,
-                    Headers.Row(BodyRow.Headers),
-                    new StackLayout
-                    {
-
-                        Children =
-                        {
-                            CollectionView
-                        }
-                    }.Row(BodyRow.Collection)
+                    Picker,
+                    body
                 }
             };
-            bool horizontalScrollingEnabled = true;
-            if(horizontalScrollingEnabled)
-            {
-                var scroller = new ScrollView
-                {
-                    Orientation = ScrollOrientation.Horizontal,
-                    Content = MainGrid
-                };
-                return scroller;
-            }
-
 
             return MainGrid;
+        }
+
+        private async void TableSelected(object sender, FocusEventArgs e)
+        {
+            var table = (sender as Picker).SelectedItem as Table;
+            ViewModel.SelectedTable = table;
+            await ViewModel.LoadTableData(table);
+            CollectionView.ItemsSource = ViewModel.AllCells;
+            UpdateView();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.AltRows.CollectionChanged += AltRows_CollectionChanged;
-            ViewModel.PropertyChanged += HeadersChanged;
-            ViewModel.OnAppearing();
+
+            ViewModel.LoadTables();
+            Picker.ItemsSource = ViewModel.Tables;
+            Picker.Unfocused += TableSelected;
         }
 
-        private void HeadersChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnDisappearing()
         {
-            if (e.PropertyName != nameof(ViewModel.ColumnHeaders))
-                return;
+            Picker.Unfocused -= TableSelected;
+
+            base.OnDisappearing();
+        }
+
+        private void UpdateView()
+        {
+            BodyGrid.WidthRequest = ViewModel.ColumnHeaders.Cells.Count * 200;
+            Debug.WriteLine($"{ViewModel.SelectedTable.name} selected, Setting ItemsLayout to span {ViewModel.ColumnHeaders.Cells.Count}");
 
             Headers.Children.Clear();
             Headers.ColumnDefinitions.Clear();
-            
+
             int columnNumber = 0;
             foreach (var column in ViewModel.SelectedTable.ColumnInfos)
             {
@@ -143,14 +175,9 @@ namespace SQLiteBrowser.Pages
                 Headers.Children.Add(new Label { Text = column.Name, BackgroundColor = cellColor, Margin = cellMargin, Padding = cellPadding }.Column(columnNumber));
                 columnNumber++;
             }
-
-        }
-
-        private void AltRows_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            MainGrid.WidthRequest = ViewModel.ColumnHeaders.Cells.Count * 200;
+            CollectionView.ItemsSource = ViewModel.AllCells;
             (CollectionView.ItemsLayout as GridItemsLayout).Span = ViewModel.ColumnHeaders.Cells.Count;
-
         }
+
     }
 }

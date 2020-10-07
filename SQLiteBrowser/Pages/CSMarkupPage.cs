@@ -162,38 +162,48 @@ namespace SQLiteBrowser.Pages
             var label = sender as Label;
             var cell = label.BindingContext as Cell;
 
-            var isForeignKey = false;
+            var alertDisplayed = false;
 
             //if(Guid.TryParse(cell.DisplayText, out Guid result) )
             //{
-                if(cell.Column.Name.ToLower().EndsWith("id"))
+            if(cell.Column.Name.ToLower().EndsWith("id"))
+            {
+                var tableName = cell.Column.Name.Substring(0, cell.Column.Name.Length - 2);
+                var table = ViewModel.Tables.FirstOrDefault(x => x.Name == tableName);
+
+                if(table != null)
                 {
-                    var tableName = cell.Column.Name.Substring(0, cell.Column.Name.Length - 2);
-                    var table = ViewModel.Tables.FirstOrDefault(x => x.Name == tableName);
+                    alertDisplayed = true;
+                    var shouldSearch = await DisplayAlert("Foreign Key", $"Would you like to search for {cell.DisplayText} in {table.Name}?", "Yes", "No");
 
-                    if(table != null)
+                    if(shouldSearch)
                     {
-                        isForeignKey = true;
-                        var shouldSearch = await DisplayAlert("Foreign Key", $"Would you like to search for {cell.DisplayText} in {table.Name}?", "Yes", "No");
+                        Picker.SelectedItem = table;
+                        ViewModel.SelectedTable = table;
+                        await ViewModel.LoadTableData(table);
+                        CollectionView.ItemsSource = ViewModel.AllCells;
+                        UpdateView();
+                        SearchBar.Text = cell.DisplayText;
+                        //var filtered = await ViewModel.Search(cell.DisplayText, table);
+                        //CollectionView.ItemsSource = filtered;
 
-                        if(shouldSearch)
-                        {
-                            Picker.SelectedItem = table;
-                            ViewModel.SelectedTable = table;
-                            await ViewModel.LoadTableData(table);
-                            CollectionView.ItemsSource = ViewModel.AllCells;
-                            UpdateView();
-                            SearchBar.Text = cell.DisplayText;
-                            //var filtered = await ViewModel.Search(cell.DisplayText, table);
-                            //CollectionView.ItemsSource = filtered;
-
-                        }
                     }
-
-                //}
+                }
 
             }
-            if(!isForeignKey)
+
+            if(!alertDisplayed)
+            {
+                if(cell.DisplayText.StartsWith("http"))
+                {
+                    alertDisplayed = true;
+                    var open = await DisplayAlert("Open", $"Would you like to open {cell.DisplayText}", "yes", "no");
+                    if(open)
+                        Device.OpenUri(new Uri(cell.DisplayText));
+                }
+            }
+
+            if(!alertDisplayed)
             {
                 await DisplayAlert("Clicked", cell.DisplayText, "Okay");
             }

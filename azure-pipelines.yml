@@ -38,7 +38,10 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/SQLiteBrowser/SQLiteBrowser.csproj'
-    versioningScheme: 'off'
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '0'
+    minorVersion: '1'
+    patchVersion: '0'
 
 
 - task: NuGetCommand@2

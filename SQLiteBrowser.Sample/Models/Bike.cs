@@ -1,6 +1,7 @@
 ﻿using System;
 using SQLite;
 using System.Collections.Generic;
+using SQLiteBrowser.ModelServices;
 
 namespace SQLiteBrowser.Models
 {
@@ -11,7 +12,7 @@ namespace SQLiteBrowser.Models
         }
 
         [PrimaryKey]
-        public int? Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Brand { get; set; }
         public string Model { get; set; }
         public int NumberOfWheels { get; set; }
@@ -19,7 +20,8 @@ namespace SQLiteBrowser.Models
         public TimeSpan HoursRidden { get; set; }
         public double DistanceRidden { get; set; }
         public string SerialNo { get; set; } = Guid.NewGuid().ToString();
-        public string PhotoUrl { get; set; } 
+        public string PhotoUrl { get; set; }
+        public string PersonId { get; set; }
 
 
         public static List<Bike> SeedData => new List<Bike>
@@ -33,7 +35,8 @@ namespace SQLiteBrowser.Models
                   HoursRidden = TimeSpan.FromHours(21000),
                   NumberOfWheels = 2,
                   Price = 2200,
-                  PhotoUrl = $"https://picsum.photos/200/201"
+                  PhotoUrl = $"https://picsum.photos/200/201",
+                  PersonId = PersonService.Bob.Id,
             },
             new Bike
             {
@@ -43,7 +46,9 @@ namespace SQLiteBrowser.Models
                   HoursRidden = TimeSpan.FromHours(2100),
                   NumberOfWheels = 2,
                   Price = 520,
-                  PhotoUrl = $"https://picsum.photos/200/202"
+                  PhotoUrl = $"https://picsum.photos/200/202",
+                  PersonId = PersonService.Janet.Id,
+
             },
             new Bike
             {
@@ -53,7 +58,9 @@ namespace SQLiteBrowser.Models
                   HoursRidden = TimeSpan.FromHours(35000),
                   NumberOfWheels = 2,
                   Price = 450,
-                  PhotoUrl = $"https://picsum.photos/200/203"
+                  PhotoUrl = $"https://picsum.photos/200/203",
+                  PersonId = PersonService.Richard.Id,
+
             },
             new Bike
             {
@@ -63,7 +70,8 @@ namespace SQLiteBrowser.Models
                   HoursRidden = TimeSpan.FromHours(28000),
                   NumberOfWheels = 2,
                   Price = 420,
-                  PhotoUrl = $"https://picsum.photos/200/204"
+                  PhotoUrl = $"https://picsum.photos/200/204",
+                  PersonId = PersonService.Monkey.Id,
             },
              new Bike
             {
@@ -73,7 +81,8 @@ namespace SQLiteBrowser.Models
                   HoursRidden = TimeSpan.FromHours(280),
                   NumberOfWheels = 2,
                   Price = 450,
-                  PhotoUrl = $"https://picsum.photos/200/205"
+                  PhotoUrl = $"https://picsum.photos/200/205",
+                  PersonId = PersonService.Janet.Id,
             },
 
         };

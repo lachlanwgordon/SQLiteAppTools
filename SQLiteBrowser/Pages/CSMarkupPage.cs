@@ -18,7 +18,7 @@ namespace SQLiteBrowser.Pages
         const int rowSpacing = 2;
         const int layoutSpacing = 2;
         const int cellHeight = 30;
-
+        const int cellWidth = 250;
         static Color cellColor = Color.White;
         static Color cellBorderColor = Color.DarkGray;
 
@@ -60,7 +60,6 @@ namespace SQLiteBrowser.Pages
             {
                 Margin = layoutMargin,
                 VerticalOptions = LayoutOptions.Start,
-                //ItemSizingStrategy = ItemSizingStrategy.MeasureFirstItem,
                 ItemsLayout = new GridItemsLayout(ItemsLayoutOrientation.Vertical)
                 {
                     Span = 5,
@@ -71,7 +70,6 @@ namespace SQLiteBrowser.Pages
                 ItemTemplate = new DataTemplate(() =>
                 {
                     var count = templateCount++;
-                    //Debug.WriteLine($"template start templateCount: {count} time: {stopwatch.ElapsedMilliseconds}");
 
                     var cell = new Label
                     {
@@ -84,7 +82,6 @@ namespace SQLiteBrowser.Pages
                     };
                     cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText), BindingMode.OneTime);
                     cell.SetBinding(Label.HorizontalTextAlignmentProperty, "Column.CLRType", BindingMode.OneTime, new TypeToAlignmentConverter());
-                    Debug.WriteLine($"template end templateCount: {count} time: {stopwatch.ElapsedMilliseconds}");
                     return cell;
                 })
             };
@@ -144,15 +141,13 @@ namespace SQLiteBrowser.Pages
 
         private async void TableSelected(object sender, FocusEventArgs e)
         {
-            stopwatch.Reset();
-            stopwatch.Start();
-            Debug.WriteLine($"Table selected {stopwatch.ElapsedMilliseconds}");
-
             var table = (sender as Picker).SelectedItem as Table;
+            if (table == null)
+                return;
+
             ViewModel.SelectedTable = table;
             await ViewModel.LoadTableData(table);
             CollectionView.ItemsSource = ViewModel.AllCells;
-            Debug.WriteLine($"Table data loaded {stopwatch.ElapsedMilliseconds}");
 
             UpdateView();
         }
@@ -176,12 +171,10 @@ namespace SQLiteBrowser.Pages
         Stopwatch stopwatch = new Stopwatch();
         private void UpdateView()
         {
-            Debug.WriteLine($"update view {stopwatch.ElapsedMilliseconds}");
 
-            BodyGrid.WidthRequest = ViewModel.SelectedTable.Columns.Count * 200;
+            BodyGrid.WidthRequest = ViewModel.SelectedTable.Columns.Count * cellWidth;
 
             Headers.Children.Clear();
-
             int columnNumber = 0;
             foreach (var column in ViewModel.SelectedTable.Columns)
             {
@@ -191,20 +184,17 @@ namespace SQLiteBrowser.Pages
                     BackgroundColor = cellColor,
                     Margin = cellMargin,
                     Padding = cellPadding,
-                    HorizontalTextAlignment = column.CLRType.IsPrimitive ? TextAlignment.End : TextAlignment.Start
+                    HorizontalTextAlignment = (TextAlignment)TypeToAlignmentConverter.Instance.Convert(column.CLRType, typeof(TextAlignment), null, null),
                 };
                 Grid.SetColumn(label, columnNumber);
                 Headers.Children.Add(label);
 
                 columnNumber++;
             }
-            Debug.WriteLine($"headers added {stopwatch.ElapsedMilliseconds}");
 
             CollectionView.ItemsSource = ViewModel.AllCells;
-            Debug.WriteLine($"source set {stopwatch.ElapsedMilliseconds}");
 
             (CollectionView.ItemsLayout as GridItemsLayout).Span = ViewModel.SelectedTable.Columns.Count;
-            Debug.WriteLine($"Width set {stopwatch.ElapsedMilliseconds}");
         }
     }
 }

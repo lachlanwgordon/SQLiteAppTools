@@ -12,18 +12,8 @@ namespace SQLiteBrowser.Models
         {
             Column = column;
             Item = item;
+            column.CheckForMaxLength(item);
 
-            //if (item != null && column != null)
-            //{
-            //    if(column.CLRType == typeof(int))
-            //    {
-            //        Alignment = TextAlignment.End;
-            //    }
-            //    else
-            //    {
-            //        Alignment = TextAlignment.Start;
-            //    }
-            //}
         }
 
         public string DisplayText

@@ -6,6 +6,7 @@ namespace SQLiteBrowser.Converters
 {
     public class TypeToAlignmentConverter : IValueConverter
     {
+        public static TypeToAlignmentConverter Instance { get; } = new TypeToAlignmentConverter();
         public TypeToAlignmentConverter()
         {
         }
@@ -13,7 +14,7 @@ namespace SQLiteBrowser.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var input = (Type)value;
-            if (input == typeof(int) || input == typeof(double) || input == typeof(long))
+            if (input == typeof(int) || input == typeof(double) || input == typeof(long) ||input == typeof(decimal) || input == typeof(float) )
                 return TextAlignment.End;
             else
                 return TextAlignment.Start;

@@ -5,8 +5,8 @@ namespace SQLiteBrowser.Models
 {
     public class Person
     {
-        [PrimaryKey, AutoIncrement]
-        public int? Id { get; set; }
+        [PrimaryKey]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         [Indexed]
         public string FirstName { get; set; }
         public string LastName { get; set; }

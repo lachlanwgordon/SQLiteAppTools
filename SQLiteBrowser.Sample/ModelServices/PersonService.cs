@@ -29,10 +29,13 @@ namespace SQLiteBrowser.ModelServices
             
             return people;
         }
-
+        public static Person Richard;
+        public static Person Bob;
+        public static Person Janet;
+        public static Person Monkey;
         private async Task SeedDemoDataAsync()
         {
-            var person = new Person
+            Bob = new Person
             {
                 DateOfBirth = new DateTime(1980, 05, 02),
                 FavouriteNumber = 7,
@@ -40,8 +43,8 @@ namespace SQLiteBrowser.ModelServices
                 LastName = "Brown",
                 UpdatedTimeStamp = DateTime.UtcNow
             };
-            await database.Connection.InsertOrReplaceAsync(person);
-            var person2 = new Person
+            await database.Connection.InsertOrReplaceAsync(Bob);
+            Janet = new Person
             {
                 DateOfBirth = new DateTime(1980, 05, 02),
                 FavouriteNumber = 7,
@@ -49,8 +52,8 @@ namespace SQLiteBrowser.ModelServices
                 LastName = "Rice",
                 UpdatedTimeStamp = DateTime.UtcNow
             };
-            await database.Connection.InsertOrReplaceAsync(person2);
-            var person3 = new Person
+            await database.Connection.InsertOrReplaceAsync(Janet);
+            Richard = new Person
             {
                 DateOfBirth = new DateTime(1970, 05, 02),
                 FavouriteNumber = 459155949,
@@ -58,8 +61,8 @@ namespace SQLiteBrowser.ModelServices
                 LastName = "Dinatale",
                 UpdatedTimeStamp = DateTime.UtcNow
             };
-            await database.Connection.InsertOrReplaceAsync(person3);
-            var person4 = new Person
+            await database.Connection.InsertOrReplaceAsync(Richard);
+            Monkey = new Person
             {
                 DateOfBirth = new DateTime(1950, 12, 03),
                 FavouriteNumber = 10,
@@ -67,7 +70,7 @@ namespace SQLiteBrowser.ModelServices
                 LastName = "Monkey",
                 UpdatedTimeStamp = DateTime.UtcNow
             };
-            await database.Connection.InsertOrReplaceAsync(person4);
+            await database.Connection.InsertOrReplaceAsync(Monkey);
             await database.Connection.InsertAllAsync(Bike.SeedData);
             //This seed data for other classes doesn't really belong here but it's just nonsense to put some stuff in the db, so who really cares
 

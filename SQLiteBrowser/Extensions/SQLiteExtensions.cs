@@ -37,27 +37,24 @@ namespace SQLiteBrowser.Extensions
                 for (int i = 0; i < table.Columns.Count(); i++)
                 {
                     var column = table.Columns[i];
-                    var colType = ColumnType((SQLitePCL.sqlite3_stmt)stmt, i);
-                    var clrType = GetTypeFromColType(colType);
-                    if(column.Name.ToLower().Contains("date") && colType == ColType.Integer)
+                    if(!column.IsInitialized)
                     {
-                        column.IsDate = true;
-                        clrType = typeof(long);
+                        column.IsInitialized = true;
+                        column.ColType = ColumnType((SQLitePCL.sqlite3_stmt)stmt, i);
+                        column.CLRType = GetTypeFromColType(column.ColType);
+                        if (column.Name.ToLower().Contains("date") && column.ColType == ColType.Integer)
+                        {
+                            column.IsDate = true;
+                            column.CLRType = typeof(long);
+                        }
                     }
-
-
-                    //These are set a lot of times
-                    //Would it be faster to check if they need to be set?
-                    //TODO: Optimise?
-                    column.ColType = colType;
-                    column.CLRType = clrType;
 
                     var readColMethod = command.GetType().GetMethod("ReadCol", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 
                     if (readColMethod == null)
                         throw new MissingMethodException("Could not find ReadCol() on SQLiteCommand, are you using a different version of SQLite-Net-PCL?");
 
-                    var val = readColMethod.Invoke(command, new object[] { stmt, i, colType, clrType });
+                    var val = readColMethod.Invoke(command, new object[] { stmt, i, column.ColType, column.CLRType });
                     //var val = command.ReadCol(stmt, i, colType, clrType);//if public can avoid the reflection
 
                     cells.Add(new Cell(val, column));

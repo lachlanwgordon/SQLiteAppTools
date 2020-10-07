@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SQLiteBrowser.Services;
+using System;
 
 namespace SQLiteBrowser.ViewModels
 {
@@ -45,6 +46,15 @@ namespace SQLiteBrowser.ViewModels
             var tables = await TableService.GetAll();
 
             Tables = tables;
+        }
+
+        internal Task<List<Cell>> Search(string searchTerm, Table table)
+        {
+
+            var rows = table.Rows.Where(x => x.Matches(searchTerm));
+            var cells = rows.SelectMany(x => x.Cells).ToList();
+            return Task.FromResult(cells);
+
         }
     }
 }

@@ -33,6 +33,13 @@ namespace SQLiteBrowser.Pages
             ItemDisplayBinding = new Binding(nameof(Table.Name)),
         };
 
+        SearchBar SearchBar = new SearchBar
+        {
+            Placeholder = "Search",
+            BackgroundColor = cellColor,
+            PlaceholderColor = cellBorderColor,
+        };
+
         public CSMarkupPage()
         {
             BindingContext = ViewModel;
@@ -42,6 +49,7 @@ namespace SQLiteBrowser.Pages
         enum MainRow
         {
             Picker,
+            Search,
             Body,
         }
 
@@ -119,9 +127,10 @@ namespace SQLiteBrowser.Pages
                 Orientation = ScrollOrientation.Horizontal,
                 Content = BodyGrid
             };
-            Grid.SetRow(scroller, (int)MainRow.Body);
             body = scroller;
-            
+            Grid.SetRow(scroller, (int)MainRow.Body);
+            Grid.SetRow(SearchBar, (int)MainRow.Search);
+
 
             MainGrid = new Grid
             {
@@ -132,12 +141,14 @@ namespace SQLiteBrowser.Pages
                 RowDefinitions = new RowDefinitionCollection
                 {
                     new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) } ,
+                    new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) } ,
                     new RowDefinition {Height = new GridLength(1, GridUnitType.Star)}
                 },
 
                 Children =
                 {
                     Picker,
+                    SearchBar,
                     body
                 }
             };
@@ -173,11 +184,31 @@ namespace SQLiteBrowser.Pages
             await ViewModel.LoadTables();
             Picker.ItemsSource = ViewModel.Tables;
             Picker.Unfocused += TableSelected;
+            SearchBar.TextChanged += Search;
+        }
+
+        bool isSearching;
+        private async void Search(object sender, TextChangedEventArgs e)
+        {
+            Debug.WriteLine($"search: {e.NewTextValue}");
+            if (isSearching)
+                return;
+            if( e.NewTextValue.Length < 3 && CollectionView.ItemsSource != ViewModel.AllCells)
+            {
+                CollectionView.ItemsSource = ViewModel.AllCells;
+            }
+
+            isSearching = true;
+            var table = Picker.SelectedItem as Table;
+            var filtered = await ViewModel.Search(e.NewTextValue, table);
+            CollectionView.ItemsSource = filtered;
+            isSearching = false;
         }
 
         protected override void OnDisappearing()
         {
             Picker.Unfocused -= TableSelected;
+            SearchBar.TextChanged -= Search;
 
             base.OnDisappearing();
         }

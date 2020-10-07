@@ -28,6 +28,13 @@ namespace SQLiteBrowser.Models
             }
         }
 
+        internal bool Matches(string searchTerm)
+        {
+            if (DisplayText != null && DisplayText.ToLower().Contains(searchTerm.ToLower()))
+                return true;
+            return false;
+        }
+
         //This is the only property that means the models depend on Xamarin Forms
         //Consider moving
         //public int Alignment { get; set; }

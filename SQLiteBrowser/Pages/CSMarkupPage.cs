@@ -82,6 +82,12 @@ namespace SQLiteBrowser.Pages
                     };
                     cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText), BindingMode.OneTime);
                     cell.SetBinding(Label.HorizontalTextAlignmentProperty, "Column.CLRType", BindingMode.OneTime, new TypeToAlignmentConverter());
+
+                    var tap = new TapGestureRecognizer();
+                    tap.Tapped += CellTapped;
+
+                    cell.GestureRecognizers.Add(tap);
+
                     return cell;
                 })
             };
@@ -137,6 +143,14 @@ namespace SQLiteBrowser.Pages
             };
 
             return MainGrid;
+        }
+
+        private void CellTapped(object sender, EventArgs e)
+        {
+            var label = sender as Label;
+            var cell = label.BindingContext as Cell;
+
+            DisplayAlert("Clicked", cell.DisplayText, "Okay");
         }
 
         private async void TableSelected(object sender, FocusEventArgs e)

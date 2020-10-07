@@ -30,7 +30,7 @@ namespace SQLiteBrowser.Models
             if(CLRType == typeof(string))
             {
                 var str = (string)val;
-                if (str.Length > MaxLength)
+                if (str != null && str.Length > MaxLength)
                     MaxLength = str.Length;
             }
             else if (IsDate)

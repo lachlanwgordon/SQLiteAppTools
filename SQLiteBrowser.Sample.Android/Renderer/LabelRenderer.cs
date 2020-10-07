@@ -4,7 +4,7 @@ using Android.Runtime;
 using SQLiteBrowser.Droid.Renderer;
 using Xamarin.Forms;
 
-[assembly: ExportRenderer(typeof(Label), typeof(CustomLabelRenderer))]
+//[assembly: ExportRenderer(typeof(Label), typeof(CustomLabelRenderer))]
 namespace SQLiteBrowser.Droid.Renderer
 {
     public class CustomLabelRenderer : Xamarin.Forms.Platform.Android.FastRenderers.LabelRenderer

@@ -39,6 +39,7 @@ namespace SQLiteBrowser.Extensions
                     var column = table.Columns[i];
                     if(!column.IsInitialized)
                     {
+                        column.Table = table;
                         column.IsInitialized = true;
                         column.ColType = ColumnType((SQLitePCL.sqlite3_stmt)stmt, i);
                         column.CLRType = GetTypeFromColType(column.ColType);

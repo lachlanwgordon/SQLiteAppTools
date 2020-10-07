@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using SQLiteBrowser.Converters;
 using SQLiteBrowser.Models;
 using SQLiteBrowser.ViewModels;
@@ -156,12 +157,48 @@ namespace SQLiteBrowser.Pages
             return MainGrid;
         }
 
-        private void CellTapped(object sender, EventArgs e)
+        private async void CellTapped(object sender, EventArgs e)
         {
             var label = sender as Label;
             var cell = label.BindingContext as Cell;
 
-            DisplayAlert("Clicked", cell.DisplayText, "Okay");
+            var isForeignKey = false;
+
+            //if(Guid.TryParse(cell.DisplayText, out Guid result) )
+            //{
+                if(cell.Column.Name.ToLower().EndsWith("id"))
+                {
+                    var tableName = cell.Column.Name.Substring(0, cell.Column.Name.Length - 2);
+                    var table = ViewModel.Tables.FirstOrDefault(x => x.Name == tableName);
+
+                    if(table != null)
+                    {
+                        isForeignKey = true;
+                        var shouldSearch = await DisplayAlert("Foreign Key", $"Would you like to search for {cell.DisplayText} in {table.Name}?", "Yes", "No");
+
+                        if(shouldSearch)
+                        {
+                            Picker.SelectedItem = table;
+                            ViewModel.SelectedTable = table;
+                            await ViewModel.LoadTableData(table);
+                            CollectionView.ItemsSource = ViewModel.AllCells;
+                            UpdateView();
+                            SearchBar.Text = cell.DisplayText;
+                            //var filtered = await ViewModel.Search(cell.DisplayText, table);
+                            //CollectionView.ItemsSource = filtered;
+
+                        }
+                    }
+
+                //}
+
+            }
+            if(!isForeignKey)
+            {
+                await DisplayAlert("Clicked", cell.DisplayText, "Okay");
+            }
+
+
         }
 
         private async void TableSelected(object sender, FocusEventArgs e)

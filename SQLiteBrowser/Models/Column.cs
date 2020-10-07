@@ -16,6 +16,7 @@ namespace SQLiteBrowser.Models
 		public Type CLRType { get; set; }
         public bool IsDate { get; internal set; }
         public bool IsInitialized { get; internal set; }
+        public Table Table { get; set; }
 
         public int MaxLength { get; private set; }
 

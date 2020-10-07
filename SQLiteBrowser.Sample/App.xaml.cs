@@ -36,7 +36,7 @@ namespace SQLiteBrowser.Sample
             var nwindName = "Northwind_small.sqlite";
             var sampleName = "browser.db3";
             //var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), nwindName);
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), sampleName);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), nwindName);
 
             if (!File.Exists(path))
             {

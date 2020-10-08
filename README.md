@@ -1,80 +1,75 @@
-The repo is currently in the experimental phase and the API is changing frequently. This will be available as a nuget when it's ready. This readme reflects how the code should end up – not as it currently is.
 
-# SQLite Browser
-SQLite Browser lets you look inside the database inside your Xamarin Forms app to inspect and debug the contents. There's no need to dig through folders deeply buried in macOS with GUIDs for names or a command line to dig around in Android. Just a nuget with a GUI right in your app.
+
+# SQLite App Tools
+SQLite App Tools lets you browse the tables of a SQLite databse, inside your Xamarin Forms app. 
+
+No need to dig through folders deeply buried in macOS with GUIDs for names, or digging around the command line to get your db3 off your Android. Just a nuget with a GUI right in your app.
+
+SQlite App Tools works on any platform that runs Xamarin Forms and sqlite-net. You can run it on simulators, emulator, phones, tablets – any where you run your app.
 
 SQLite Browser works on any Xamarin Forms app using sqlite-net-pcl and can be used on simulators, emulators and devices.
 
+
+![SQLite App Tools running on and iPad Simulator and Android Pixel 3A](img/demo.gif "test")
+
+
 # Getting Started
 
-1. Add SQLiteAppTools to your .NetStandard library from Nuget
+1. Add SQLiteAppTools to your .NetStandard library from Nuget. The preview version is currently available on an Azure Devops feed at `https://pkgs.dev.azure.com/lachlanwgordon/SQLiteAppTools/_packaging/SQLiteBrowser/nuget/v3/index.json`.
 
-2. In your App.xaml.cs set `MainPage = new BrowserPage(YourSQLiteConnection);`(and comment out where you were setting MainPage).
-Make sure you have initialized your SQLiteConnection with the correct path and have called CreateTable<>() for all your types.
+It is a public feed but you will need to sign in with a Microsoft account. The package will be moving to nuget.org shortly.
 
-3. Run your App and explore your database.
+2. In your `App.xaml.cs` initialize SQLite App Tools and pass in the path of your database.
 
-If your SQLiteConnection isn't ready yet at startup, you want to open the Browser after the app has fully started, you're not using a XamarinForms App or for some other reason the above doesn't work for you – see **Alternate Setup Methods**
+```
+protected override async void OnStart()
+{
+    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "data.db3");
+    TableService.Init(path);
+}
+```
 
-# Alternate Setup Methods
-There are several ways to open the SQLiteAppTools to work with different startup flows and when you want to access the browser.
+The path should be exactly the same as the path you use when you create a `new SQLiteConnection(path);`
 
-All these options require you start by installing SQLiteAppTools from Nuget.
+3. Navigate to a new `CSMarkupPage`. The easiest way to do this is to set it as the `MainPage` in your `App.xaml`.
 
-## Initialize on startup and Navigate Later
-If you want to Initialise the SQLite browser when your app starts but wait until later when then app is running to browse the data:
+```
+protected override async void OnStart()
+{
+    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "data.db3");
+    TableService.Init(path);
+    MainPage = new SQLiteAppTools.Pages.CSMarkupPage();
+}
+```
 
-1. Initialize in App.xaml.cs, or your Database class etc. wherever you have access to the connection and once you have called CreateTable();
-call `SQLiteAppTools.Init.Init(YourSQLiteConnection);`
+Alternatively you can can use the `CSMarkupPage` anywhere you use a `ContentPage`, so you can put it in your AppShell, or navigate to it from a secret menu.
 
-2. Add a BrowserPage somewhere in your app's navigation.  This could be in your MasterDetailPage, Shell or you could navigate from anywhere in your app just like you would with any XamarinForms Page. Once you've call Init() there's no need to pass the connection to the BrowserPage again, you can call `new BrowserPage()` with no parameters.
+4. Run your App, and navigate to the .
 
-## Initialize with Database Path and Types
-If you don't have access to your SQLiteConnection where you want to initialize the SQLite Browser or if you don't call CreateTable for each type until you use them(or only once when app first runs) you can instead pass in a Database Path and any types you want to be able to browse.
-1. call `SQLiteAppTools.Init.Init("full/path/data.db3",typeof(Person),typeof(Cat),...);`
-2. Add a BrowserPage somewhere in your app's navigation.  This could be in your MasterDetailPage, Shell or you could navigate from anywhere in your app just like you would with any XamarinForms Page. Once you've call Init() there's no need to pass the connection to the BrowserPage again, you can call `new BrowserPage()` with no parameters.
+5. Select a Table from the Picker, then scroll, click and search around your database.
 
-## Use the BrowserApp From Native Code
-If you're not using a Xamarin Forms App, or you want to be able to quickly boot into SQLiteAppTools without initializing your Forms App you can add a BrowserApp from your AppDelegate or MainActivity.
-1. Where you would normally call `LoadApplication(new App());` call `LoadApplication(new BrowserApp(SqliteConnection));` or `SQLiteAppTools.Init.Init("full/path/data.db3",typeof(Person),typeof(Cat),...);`
+# Features
 
-See **Initialize with Database Path and Types** for details of using a connection vs Path and Types.
+The navigation and filtering features are likely to change quite a bit but the code you need to write to get this running shouldn't need to change much.
 
-If you weren't already using Xamarin Forms you will also need to add `Xamarin.Forms.Forms.Init(this, savedInstanceState);` on Android or `Xamarin.Forms.Forms.Init();` on iOS.
+## Select Table
+The Picker has a list of Tables found in your database. Select one and it will load the data. Scroll around.
 
-# Using the Browser
-Once you've got the browser up and runnning all the functionality happens within the app. To get started open the Table picker, select a picker and scroll through the records.
+## Search
+Type 3 or more characters in the search box and it will search all cells in the table and display the matching rows.
 
-Tap on any record to see details.
+## Navigate to Foreign Key
+Click on a foreign key in a table, if the column name is of the format `{TableName}Id`, the table will be opened and it will search for the Id.
 
-Long press on any field to copy the contents – This will be useful for searching, executing SQL and Navigation
+## Open URL
+Click on a cell with a URL in it, the URL will open in the default browser.
 
-## The tool bar
-Under the picker is a tool bar which lets you search, filter, execute SQL etc.
 
-### Search
-Click the magnifiying glass and enter text to search. By default it will search all fields in the current table. You can change this to only search certain fields to speed it up or you can search all tables to slow it down.
+# Contributing
 
-### Execute SQL
-Want to write your own query or run a script to seed the database? Go right ahead, tap the `SQL` button and type away. This is useful for debuggin your queries without rebuilding your app every time or if you're feeling analytical.
+Found a bug or have a good feature idea? Create an issue.
 
-### Add Item
-Click the plus button and fill in the details to add a new record.
-
-## Detailed View
-When you tap on an item it's details open up. From the details page you can edit, navigate and view resources.
-
-## Edit
-Tap the pencil to make all fields editable. Click save to update them in the database.
-
-## Navigation
-SQLite-Net-PCL doesn't support foreign keys but we all use them anyway and reconstruct the data. Tap on a record to see the details, the tap on anyfield that has a foreign key in it. If the FieldName is PersonId or Person and you have a table called Person it will open the table and filter by the ID. If you have we can't find a matching table it will ask you to select a table.
-
-## Images
-If a resource looks like a path to an image we'll try to load it and display it.
-
-## URLs
-If you've got URLs in your database linking(e.g. a pdf in blob storage or an external link) tap on the URL to open it in the devices default browser.
+PRs welcome!
 
 
 

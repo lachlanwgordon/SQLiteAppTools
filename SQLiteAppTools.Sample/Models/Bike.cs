@@ -36,7 +36,7 @@ namespace SQLiteAppTools.Models
                   NumberOfWheels = 2,
                   Price = 2200,
                   PhotoUrl = $"https://picsum.photos/200/201",
-                  PersonId = PersonService.Bob.Id,
+                  PersonId = PersonService.Clippy.Id,
             },
             new Bike
             {
@@ -47,7 +47,7 @@ namespace SQLiteAppTools.Models
                   NumberOfWheels = 2,
                   Price = 520,
                   PhotoUrl = $"https://picsum.photos/200/202",
-                  PersonId = PersonService.Janet.Id,
+                  PersonId = PersonService.GreenDroid.Id,
 
             },
             new Bike
@@ -59,7 +59,7 @@ namespace SQLiteAppTools.Models
                   NumberOfWheels = 2,
                   Price = 450,
                   PhotoUrl = $"https://picsum.photos/200/203",
-                  PersonId = PersonService.Richard.Id,
+                  PersonId = PersonService.NetBot.Id,
 
             },
             new Bike
@@ -82,7 +82,7 @@ namespace SQLiteAppTools.Models
                   NumberOfWheels = 2,
                   Price = 450,
                   PhotoUrl = $"https://picsum.photos/200/205",
-                  PersonId = PersonService.Janet.Id,
+                  PersonId = PersonService.GreenDroid.Id,
             },
 
         };

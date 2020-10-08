@@ -48,13 +48,11 @@ namespace SQLiteAppTools.ViewModels
             Tables = tables;
         }
 
-        internal Task<List<Cell>> Search(string searchTerm, Table table)
+        internal List<Cell> Search(string searchTerm, Table table)
         {
-
             var rows = table.Rows.Where(x => x.Matches(searchTerm));
             var cells = rows.SelectMany(x => x.Cells).ToList();
-            return Task.FromResult(cells);
-
+            return cells;
         }
     }
 }

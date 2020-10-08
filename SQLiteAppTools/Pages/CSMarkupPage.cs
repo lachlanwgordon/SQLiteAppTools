@@ -5,7 +5,12 @@ using SQLiteAppTools.Converters;
 using SQLiteAppTools.Models;
 using SQLiteAppTools.ViewModels;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;  
 using Cell = SQLiteAppTools.Models.Cell;
+using Picker = Xamarin.Forms.Picker;
+using ScrollView = Xamarin.Forms.ScrollView;
+using SearchBar = Xamarin.Forms.SearchBar;
 
 namespace SQLiteAppTools.Pages
 {
@@ -20,14 +25,24 @@ namespace SQLiteAppTools.Pages
         const int layoutSpacing = 2;
         const int cellHeight = 30;
         const int cellWidth = 250;
-        static Color cellColor = Color.White;
-        static Color cellBorderColor = Color.DarkGray;
 
-        AltBrowserViewModel ViewModel = new AltBrowserViewModel();
+        static readonly Color cellColor = Color.White;
+        static readonly Color cellBorderColor = Color.DarkGray;
+
+        readonly AltBrowserViewModel ViewModel = new AltBrowserViewModel();
+
         View MainGrid;
+        CollectionView CollectionView;
         public Grid BodyGrid;
-        Grid Headers = new Grid { BackgroundColor = cellBorderColor, ColumnSpacing = columnSpacing, Margin = layoutMargin };
-        Picker Picker = new Picker
+
+        readonly Grid Headers = new Grid
+        {
+            BackgroundColor = cellBorderColor,
+            ColumnSpacing = columnSpacing,
+            Margin = layoutMargin
+        };
+
+        readonly Picker Picker = new Picker
         {
             Title = "Table",
             BackgroundColor = cellColor,
@@ -45,6 +60,7 @@ namespace SQLiteAppTools.Pages
         {
             BindingContext = ViewModel;
             Content = GetContent();
+            On<iOS>().SetUseSafeArea(true);
         }
 
         enum MainRow
@@ -59,52 +75,9 @@ namespace SQLiteAppTools.Pages
             Headers,
             Collection,
         }
-        CollectionView CollectionView;
 
-        int templateCount;
         private View GetContent()
         {
-            Padding = new Thickness(0, 40, 0, 0);
-            CollectionView = new CollectionView
-            {
-                Margin = layoutMargin,
-                VerticalOptions = LayoutOptions.Start,
-                ItemsLayout = new GridItemsLayout(ItemsLayoutOrientation.Vertical)
-                {
-                    Span = 5,
-                    HorizontalItemSpacing = columnSpacing,
-                    VerticalItemSpacing = rowSpacing,
-                },
-                BackgroundColor = cellBorderColor,
-                ItemTemplate = new DataTemplate(() =>
-                {
-                    var count = templateCount++;
-
-                    var cell = new Label
-                    {
-                        MaxLines = 1,
-                        BackgroundColor = cellColor,
-                        Margin = cellMargin,
-                        Padding = cellPadding,
-                        HeightRequest = cellHeight,
-                        LineBreakMode = LineBreakMode.NoWrap
-                    };
-                    cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText), BindingMode.OneTime);
-                    cell.SetBinding(Label.HorizontalTextAlignmentProperty, "Column.CLRType", BindingMode.OneTime, new TypeToAlignmentConverter());
-
-                    var tap = new TapGestureRecognizer();
-                    tap.Tapped += CellTapped;
-
-                    cell.GestureRecognizers.Add(tap);
-
-                    return cell;
-                })
-            };
-            Grid.SetRow(CollectionView, (int)BodyRow.Collection);
-
-            View body;
-
-            Grid.SetRow(Headers, (int)BodyRow.Headers);
             BodyGrid = new Grid
             {
                 BackgroundColor = cellBorderColor,
@@ -118,19 +91,16 @@ namespace SQLiteAppTools.Pages
                 Children =
                 {
                     Headers,
-                    CollectionView
                 }
             };
-            
+            Grid.SetRow(Headers, (int)BodyRow.Headers);
+
             var scroller = new ScrollView
             {
                 BackgroundColor = cellBorderColor,
                 Orientation = ScrollOrientation.Horizontal,
                 Content = BodyGrid
             };
-            body = scroller;
-            Grid.SetRow(scroller, (int)MainRow.Body);
-            Grid.SetRow(SearchBar, (int)MainRow.Search);
 
 
             MainGrid = new Grid
@@ -150,11 +120,74 @@ namespace SQLiteAppTools.Pages
                 {
                     Picker,
                     SearchBar,
-                    body
+                    scroller
                 }
             };
+            Grid.SetRow(SearchBar, (int)MainRow.Search);
+            Grid.SetRow(scroller, (int)MainRow.Body);
 
             return MainGrid;
+        }
+
+        private void UpdateCollectionView()
+        {
+            if (CollectionView != null && BodyGrid.Children.Contains(CollectionView)) 
+                BodyGrid.Children.Remove(CollectionView);
+
+            CollectionView = new CollectionView
+            {
+                Margin = layoutMargin,
+                VerticalOptions = LayoutOptions.Start,
+                ItemsLayout = new GridItemsLayout(ItemsLayoutOrientation.Vertical)
+                {
+                    Span = ViewModel.SelectedTable.Columns.Count,
+                    HorizontalItemSpacing = columnSpacing,
+                    VerticalItemSpacing = rowSpacing,
+                },
+                BackgroundColor = cellBorderColor,
+                ItemsSource = ViewModel.AllCells,
+
+                ItemTemplate = new DataTemplate(() =>
+                {
+                    var cell = new Label
+                    {
+                        MaxLines = 1,
+                        BackgroundColor = cellColor,
+                        Margin = cellMargin,
+                        Padding = cellPadding,
+                        HeightRequest = cellHeight,
+                        LineBreakMode = LineBreakMode.NoWrap
+                    };
+                    cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText), BindingMode.OneTime);
+                    cell.SetBinding(Label.HorizontalTextAlignmentProperty, $"{nameof(Cell.Column)}.{nameof(Column.CLRType)}", BindingMode.OneTime, TypeToAlignmentConverter.Instance);
+
+                    var tap = new TapGestureRecognizer();
+                    tap.Tapped += CellTapped;
+                    cell.GestureRecognizers.Add(tap);
+
+                    return cell;
+                })
+            };
+
+            Grid.SetRow(CollectionView, (int)BodyRow.Collection);
+            BodyGrid.Children.Add(CollectionView);
+            BodyGrid.WidthRequest = ViewModel.SelectedTable.Columns.Count * cellWidth;
+
+            Headers.Children.Clear();
+            int columnNumber = 0;
+            foreach (var column in ViewModel.SelectedTable.Columns)
+            {
+                var label = new Label
+                {
+                    Text = column.Name,
+                    BackgroundColor = cellColor,
+                    Margin = cellMargin,
+                    Padding = cellPadding,
+                    HorizontalTextAlignment = (TextAlignment)TypeToAlignmentConverter.Instance.Convert(column.CLRType, typeof(TextAlignment), null, null),
+                };
+                Grid.SetColumn(label, columnNumber++);
+                Headers.Children.Add(label);
+            }
         }
 
         private async void CellTapped(object sender, EventArgs e)
@@ -164,8 +197,6 @@ namespace SQLiteAppTools.Pages
 
             var alertDisplayed = false;
 
-            //if(Guid.TryParse(cell.DisplayText, out Guid result) )
-            //{
             if(cell.Column.Name.ToLower().EndsWith("id"))
             {
                 var tableName = cell.Column.Name.Substring(0, cell.Column.Name.Length - 2);
@@ -181,15 +212,10 @@ namespace SQLiteAppTools.Pages
                         Picker.SelectedItem = table;
                         ViewModel.SelectedTable = table;
                         await ViewModel.LoadTableData(table);
-                        CollectionView.ItemsSource = ViewModel.AllCells;
-                        UpdateView();
+                        UpdateCollectionView();
                         SearchBar.Text = cell.DisplayText;
-                        //var filtered = await ViewModel.Search(cell.DisplayText, table);
-                        //CollectionView.ItemsSource = filtered;
-
                     }
                 }
-
             }
 
             if(!alertDisplayed)
@@ -207,21 +233,16 @@ namespace SQLiteAppTools.Pages
             {
                 await DisplayAlert("Clicked", cell.DisplayText, "Okay");
             }
-
-
         }
 
         private async void TableSelected(object sender, FocusEventArgs e)
         {
-            var table = (sender as Picker).SelectedItem as Table;
-            if (table == null)
+            if (!((sender as Picker).SelectedItem is Table table))
                 return;
 
             ViewModel.SelectedTable = table;
             await ViewModel.LoadTableData(table);
-            CollectionView.ItemsSource = ViewModel.AllCells;
-
-            UpdateView();
+            UpdateCollectionView();
         }
 
         protected override async void OnAppearing()
@@ -235,9 +256,8 @@ namespace SQLiteAppTools.Pages
         }
 
         bool isSearching;
-        private async void Search(object sender, TextChangedEventArgs e)
+        private void Search(object sender, TextChangedEventArgs e)
         {
-            Debug.WriteLine($"search: {e.NewTextValue}");
             if (isSearching)
                 return;
             if( e.NewTextValue.Length < 3 && CollectionView.ItemsSource != ViewModel.AllCells)
@@ -247,7 +267,7 @@ namespace SQLiteAppTools.Pages
 
             isSearching = true;
             var table = Picker.SelectedItem as Table;
-            var filtered = await ViewModel.Search(e.NewTextValue, table);
+            var filtered = ViewModel.Search(e.NewTextValue, table);
             CollectionView.ItemsSource = filtered;
             isSearching = false;
         }
@@ -258,35 +278,6 @@ namespace SQLiteAppTools.Pages
             SearchBar.TextChanged -= Search;
 
             base.OnDisappearing();
-        }
-
-        Stopwatch stopwatch = new Stopwatch();
-        private void UpdateView()
-        {
-
-            BodyGrid.WidthRequest = ViewModel.SelectedTable.Columns.Count * cellWidth;
-
-            Headers.Children.Clear();
-            int columnNumber = 0;
-            foreach (var column in ViewModel.SelectedTable.Columns)
-            {
-                var label = new Label
-                {
-                    Text = column.Name,
-                    BackgroundColor = cellColor,
-                    Margin = cellMargin,
-                    Padding = cellPadding,
-                    HorizontalTextAlignment = (TextAlignment)TypeToAlignmentConverter.Instance.Convert(column.CLRType, typeof(TextAlignment), null, null),
-                };
-                Grid.SetColumn(label, columnNumber);
-                Headers.Children.Add(label);
-
-                columnNumber++;
-            }
-
-            CollectionView.ItemsSource = ViewModel.AllCells;
-
-            (CollectionView.ItemsLayout as GridItemsLayout).Span = ViewModel.SelectedTable.Columns.Count;
         }
     }
 }

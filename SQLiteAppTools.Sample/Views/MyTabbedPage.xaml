@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sqiteapptools="clr-namespace:SQLiteAppTools;assembly=SQLiteAppTools"
+    xmlns:sqiteapptoolsPages="clr-namespace:SQLiteAppTools.Pages;assembly=SQLiteAppTools"
+    xmlns:views="clr-namespace:SQLiteAppTools.Sample.Views"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="True"
+    x:Class="SQLiteAppTools.Sample.Views.MyTabbedPage">
+    <!--Pages can be added as references or inline-->
+    
+    <views:MainPage
+        Title="Tab 1" />
+    <views:PeoplePage
+        Title="Tab 2" />
+    <sqiteapptoolsPages:CSMarkupPage Title="DB"></sqiteapptoolsPages:CSMarkupPage>
+</TabbedPage>

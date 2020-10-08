@@ -7,7 +7,7 @@ SQLite Browser works on any Xamarin Forms app using sqlite-net-pcl and can be us
 
 # Getting Started
 
-1. Add SQLiteBrowser to your .NetStandard library from Nuget
+1. Add SQLiteAppTools to your .NetStandard library from Nuget
 
 2. In your App.xaml.cs set `MainPage = new BrowserPage(YourSQLiteConnection);`(and comment out where you were setting MainPage).
 Make sure you have initialized your SQLiteConnection with the correct path and have called CreateTable<>() for all your types.
@@ -17,26 +17,26 @@ Make sure you have initialized your SQLiteConnection with the correct path and h
 If your SQLiteConnection isn't ready yet at startup, you want to open the Browser after the app has fully started, you're not using a XamarinForms App or for some other reason the above doesn't work for you – see **Alternate Setup Methods**
 
 # Alternate Setup Methods
-There are several ways to open the SQLiteBrowser to work with different startup flows and when you want to access the browser.
+There are several ways to open the SQLiteAppTools to work with different startup flows and when you want to access the browser.
 
-All these options require you start by installing SQLiteBrowser from Nuget.
+All these options require you start by installing SQLiteAppTools from Nuget.
 
 ## Initialize on startup and Navigate Later
 If you want to Initialise the SQLite browser when your app starts but wait until later when then app is running to browse the data:
 
 1. Initialize in App.xaml.cs, or your Database class etc. wherever you have access to the connection and once you have called CreateTable();
-call `SQLiteBrowser.Init.Init(YourSQLiteConnection);`
+call `SQLiteAppTools.Init.Init(YourSQLiteConnection);`
 
 2. Add a BrowserPage somewhere in your app's navigation.  This could be in your MasterDetailPage, Shell or you could navigate from anywhere in your app just like you would with any XamarinForms Page. Once you've call Init() there's no need to pass the connection to the BrowserPage again, you can call `new BrowserPage()` with no parameters.
 
 ## Initialize with Database Path and Types
 If you don't have access to your SQLiteConnection where you want to initialize the SQLite Browser or if you don't call CreateTable for each type until you use them(or only once when app first runs) you can instead pass in a Database Path and any types you want to be able to browse.
-1. call `SQLiteBrowser.Init.Init("full/path/data.db3",typeof(Person),typeof(Cat),...);`
+1. call `SQLiteAppTools.Init.Init("full/path/data.db3",typeof(Person),typeof(Cat),...);`
 2. Add a BrowserPage somewhere in your app's navigation.  This could be in your MasterDetailPage, Shell or you could navigate from anywhere in your app just like you would with any XamarinForms Page. Once you've call Init() there's no need to pass the connection to the BrowserPage again, you can call `new BrowserPage()` with no parameters.
 
 ## Use the BrowserApp From Native Code
-If you're not using a Xamarin Forms App, or you want to be able to quickly boot into SQLiteBrowser without initializing your Forms App you can add a BrowserApp from your AppDelegate or MainActivity.
-1. Where you would normally call `LoadApplication(new App());` call `LoadApplication(new BrowserApp(SqliteConnection));` or `SQLiteBrowser.Init.Init("full/path/data.db3",typeof(Person),typeof(Cat),...);`
+If you're not using a Xamarin Forms App, or you want to be able to quickly boot into SQLiteAppTools without initializing your Forms App you can add a BrowserApp from your AppDelegate or MainActivity.
+1. Where you would normally call `LoadApplication(new App());` call `LoadApplication(new BrowserApp(SqliteConnection));` or `SQLiteAppTools.Init.Init("full/path/data.db3",typeof(Person),typeof(Cat),...);`
 
 See **Initialize with Database Path and Types** for details of using a connection vs Path and Types.
 

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteAppTools", "SQLiteApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteAppTools.Sample.iOS", "SQLiteAppTools.Sample.iOS\SQLiteAppTools.Sample.iOS.csproj", "{BFA206E5-C90B-4B86-8FA5-05632512F8A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteAppTools.Tests", "SQLiteAppTools.Tests\SQLiteAppTools.Tests.csproj", "{B28E2AD5-C717-45CB-908D-BB62C967F9FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,5 +83,17 @@ Global
 		{BFA206E5-C90B-4B86-8FA5-05632512F8A3}.Debug|iPhone.Build.0 = Debug|iPhone
 		{BFA206E5-C90B-4B86-8FA5-05632512F8A3}.Release|iPhone.ActiveCfg = Release|iPhone
 		{BFA206E5-C90B-4B86-8FA5-05632512F8A3}.Release|iPhone.Build.0 = Release|iPhone
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B28E2AD5-C717-45CB-908D-BB62C967F9FF}.Release|iPhone.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

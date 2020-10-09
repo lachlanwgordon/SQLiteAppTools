@@ -7,8 +7,8 @@ namespace SQLiteAppTools.Models
 {
     public class Column
     {
-		[Column("name")]
-		public string Name { get; set; }
+        [Column("name")]
+        public string Name { get; set; } =  "";
 
 		[Column ("type")]
 		public string SQLType { get; set; }
@@ -18,15 +18,24 @@ namespace SQLiteAppTools.Models
         public bool IsInitialized { get; internal set; }
         public Table Table { get; set; }
 
-        public int MaxLength { get; private set; }
+        int _maxLength;
+        public int MaxLength
+        {
+            get => _maxLength == 0 ? Name.Length : _maxLength;
+            private set => _maxLength = value;
+        }
+
+
 
 		public void CheckForMaxLength(object val)
         {
             if (MaxLength == 0)
             {
                 MaxLength = Name.Length;
-
             }
+
+            if (CLRType == null)
+                CLRType = val.GetType();
 
             if(CLRType == typeof(string))
             {

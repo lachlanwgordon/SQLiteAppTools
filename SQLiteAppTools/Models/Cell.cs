@@ -13,7 +13,6 @@ namespace SQLiteAppTools.Models
             Column = column;
             Item = item;
             column.CheckForMaxLength(item);
-
         }
 
         public string DisplayText

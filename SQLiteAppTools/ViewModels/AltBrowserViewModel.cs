@@ -3,13 +3,14 @@ using SQLiteAppTools.Models;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SQLiteAppTools.Services;
 using System;
+using SQLiteAppTools.ViewModels;
 
-namespace SQLiteAppTools.ViewModels
+namespace SQLiteAppTools
 {
     public class AltBrowserViewModel : BaseViewModel
     {
+        public string Path { get; set; }
         private List<Table> tables;
         public List<Table> Tables
         {
@@ -43,6 +44,7 @@ namespace SQLiteAppTools.ViewModels
 
         public async Task LoadTables()
         {
+            TableService.Init(Path);
             var tables = await TableService.GetAll();
 
             Tables = tables;

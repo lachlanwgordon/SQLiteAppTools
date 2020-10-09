@@ -1,5 +1,3 @@
-
-
 # SQLite App Tools
 SQLite App Tools lets you browse the tables of a SQLite databse, inside your Xamarin Forms app. 
 
@@ -8,7 +6,6 @@ No need to dig through folders deeply buried in macOS with GUIDs for names, or d
 SQlite App Tools works on any platform that runs Xamarin Forms and sqlite-net. You can run it on simulators, emulator, phones, tablets – any where you run your app.
 
 SQLite Browser works on any Xamarin Forms app using sqlite-net-pcl and can be used on simulators, emulators and devices.
-
 
 ![SQLite App Tools running on and iPad Simulator and Android Pixel 3A](img/demo.gif "test")
 
@@ -19,34 +16,22 @@ SQLite Browser works on any Xamarin Forms app using sqlite-net-pcl and can be us
 
 It is a public feed but you will need to sign in with a Microsoft account. The package will be moving to nuget.org shortly.
 
-2. In your `App.xaml.cs` initialize SQLite App Tools and pass in the path of your database.
+2. In your `App.xaml.cs` set your MainPage to a `new SQLiteAppTools.BrowserPage(path)`. The path needs to be the same path you use when creating a `SQLiteConnection`.
+
+You main need to remove(or comment out) the line where you previously set your MainPage.
 
 ```
 protected override async void OnStart()
 {
     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "data.db3");
-    TableService.Init(path);
+    MainPage = new SQLiteAppTools.BrowserPage(path);
 }
 ```
 
-The path should be exactly the same as the path you use when you create a `new SQLiteConnection(path);`
+3. Select a Table from the Picker, then scroll, click and search around your database.
 
-3. Navigate to a new `CSMarkupPage`. The easiest way to do this is to set it as the `MainPage` in your `App.xaml`.
+If you want to pass in the path at startup, and navigate to the page later, or through a Shell, TabbedPage etc., see [Initialize on startup, navigate later](#Initialize-on-startup,-navigate-later)
 
-```
-protected override async void OnStart()
-{
-    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "data.db3");
-    TableService.Init(path);
-    MainPage = new SQLiteAppTools.Pages.CSMarkupPage();
-}
-```
-
-Alternatively you can can use the `CSMarkupPage` anywhere you use a `ContentPage`, so you can put it in your AppShell, or navigate to it from a secret menu.
-
-4. Run your App, and navigate to the .
-
-5. Select a Table from the Picker, then scroll, click and search around your database.
 
 # Features
 
@@ -64,6 +49,32 @@ Click on a foreign key in a table, if the column name is of the format `{TableNa
 ## Open URL
 Click on a cell with a URL in it, the URL will open in the default browser.
 
+## Initialize on startup, navigate later
+I usually like to initialize my database at startup, and then forget about what the path is and I don't want to mess around with passing the path into the view or view model where I navigate to the SQLite App Tools Browser Page.
+
+To initialize without opening the page, call `TableService.Init()`:
+
+```
+protected override async void OnStart()
+{
+    var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "data.db3");
+    SQLiteAppTools.TableService.Init(path);
+}
+```
+
+When you navigate to the page, you don't need to include a `path` parameter.
+
+```
+Shell.Current.Navigation.PushAsync(new SQLiteAppTools.BrowserPage());
+```
+
+Or you can include it in a Shell by including the namespace `xmlns:sqiteapptools="clr-namespace:SQLiteAppTools;assembly=SQLiteAppTools"`
+
+and adding the `BrowserPage` the same way you would with any other content page.
+
+```
+<sqiteapptools:BrowserPage Title="DB"></sqiteapptools:BrowserPage>
+```
 
 # Contributing
 

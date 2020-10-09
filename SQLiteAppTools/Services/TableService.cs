@@ -6,7 +6,7 @@ using SQLite;
 using SQLiteAppTools.Extensions;
 using SQLiteAppTools.Models;
 
-namespace SQLiteAppTools.Services
+namespace SQLiteAppTools
 {
     public static class TableService
     {
@@ -16,6 +16,8 @@ namespace SQLiteAppTools.Services
 
         public static void Init(string path)
         {
+            if (Path == path || path == null)
+                return;//already initialised
             Path = path;
             Connection = new SQLiteAsyncConnection(Path);
             ConnectionSync = new SQLiteConnection(Path);

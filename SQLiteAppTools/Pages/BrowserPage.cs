@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using SQLiteAppTools.Converters;
 using SQLiteAppTools.Models;
-using SQLiteAppTools.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;  
@@ -12,10 +11,11 @@ using Picker = Xamarin.Forms.Picker;
 using ScrollView = Xamarin.Forms.ScrollView;
 using SearchBar = Xamarin.Forms.SearchBar;
 
-namespace SQLiteAppTools.Pages
+namespace SQLiteAppTools
 {
-    public class CSMarkupPage : ContentPage
+    public class BrowserPage : ContentPage
     {
+        public string Path { get; set; }
         const int cellPadding = 5;
         const int cellMargin = 0;
         const int layoutPadding = 0;
@@ -56,7 +56,12 @@ namespace SQLiteAppTools.Pages
             PlaceholderColor = cellBorderColor,
         };
 
-        public CSMarkupPage()
+        public BrowserPage(string path) : this()
+        {
+            Path = path;
+        }
+
+        public BrowserPage()
         {
             BindingContext = ViewModel;
             Content = GetContent();
@@ -248,6 +253,7 @@ namespace SQLiteAppTools.Pages
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            ViewModel.Path = Path; 
 
             await ViewModel.LoadTables();
             Picker.ItemsSource = ViewModel.Tables;

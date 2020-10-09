@@ -3,14 +3,9 @@ using System.IO;
 using System.Reflection;
 using SQLiteAppTools.Models;
 using SQLiteAppTools.ModelServices;
-using SQLiteAppTools.Pages;
 using SQLiteAppTools.Sample.Views;
 using SQLiteAppTools.Service;
-using SQLiteAppTools.Services;
-using SQLiteAppTools.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-//[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace SQLiteAppTools.Sample
 {
     public partial class App : Application
@@ -23,10 +18,7 @@ namespace SQLiteAppTools.Sample
             DependencyService.Register<IPersonService, PersonService>();
             Device.SetFlags(new string[] { "Expander_Experimental", "Markup_Experimental" });
             MainPage = new ContentPage();
-
-
         }
-
 
         protected override async void OnStart()
         {

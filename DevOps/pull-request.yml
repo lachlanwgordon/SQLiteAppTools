@@ -15,7 +15,7 @@ jobs:
 
   - task: NuGetCommand@2
     inputs:
-      restoreSolution: '**/*.Build.sln'
+      restoreSolution: '**/**/*.Build.sln'
 
   - task: DotNetCoreCLI@2
     inputs:

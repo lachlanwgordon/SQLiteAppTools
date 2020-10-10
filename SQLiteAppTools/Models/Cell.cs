@@ -19,9 +19,19 @@ namespace SQLiteAppTools.Models
         {
             get
             {
-                if(Column.IsDate)
+                if(Column.IsDate || Column.CLRType == typeof(DateTime))
                 {
-                    return new DateTime((long)Item).ToString();
+                    DateTime date;
+                    if(Column.CLRType == typeof(int) || Column.CLRType == typeof(long))
+                    {
+                        date = new DateTime((long)Item);
+                    }
+                    else
+                    {
+                        date = (DateTime)Item;
+                    }
+                    return date.ToString("s");
+
                 }
                 return Item?.ToString();
             }

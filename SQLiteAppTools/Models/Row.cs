@@ -15,7 +15,7 @@ namespace SQLiteAppTools.Models
             Table = table;
         }
 
-        internal bool Matches(string searchTerm)
+        public bool Matches(string searchTerm)
         {
             if (Cells.Any(x => x.Matches(searchTerm)))
                 return true;

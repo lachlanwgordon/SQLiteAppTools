@@ -160,7 +160,7 @@ namespace SQLiteAppTools
                         BackgroundColor = cellColor,
                         Margin = cellMargin,
                         Padding = cellPadding,
-                        HeightRequest = cellHeight,
+                        FontSize = 20,
                         LineBreakMode = LineBreakMode.NoWrap
                     };
                     cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText), BindingMode.OneTime);

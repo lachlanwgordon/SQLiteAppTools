@@ -1,7 +1,7 @@
 # SQLite App Tools
-SQLite App Tools lets you browse the tables of a SQLite databse, inside your Xamarin Forms app. 
+SQLite App Tools lets you browse the tables of a SQLite database, inside your Xamarin Forms app. 
 
-No need to dig through folders deeply buried in macOS with GUIDs for names, or digging around the command line to get your db3 off your Android. Just a nuget with a GUI right in your app.
+No need to dig through folders deeply buried in macOS with GUIDs for names, or digging around the command line to get your .db3 off your Android. Just a nuget with a GUI right in your app.
 
 SQlite App Tools works on any platform that runs Xamarin Forms and sqlite-net. You can run it on simulators, emulator, phones, tablets – any where you run your app.
 
@@ -31,7 +31,6 @@ protected override async void OnStart()
 3. Select a Table from the Picker, then scroll, click and search around your database.
 
 If you want to pass in the path at startup, and navigate to the page later, or through a Shell, TabbedPage etc., see [Initialize on startup, navigate later](#Initialize-on-startup,-navigate-later)
-
 
 # Features
 
@@ -76,16 +75,20 @@ and adding the `BrowserPage` the same way you would with any other content page.
 <sqiteapptools:BrowserPage Title="DB"></sqiteapptools:BrowserPage>
 ```
 
+# Trouble shooting and FAQ
+
+## Does this app work with EF Core SQLite?
+Yes! SQLite App Tools depends on sqlite-net but it can still open a database built with Entity Framework Core.
+
+The setup process is the same, the only difference is you will need to make sure SQLite-net is installed in all of your projects(Net Standard, iOS, Android etc.). This is required for SQLite-net users as well but they will already have this set up.
+
 # Contributing
 
 Found a bug or have a good feature idea? Create an issue.
 
 PRs welcome!
 
-
-
-
-
-
-
-
+# Credits
+SQLite App Tools  uses:
+ - [Frank Krueger's SQLite-net](https://github.com/praeclarum/sqlite-net), thanks Frank.
+ - [Xamarin Forms](https://github.com/xamarin/Xamarin.Forms)

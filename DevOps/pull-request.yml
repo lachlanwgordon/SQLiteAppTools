@@ -3,7 +3,7 @@ jobs:
 
 - job: BuildApp
   pool:
-    vmImage: 'macOS latest'
+    vmImage: 'windows-latest'
 
   variables:
     buildConfiguration: 'Debug'
@@ -15,7 +15,12 @@ jobs:
 
   - task: NuGetCommand@2
     inputs:
-      restoreSolution: '**/*.sln'
+      restoreSolution: '**/*.Build.sln'
+
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+      projects: '**/*.Tests.csproj'
 
   - task: DotNetCoreCLI@2
     inputs:

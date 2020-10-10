@@ -207,7 +207,11 @@ namespace SQLiteAppTools
                 var tableName = cell.Column.Name.Substring(0, cell.Column.Name.Length - 2);
                 var table = ViewModel.Tables.FirstOrDefault(x => x.Name == tableName);
 
-                if(table != null)
+                if(table == null)
+                    table = ViewModel.Tables.FirstOrDefault(x => x.Name.Contains(tableName));
+
+
+                if (table != null)
                 {
                     alertDisplayed = true;
                     var shouldSearch = await DisplayAlert("Foreign Key", $"Would you like to search for {cell.DisplayText} in {table.Name}?", "Yes", "No");

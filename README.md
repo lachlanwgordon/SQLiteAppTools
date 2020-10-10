@@ -1,4 +1,6 @@
 # SQLite App Tools
+[![Build Status](https://dev.azure.com/lachlanwgordon/SQLiteAppTools/_apis/build/status/lachlanwgordon.SQLiteAppTools?branchName=main)](https://dev.azure.com/lachlanwgordon/SQLiteAppTools/_build/latest?definitionId=21&branchName=main)
+
 SQLite App Tools lets you browse the tables of a SQLite database, inside your Xamarin Forms app. 
 
 No need to dig through folders deeply buried in macOS with GUIDs for names, or digging around the command line to get your .db3 off your Android. Just a nuget with a GUI right in your app.
@@ -82,6 +84,25 @@ Yes! SQLite App Tools depends on sqlite-net but it can still open a database bui
 
 The setup process is the same, the only difference is you will need to make sure SQLite-net is installed in all of your projects(Net Standard, iOS, Android etc.). This is required for SQLite-net users as well but they will already have this set up.
 
+## I use Prism, will this work?
+Yep, the steps in getting started will work as is. If you want to open the the SQLite App Tools BrowserPage by navigating to it while the app is running, there are a couple of extra steps.
+
+Initialize the SQLite App Tools.
+
+```
+SQLiteAppTools.TableService.Init(dbpath);
+```
+
+Register the `BrowserPage` for navigation.
+```
+containerRegistry.RegisterForNavigation<SQLiteAppTools.BrowserPage>();
+```
+
+Navigate to `"BrowserPage"`, as you would with any other page, using the Prism INavigationService.
+```
+_navigationService.NavigateAsync("/BrowserPage");
+```
+
 # Contributing
 
 Found a bug or have a good feature idea? Create an issue.
@@ -91,4 +112,4 @@ PRs welcome!
 # Credits
 SQLite App Tools  uses:
  - [Frank Krueger's SQLite-net](https://github.com/praeclarum/sqlite-net), thanks Frank.
- - [Xamarin Forms](https://github.com/xamarin/Xamarin.Forms)
+ - [Xamarin Forms](https://github.com/xamarin/Xamarin.Forms), thanks Xamarin.

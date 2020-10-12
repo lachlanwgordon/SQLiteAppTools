@@ -1,0 +1,28 @@
+trigger: none
+jobs:
+
+- job: BuildApp
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    buildConfiguration: 'Debug'
+    outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+
+  steps:
+
+  - task: NuGetToolInstaller@0
+
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '**/**/*.Build.sln'
+
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
+      projects: '**/**/*.Tests.csproj'
+
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+      projects: '**/**/*.Tests.csproj'

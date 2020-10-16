@@ -20,12 +20,12 @@ jobs:
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
-      projects: ./SQLiteAppTools/SQLiteAppTools.csproj'
+      projects: '**/SQLiteAppTools/SQLiteAppTools.csproj'
       
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
-      projects: SQLiteAppTools.Tests/SQLiteAppTools.Tests.csproj'
+      projects: '**/SQLiteAppTools.Tests/SQLiteAppTools.Tests.csproj'
 
   - task: DotNetCoreCLI@2
     inputs:

@@ -40,4 +40,4 @@ jobs:
   - task: DotNetCoreCLI@2
     inputs:
       command: 'test'
-      projects: 'SQLiteAppTools.Build.sln'
+      projects: '**/SQLiteAppTools.Tests/SQLiteAppTools.Tests.csproj'

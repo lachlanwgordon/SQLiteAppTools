@@ -11,18 +11,33 @@ jobs:
 
   steps:
 
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Write your commands here
+        
+        echo 'Hello world'
+        pwd
+        ls -R
+
   - task: NuGetToolInstaller@0
 
   - task: NuGetCommand@2
     inputs:
-      restoreSolution: '**/**/*.Build.sln'
+      restoreSolution: 'SQLiteAppTools.Build.sln'
 
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
-      projects: '**/**/*.Tests.csproj'
+      projects: '**/SQLiteAppTools/SQLiteAppTools.csproj'
+      
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
+      projects: '**/SQLiteAppTools.Tests/SQLiteAppTools.Tests.csproj'
 
   - task: DotNetCoreCLI@2
     inputs:
       command: 'test'
-      projects: '**/**/*.Tests.csproj'
+      projects: 'SQLiteAppTools.Build.sln'

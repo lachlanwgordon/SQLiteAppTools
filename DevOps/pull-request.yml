@@ -11,7 +11,15 @@ jobs:
 
   steps:
 
-
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Write your commands here
+        
+        echo 'Hello world'
+        pwd
+        ls -R
 
   - task: NuGetToolInstaller@0
 
@@ -32,4 +40,4 @@ jobs:
   - task: DotNetCoreCLI@2
     inputs:
       command: 'test'
-      projects: SQLiteAppTools.Tests/SQLiteAppTools.Tests.csproj'
+      projects: '**/SQLiteAppTools.Tests/SQLiteAppTools.Tests.csproj'

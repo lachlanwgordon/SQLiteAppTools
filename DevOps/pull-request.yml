@@ -10,12 +10,11 @@ jobs:
     outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
 
   steps:
-
-  - task: NuGetToolInstaller@0
-
-  - task: NuGetCommand@2
+      
+  - task: DotNetCoreCLI@2
     inputs:
-      restoreSolution: 'SQLiteAppTools.Build.sln'
+      command: 'restore'
+      projects: '**/SQLiteAppTools.Tests/SQLiteAppTools.Tests.csproj'
 
   - task: DotNetCoreCLI@2
     inputs:

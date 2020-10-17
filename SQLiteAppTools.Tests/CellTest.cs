@@ -51,5 +51,31 @@ namespace SQLiteAppTools.Tests
             Assert.AreEqual(expected, cell.ToString());
         }
 
+        public static IEnumerable<TestCaseData> URLTests
+        {
+            get
+            {
+                yield return new TestCaseData("http://google.com", true);
+                yield return new TestCaseData("https://google.com", true);
+                yield return new TestCaseData("https://twitter.com/home", true);
+                yield return new TestCaseData("https://pbs.twimg.com/profile_images/1278472140673572864/qHD60s7Z_400x400.jpg", true);
+                yield return new TestCaseData("https", false);
+                yield return new TestCaseData("3.5", false);
+                yield return new TestCaseData(3.5, false);
+                yield return new TestCaseData(new DateTime(), false);
+                yield return new TestCaseData(new Guid(), false);
+            }
+        }
+
+        [TestCaseSource(typeof(CellTest), nameof(URLTests))]
+        public void TestURLs(object url, bool expected)
+        {
+            var column = new Column();
+            var cell = new Cell(url, column);
+            var isUrl = cell.IsUrl;
+            Assert.AreEqual(expected, isUrl);
+        }
+
+
     }
 }

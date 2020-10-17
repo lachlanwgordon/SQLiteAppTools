@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using SQLiteAppTools.Converters;
 using SQLiteAppTools.Models;
 using Xamarin.Forms;
@@ -16,6 +17,10 @@ namespace SQLiteAppTools
     public class BrowserPage : ContentPage
     {
         public string Path { get; set; }
+        readonly AltBrowserViewModel ViewModel = new AltBrowserViewModel();
+
+        #region StyleConstants
+        //Not using real Styles because they're slow with this many thousands of labels
         const int cellPadding = 5;
         const int cellMargin = 0;
         const int layoutPadding = 0;
@@ -29,8 +34,7 @@ namespace SQLiteAppTools
         static readonly Color cellColor = Color.White;
         static readonly Color cellBorderColor = Color.DarkGray;
         static readonly Color textColor = Color.Black;
-
-        readonly AltBrowserViewModel ViewModel = new AltBrowserViewModel();
+        #endregion
 
         View MainGrid;
         CollectionView CollectionView;
@@ -233,42 +237,46 @@ namespace SQLiteAppTools
                     }
                 }
             }
-
-            if(!alertDisplayed)
+            
+            if(!alertDisplayed && cell.IsUrl)
             {
-                if(cell.DisplayText.StartsWith("http"))
-                {
-                    alertDisplayed = true;
-                    var shouldOpen = await DisplayAlert("Open", $"Would you like to open {cell.DisplayText}", "yes", "no");
-                    if(shouldOpen)
-                    {
-                        var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName.Contains("Xamarin.Essentials"));
-
-                        var types = assembly?.GetTypes();
-                        var webBrowser = types?.FirstOrDefault(x => x.Name == "Browser");
-                        var methods = webBrowser?.GetMethods();
-                        var openMethod = methods?.FirstOrDefault(x => x.Name == "OpenAsync");
-
-                        if(openMethod != null)
-                        {
-                            //If available use Xamarin Essentials
-                            openMethod.Invoke(null, new [] { cell.DisplayText, null });
-                        }
-                        else
-                        {
-                            //Else use the deprecated method in Forms
-#pragma warning disable CS0618 // Type or member is obsolete
-                            Device.OpenUri(new Uri(cell.DisplayText));
-#pragma warning restore CS0618 // Type or member is obsolete
-                        }
-                    }
-                }
+                alertDisplayed = await TryOpenBrowser(cell);
             }
 
             if(!alertDisplayed)
             {
                 await DisplayAlert("Clicked", cell.DisplayText, "Okay");
             }
+        }
+
+        private async Task<bool> TryOpenBrowser(Cell cell)
+        {
+            bool alertDisplayed = true;
+            var shouldOpen = await DisplayAlert("Open", $"Would you like to open {cell.DisplayText}", "yes", "no");
+            if (shouldOpen)
+            {
+                var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName.Contains("Xamarin.Essentials"));
+
+                var types = assembly?.GetTypes();
+                var webBrowser = types?.FirstOrDefault(x => x.Name == "Browser");
+                var methods = webBrowser?.GetMethods();
+                var openMethod = methods?.FirstOrDefault(x => x.Name == "OpenAsync");
+
+                if (openMethod != null)
+                {
+                    //If available use Xamarin Essentials
+                    openMethod.Invoke(null, new[] { cell.DisplayText, null });
+                }
+                else
+                {
+                    //Else use the deprecated method in Forms
+#pragma warning disable CS0618 // Type or member is obsolete
+                    Device.OpenUri(new Uri(cell.DisplayText));
+#pragma warning restore CS0618 // Type or member is obsolete
+                }
+            }
+
+            return alertDisplayed;
         }
 
         private async void TableSelected(object sender, FocusEventArgs e)

@@ -28,6 +28,7 @@ namespace SQLiteAppTools
 
         static readonly Color cellColor = Color.White;
         static readonly Color cellBorderColor = Color.DarkGray;
+        static readonly Color textColor = Color.Black;
 
         readonly AltBrowserViewModel ViewModel = new AltBrowserViewModel();
 
@@ -47,13 +48,15 @@ namespace SQLiteAppTools
             Title = "Table",
             BackgroundColor = cellColor,
             ItemDisplayBinding = new Binding(nameof(Table.Name)),
+            TextColor = textColor,
+            TitleColor = cellBorderColor,
         };
-
-        SearchBar SearchBar = new SearchBar
+        readonly SearchBar SearchBar = new SearchBar
         {
             Placeholder = "Search",
             BackgroundColor = cellColor,
             PlaceholderColor = cellBorderColor,
+            TextColor = textColor,
         };
 
         public BrowserPage(string path) : this()
@@ -158,6 +161,7 @@ namespace SQLiteAppTools
                     {
                         MaxLines = 1,
                         BackgroundColor = cellColor,
+                        TextColor = textColor,
                         Margin = cellMargin,
                         Padding = cellPadding,
                         FontSize = 20,
@@ -187,6 +191,7 @@ namespace SQLiteAppTools
                     Text = column.Name,
                     BackgroundColor = cellColor,
                     Margin = cellMargin,
+                    TextColor = textColor,
                     Padding = cellPadding,
                     HorizontalTextAlignment = (TextAlignment)TypeToAlignmentConverter.Instance.Convert(column.CLRType, typeof(TextAlignment), null, null),
                 };
@@ -208,8 +213,10 @@ namespace SQLiteAppTools
                 var table = ViewModel.Tables.FirstOrDefault(x => x.Name == tableName);
 
                 if(table == null)
+                {
+                    //Some people call all their classes PersonDTO or PersonEntity but the foreign key is PersonId
                     table = ViewModel.Tables.FirstOrDefault(x => x.Name.Contains(tableName));
-
+                }
 
                 if (table != null)
                 {
@@ -232,9 +239,29 @@ namespace SQLiteAppTools
                 if(cell.DisplayText.StartsWith("http"))
                 {
                     alertDisplayed = true;
-                    var open = await DisplayAlert("Open", $"Would you like to open {cell.DisplayText}", "yes", "no");
-                    if(open)
-                        Device.OpenUri(new Uri(cell.DisplayText));
+                    var shouldOpen = await DisplayAlert("Open", $"Would you like to open {cell.DisplayText}", "yes", "no");
+                    if(shouldOpen)
+                    {
+                        var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.FullName.Contains("Xamarin.Essentials"));
+
+                        var types = assembly?.GetTypes();
+                        var webBrowser = types?.FirstOrDefault(x => x.Name == "Browser");
+                        var methods = webBrowser?.GetMethods();
+                        var openMethod = methods?.FirstOrDefault(x => x.Name == "OpenAsync");
+
+                        if(openMethod != null)
+                        {
+                            //If available use Xamarin Essentials
+                            openMethod.Invoke(null, new [] { cell.DisplayText, null });
+                        }
+                        else
+                        {
+                            //Else use the deprecated method in Forms
+#pragma warning disable CS0618 // Type or member is obsolete
+                            Device.OpenUri(new Uri(cell.DisplayText));
+#pragma warning restore CS0618 // Type or member is obsolete
+                        }
+                    }
                 }
             }
 

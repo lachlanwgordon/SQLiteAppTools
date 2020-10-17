@@ -50,6 +50,17 @@ namespace SQLiteAppTools.Models
         //public TextAlignment Alignment { get; set; }
         public bool IsVisible => Item != null;
 
+        public bool IsUrl
+        {
+            get
+            {
+                Uri uriResult;
+                bool result = Uri.TryCreate(DisplayText, UriKind.Absolute, out uriResult)
+                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                return result;
+            }
+        }
+
         public override string ToString()
         {
             return DisplayText;

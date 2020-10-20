@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,15 +24,9 @@
     <Folder Include="Views\" />
     <Folder Include="Service\" />
     <Folder Include="Resources\" />
-    <Folder Include="Pages\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Northwind_small.sqlite" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Views\PeoplePage.xaml">
-      <LogicalName>SQLiteAppTools.Views.PeoplePagePage.xaml</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SQLiteAppTools\SQLiteAppTools.csproj" />

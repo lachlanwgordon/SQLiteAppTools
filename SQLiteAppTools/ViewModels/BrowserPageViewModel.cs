@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using SQLiteAppTools.Models;
 using System.Linq;
 using System.Collections.Generic;
@@ -8,9 +7,11 @@ using SQLiteAppTools.ViewModels;
 
 namespace SQLiteAppTools
 {
-    public class AltBrowserViewModel : BaseViewModel
+    public class BrowserPageViewModel : BaseViewModel
     {
         public string Path { get; set; }
+        TableService tableService;
+
         private List<Table> tables;
         public List<Table> Tables
         {
@@ -18,8 +19,8 @@ namespace SQLiteAppTools
             set => SetProperty(ref tables, value);
         }
 
-        private List<Models.Cell> allCells;
-        public List<Models.Cell> AllCells
+        private List<Cell> allCells;
+        public List<Cell> AllCells
         {
             get => allCells;
             set => SetProperty(ref allCells, value);
@@ -37,15 +38,16 @@ namespace SQLiteAppTools
 
         public async Task LoadTableData(Table table)
         {
-            await TableService.LoadData(table);
+            await tableService.LoadData(table);
 
             AllCells = table.Rows.SelectMany(x => x.Cells).ToList();
         }
 
         public async Task LoadTables()
         {
-            TableService.Init(Path);
-            var tables = await TableService.GetAll();
+            if (tableService == null)
+                tableService = new TableService(Path);
+            var tables = await tableService.GetAll();
 
             Tables = tables;
         }

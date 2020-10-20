@@ -4,13 +4,43 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:SQLiteAppTools.Sample.ViewModels"
     mc:Ignorable="d"
     x:Class="SQLiteAppTools.Sample.Views.MainPage">
+     <ContentPage.BindingContext>
+        <viewModels:MainPageViewModel
+            x:Name="ViewModel" />
+    </ContentPage.BindingContext>
     <StackLayout>
         <!-- Place new controls here -->
         <Label
-            Text="Welcome to Xamarin.Forms!"
+            Text="Welcome to SQLite App Tools"
+            VerticalOptions="CenterAndExpand" />
+        <Label >
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Try out SQLite App Tools with the "></Span>
+                    <Span Text="Northwind" TextColor="Blue" FontAttributes="Bold" TextDecorations="Underline"></Span>
+                    <Span Text=" embedded database."></Span>
+                </FormattedString>
+            </Label.FormattedText>
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding OpenNorthwind}" NumberOfTapsRequired="1"/>
+            </Label.GestureRecognizers>
+        </Label>
+        <Label
+            Text="Or explore the sample app in the tabs."
             HorizontalOptions="Center"
             VerticalOptions="CenterAndExpand" />
     </StackLayout>
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="Title"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+        <Style TargetType="Span">
+            <Setter Property="FontSize" Value="Title"/>
+        </Style>
+    </ContentPage.Resources>
 </ContentPage>

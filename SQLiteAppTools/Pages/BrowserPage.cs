@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using SQLiteAppTools.Converters;
@@ -16,8 +15,12 @@ namespace SQLiteAppTools
 {
     public class BrowserPage : ContentPage
     {
-        public string Path { get; set; }
-        readonly AltBrowserViewModel ViewModel = new AltBrowserViewModel();
+        public string Path
+        {
+            get => ViewModel.Path;
+            set => ViewModel.Path = value;
+        }
+        readonly BrowserPageViewModel ViewModel = new BrowserPageViewModel();
 
         #region StyleConstants
         //Not using real Styles because they're slow with this many thousands of labels
@@ -28,9 +31,9 @@ namespace SQLiteAppTools
         const int columnSpacing = 2;
         const int rowSpacing = 2;
         const int layoutSpacing = 2;
-        const int cellHeight = 30;
+        const int cellHeight = 33;
         const int cellWidth = 250;
-
+        const int cellFontSize = 20;
         static readonly Color cellColor = Color.White;
         static readonly Color cellBorderColor = Color.DarkGray;
         static readonly Color textColor = Color.Black;
@@ -163,12 +166,13 @@ namespace SQLiteAppTools
                 {
                     var cell = new Label
                     {
+                        HeightRequest = cellHeight,
                         MaxLines = 1,
                         BackgroundColor = cellColor,
                         TextColor = textColor,
                         Margin = cellMargin,
                         Padding = cellPadding,
-                        FontSize = 20,
+                        FontSize = cellFontSize,
                         LineBreakMode = LineBreakMode.NoWrap
                     };
                     cell.SetBinding(Label.TextProperty, nameof(Cell.DisplayText), BindingMode.OneTime);
@@ -192,6 +196,7 @@ namespace SQLiteAppTools
             {
                 var label = new Label
                 {
+                    FontSize = cellFontSize,
                     Text = column.Name,
                     BackgroundColor = cellColor,
                     Margin = cellMargin,
@@ -292,7 +297,6 @@ namespace SQLiteAppTools
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            ViewModel.Path = Path; 
 
             await ViewModel.LoadTables();
             Picker.ItemsSource = ViewModel.Tables;

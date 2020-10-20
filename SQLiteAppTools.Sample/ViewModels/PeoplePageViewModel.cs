@@ -1,20 +1,34 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using MvvmHelpers;
+using MvvmHelpers.Commands;
 using SQLiteAppTools.Models;
-using SQLiteAppTools.ModelServices;
+using SQLiteAppTools.Sample.ModelServices;
+using SQLiteAppTools.Sample.Views;
+using Xamarin.Forms;
 
-namespace SQLiteAppTools.ViewModels
+namespace SQLiteAppTools.Sample.ViewModels
 {
-    public class PeoplePageViewModel
+    public class PeoplePageViewModel : BaseViewModel
     {
-        IPersonService personService = Xamarin.Forms.DependencyService.Resolve<IPersonService>();
-        public ObservableCollection<Person> People { get; set; } = new ObservableCollection<Person>();
+        IPersonService personService = DependencyService.Resolve<IPersonService>();
+
+        public ObservableRangeCollection<Person> People { get; set; } = new ObservableRangeCollection<Person>();
 
         public async Task InitializeAsync()
         {
+            People.Clear();
             var people = await personService.GetAllPeopleAsync();
-            people.ForEach(x => People.Add(x));
+            People.AddRange(people);
+        }
+
+        public ICommand EditPersonCommand => new AsyncCommand<Person>(AddPerson);
+        private async Task AddPerson(Person person)
+        {
+            person ??= new Person();
+            await Shell.Current.Navigation.PushAsync(new PersonPage(person));
         }
     }
  }

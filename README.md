@@ -20,7 +20,7 @@ It is a public feed but you will need to sign in with a Microsoft account. The p
 
 2. In your `App.xaml.cs` set your MainPage to a `new SQLiteAppTools.BrowserPage(path)`. The path needs to be the same path you use when creating a `SQLiteConnection`.
 
-You main need to remove(or comment out) the line where you previously set your MainPage.
+You main need to remove (or comment out) the line where you previously set your MainPage.
 
 ```
 protected override async void OnStart()
@@ -53,13 +53,13 @@ Click on a cell with a URL in it, the URL will open in the default browser.
 ## Initialize on startup, navigate later
 I usually like to initialize my database at startup, and then forget about what the path is and I don't want to mess around with passing the path into the view or view model where I navigate to the SQLite App Tools Browser Page.
 
-To initialize without opening the page, call `TableService.Init()`:
+To initialize without opening the page, call `SQLiteAppTools.Init()`:
 
 ```
 protected override async void OnStart()
 {
     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "data.db3");
-    SQLiteAppTools.TableService.Init(path);
+    SQLiteAppTools.SQLiteAppTools.Init(path);
 }
 ```
 
@@ -90,7 +90,7 @@ Yep, the steps in getting started will work as is. If you want to open the the S
 Initialize the SQLite App Tools.
 
 ```
-SQLiteAppTools.TableService.Init(dbpath);
+SQLiteAppTools.SQLiteAppTools.Init(dbpath);
 ```
 
 Register the `BrowserPage` for navigation.
@@ -110,6 +110,11 @@ Found a bug or have a good feature idea? Create an issue.
 PRs welcome!
 
 # Credits
-SQLite App Tools  uses:
+SQLite App Tools uses:
  - [Frank Krueger's SQLite-net](https://github.com/praeclarum/sqlite-net), thanks Frank.
  - [Xamarin Forms](https://github.com/xamarin/Xamarin.Forms), thanks Xamarin.
+
+The Sample app also uses:
+ - [James Montemagno's MVVM Helper](https://github.com/jamesmontemagno/mvvm-helpers), thanks James.
+ - [Xamarin Essentials](https://github.com/xamarin/Essentials), thanks Xamarin.
+ 

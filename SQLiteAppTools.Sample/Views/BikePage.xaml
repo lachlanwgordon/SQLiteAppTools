@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns="http://xamarin.com/schemas/2014/forms"
+  x:Class="SQLiteAppTools.Sample.Views.BikePage">
+    <StackLayout>
+        <Entry Placeholder="Brand" Text="{Binding Bike.Brand}" ></Entry>
+        <Entry Placeholder="Model" Text="{Binding Bike.Model}" ></Entry>
+        <Entry Placeholder="Model" Text="{Binding Bike.NumberOfWheels}" Keyboard="Numeric" ></Entry>
+        <Entry Placeholder="Model" Text="{Binding Bike.Price}" Keyboard="Numeric" ></Entry>
+        <Entry Placeholder="Distance" Text="{Binding Bike.Distance}" Keyboard="Numeric" ></Entry>
+        <Entry Placeholder="Serial Number" Text="{Binding Bike.SerialNo}"></Entry>
+        <Entry Placeholder="Photo Url" Text="{Binding Bike.PhotoUrl}"></Entry>
+        <Picker Title="Owner" ItemsSource="{Binding People}" SelectedItem="{Binding SelectedPerson}" ItemDisplayBinding="{Binding FirstName}"></Picker>
+        <Button Command="{Binding SaveCommand}" Text="Save"></Button>
+    </StackLayout>
+</ContentPage>

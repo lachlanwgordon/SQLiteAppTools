@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:sqliteapptools="clr-namespace:SQLiteAppTools;assembly=SQLiteAppTools"
+    xmlns:views="clr-namespace:SQLiteAppTools.Sample.Views"
+    x:Class="SQLiteAppTools.Sample.AppShell">
+    <TabBar>
+        <Tab
+            Title="Main">
+            <ShellContent>
+                <views:MainPage></views:MainPage>
+            </ShellContent>
+        </Tab>
+        <Tab
+            Title="People">
+            <ShellContent>
+                <views:PeoplePage></views:PeoplePage>
+            </ShellContent>
+        </Tab>
+         <Tab
+            Title="Bikes">
+            <ShellContent>
+                <views:BikesPage></views:BikesPage>
+            </ShellContent>
+        </Tab>
+        <Tab
+            Title="SQLite App Tools">
+            <ShellContent>
+                <sqliteapptools:BrowserPage></sqliteapptools:BrowserPage>
+            </ShellContent>
+        </Tab>
+    </TabBar>
+</Shell>

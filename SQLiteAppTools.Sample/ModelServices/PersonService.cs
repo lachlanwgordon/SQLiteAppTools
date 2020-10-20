@@ -6,13 +6,11 @@ using SQLiteAppTools.Models;
 using SQLiteAppTools.Service;
 using Xamarin.Forms;
 
-namespace SQLiteAppTools.ModelServices
+namespace SQLiteAppTools.Sample.ModelServices
 {
     public interface IPersonService
     {
-
         Task<List<Person>> GetAllPeopleAsync();
-        Task<Person> GetPersonByIdAsync(int id);
         Task SavePersonAsync(Person person);
     }
 
@@ -23,10 +21,13 @@ namespace SQLiteAppTools.ModelServices
         public async Task<List<Person>> GetAllPeopleAsync()
         {
             await Task.Delay(500);
-            await SeedDemoDataAsync();
 
-            var people =  await database.Connection.Table<Person>().ToListAsync();
-            
+            var people = await database.Connection.Table<Person>().ToListAsync();
+            if(people.Count == 0)
+                await SeedDemoDataAsync();
+            people = await database.Connection.Table<Person>().ToListAsync();
+
+
             return people;
         }
         public static Person NetBot;
@@ -72,15 +73,6 @@ namespace SQLiteAppTools.ModelServices
                 UpdatedTimeStamp = DateTime.UtcNow
             };
             await database.Connection.InsertOrReplaceAsync(Clippy);
-            await database.Connection.InsertAllAsync(Bike.SeedData);
-            //This seed data for other classes doesn't really belong here but it's just nonsense to put some stuff in the db, so who really cares
-
-
-        }
-
-        public async Task<Person> GetPersonByIdAsync(int id)
-        {
-            return await database.Connection.GetAsync<Person>(id);
         }
 
         public async Task SavePersonAsync(Person person)

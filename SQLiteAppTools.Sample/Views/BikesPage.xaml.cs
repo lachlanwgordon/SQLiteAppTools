@@ -1,16 +1,14 @@
 using System;
-using SQLiteAppTools.Sample.ViewModels;
 using Xamarin.Forms;
-
+using System.Windows.Input;
+using SQLiteAppTools.Models;
 
 namespace SQLiteAppTools.Sample.Views
 {
-    public partial class PeoplePage : ContentPage
+    public partial class BikesPage : ContentPage
     {
-        public PeoplePageViewModel ViewModel { get; set; } = new PeoplePageViewModel();
-        public PeoplePage()
+        public BikesPage()
         {
-            BindingContext = ViewModel;
             InitializeComponent();
         }
 

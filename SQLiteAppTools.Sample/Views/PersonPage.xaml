@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns="http://xamarin.com/schemas/2014/forms"
+  x:Class="SQLiteAppTools.Sample.Views.PersonPage">
+    <StackLayout>
+        <Entry Placeholder="First name" Text="{Binding Person.FirstName}"></Entry>
+        <Entry Placeholder="Last name" Text="{Binding Person.LastName}"></Entry>
+        <Entry Placeholder="Favourtite Number" Text="{Binding Person.FavouriteNumber}" Keyboard="Numeric"></Entry>
+        <Entry Placeholder="Last name" Text="{Binding Person.LastName}"></Entry>
+        <DatePicker Date="{Binding Person.DateOfBirth}"></DatePicker>
+        <Button Text="Save" Command="{Binding SaveCommand}"></Button>
+    </StackLayout>
+</ContentPage>

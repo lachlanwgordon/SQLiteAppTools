@@ -15,6 +15,7 @@ variables:
   solution: '**/SQLiteAppTools.Build.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  buildNumber: $(PackageVersion)
 
 steps:
 - task: NuGetToolInstaller@1

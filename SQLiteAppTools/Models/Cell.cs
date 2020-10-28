@@ -65,6 +65,7 @@ namespace SQLiteAppTools.Models
         {
             return DisplayText;
         }
+
     }
     
 }

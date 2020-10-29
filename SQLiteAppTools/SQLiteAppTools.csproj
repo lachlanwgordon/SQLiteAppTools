@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>0.1.0-pre</PackageVersion>
+    <PackageVersion>0.1.1-pre</PackageVersion>
     <Authors>Lachlan Gordon</Authors>
     <PackageId>SQLiteAppTools</PackageId>
     <PackOnBuild>true</PackOnBuild>

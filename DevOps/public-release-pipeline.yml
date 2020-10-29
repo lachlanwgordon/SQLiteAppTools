@@ -47,6 +47,13 @@ steps:
 #     packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
 #     versioningScheme: 'off'
 
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo post built
+      
+      ls -R
 
 - task: NuGetCommand@2
   inputs:

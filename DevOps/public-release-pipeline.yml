@@ -15,7 +15,7 @@ variables:
   solution: '**/SQLiteAppTools.Build.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  BUILD_BUILDNUMBER: $(PackageVersion)
+  buildNumber: $(PackageVersion)
 
 steps:
 - task: NuGetToolInstaller@1
@@ -42,4 +42,4 @@ steps:
     command: 'pack'
     packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
     versioningScheme: 'byEnvVar'
-    versionEnvVar: '$(PackageVersion)'
+    versionEnvVar: 'buildNumber'

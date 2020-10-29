@@ -8,6 +8,8 @@
     <PackageId>SQLiteAppTools</PackageId>
     <PackOnBuild>true</PackOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/lachlanwgordon/SQLiteAppTools</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/lachlanwgordon/SQLiteAppTools</PackageProjectUrl>
     <IsPackable>true</IsPackable>
     <Description>SQLite App Tools lets you look inside the database inside your Xamarin Forms app to inspect and debug the contents. There's no need to dig through folders deeply buried in macOS with GUIDs for names or use the command line to dig around in Android. Just a nuget with a GUI right in your app.</Description>
     <SynchReleaseVersion>false</SynchReleaseVersion>

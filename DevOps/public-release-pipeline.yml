@@ -41,5 +41,4 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
-    versioningScheme: 'byEnvVar'
-    versionEnvVar: 'buildNumber'
+    versioningScheme: 'off'

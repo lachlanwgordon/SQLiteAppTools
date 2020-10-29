@@ -35,6 +35,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
+    versioningScheme: 'off'
+
 # - task: NuGetCommand@2
 #   inputs:
 #     command: 'pack'

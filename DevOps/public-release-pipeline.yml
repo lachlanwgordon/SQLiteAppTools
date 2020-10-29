@@ -26,7 +26,6 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -36,11 +35,11 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: NuGetCommand@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
-    versioningScheme: 'off'
+# - task: NuGetCommand@2
+#   inputs:
+#     command: 'pack'
+#     packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
+#     versioningScheme: 'off'
 
 - task: Bash@3
   inputs:

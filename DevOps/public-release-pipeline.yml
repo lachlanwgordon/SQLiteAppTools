@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- release/*
+- main
 
 pr: none
 
@@ -15,7 +15,6 @@ variables:
   solution: '**/SQLiteAppTools.Build.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  buildNumber: $(PackageVersion)
 
 steps:
 - task: NuGetToolInstaller@1
@@ -24,17 +23,13 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-# - task: VSBuild@1
-#   inputs:
-#     solution: '$(solution)'
-#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
 - task: VSBuild@1
-  displayName: Build
   inputs:
     solution: '$(solution)'
-    configuration: 'release'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
 
 - task: VSTest@2
   inputs:
@@ -45,7 +40,10 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
-    versioningScheme: 'off'
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '0'
+    minorVersion: '1'
+    patchVersion: '0'
 
 - task: Bash@3
   inputs:
@@ -58,6 +56,71 @@ steps:
 - task: NuGetCommand@2
   inputs:
     command: 'push'
-    packagesToPush: '**/*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'internal'
-    publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/872b4185-5bcc-4b23-a705-f34441fcd668'
+    publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/a68d072b-6d5b-4c4c-a94d-796563e29f15'
+
+
+# # ASP.NET
+# # Build and test ASP.NET projects.
+# # Add steps that publish symbols, save build artifacts, deploy, and more:
+# # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+# trigger:
+# - release/*
+
+# pr: none
+
+# pool:
+#   vmImage: 'windows-latest'
+
+# variables:
+#   solution: '**/SQLiteAppTools.Build.sln'
+#   buildPlatform: 'Any CPU'
+#   buildConfiguration: 'Release'
+#   buildNumber: $(PackageVersion)
+
+# steps:
+# - task: NuGetToolInstaller@1
+
+# - task: NuGetCommand@2
+#   inputs:
+#     restoreSolution: '$(solution)'
+
+# # - task: VSBuild@1
+# #   inputs:
+# #     solution: '$(solution)'
+# #     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+# #     platform: '$(buildPlatform)'
+# #     configuration: '$(buildConfiguration)'
+# - task: VSBuild@1
+#   displayName: Build
+#   inputs:
+#     solution: '$(solution)'
+#     configuration: 'release'
+
+# - task: VSTest@2
+#   inputs:
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
+
+# - task: NuGetCommand@2
+#   inputs:
+#     command: 'pack'
+#     packagesToPack: '**/SQLiteAppTools/SQLiteAppTools.csproj'
+#     versioningScheme: 'off'
+
+# - task: Bash@3
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       echo post built
+      
+#       ls -R
+
+# - task: NuGetCommand@2
+#   inputs:
+#     command: 'push'
+#     packagesToPush: '**/*.nupkg'
+#     nuGetFeedType: 'internal'
+#     publishVstsFeed: '78682d02-a4cd-4574-ac0a-625cd1f6cd8c/872b4185-5bcc-4b23-a705-f34441fcd668'

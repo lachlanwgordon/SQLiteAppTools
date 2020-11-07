@@ -23,9 +23,8 @@ namespace SQLiteAppTools.Tests
         [TestCaseSource(typeof(ColTypeCLRTypeTests), nameof(TestTypesData))]
         public void TestTypes(ColType colType, Type expected)
         {
-            var type = SQLiteExtensions.GetTypeFromColType(colType);
+            var type = TableService.GetTypeFromColType(colType);
             Assert.AreEqual(expected, type);
         }
-
     }
 }
